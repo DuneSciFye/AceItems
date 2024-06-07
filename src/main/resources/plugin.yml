@@ -1,0 +1,8 @@
+name: AceItems
+version: '${version}'
+main: me.dunescifye.aceitems.AceItems
+api-version: '1.20'
+depend: [CommandAPI]
+softdepend:
+  - PlaceholderAPI
+  - LibsDisguises
