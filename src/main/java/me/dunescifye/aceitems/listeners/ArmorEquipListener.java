@@ -34,7 +34,7 @@ public class ArmorEquipListener implements Listener {
             if (item.hasItemMeta()){
                 Player p = e.getPlayer();
                 PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-                if (container.has(keyItemID)){
+                if (container.has(keyItemID, PersistentDataType.STRING)){
                     String itemID = container.get(keyItemID, PersistentDataType.STRING);
                     if (itemID.equals("June24Boots") ||
                         itemID.equals("June24Leggings") ||
