@@ -36,6 +36,7 @@ public class EntityToggleGlideListener implements Listener {
                 PersistentDataContainer container = meta.getPersistentDataContainer();
                 if (container.has(keyItemID, PersistentDataType.STRING)){
                     String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                    assert itemID != null;
                     if (itemID.equals("June24Elytra")) {
                         if (!June24ElytraDisabledWorlds.contains(p.getWorld().getName())) {
                             Particle.DustOptions aqua = new Particle.DustOptions(Color.AQUA, 2.0F);

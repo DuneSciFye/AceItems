@@ -53,6 +53,7 @@ public class PlayerBlockBreakListener implements Listener {
             PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
             if (container.has(keyItemID)){
                 String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                assert itemID != null;
                 if (itemID.equals("June24MoreOPPickaxe")){
                     if (!June24MoreOPPickaxeDisabledWorlds.contains(p.getWorld().getName())) {
                         if (ThreadLocalRandom.current().nextInt(1, June24MoreOPPickaxeWaterBreathingPotionChance) == 1)

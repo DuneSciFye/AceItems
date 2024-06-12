@@ -28,6 +28,7 @@ public class PlayerExpChangeListener implements Listener {
             PersistentDataContainer container = offhandItem.getItemMeta().getPersistentDataContainer();
             if (container.has(keyItemID)) {
                 String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                assert itemID != null;
                 if (itemID.equals("June24XPBeacon")) {
                     if (!June24XPBeaconDisabledWorlds.contains(p.getWorld().getName())) {
                         e.setAmount((int) (e.getAmount() * 1.5));

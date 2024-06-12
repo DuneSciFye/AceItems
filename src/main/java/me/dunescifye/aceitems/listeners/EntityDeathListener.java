@@ -32,6 +32,7 @@ public class EntityDeathListener implements Listener {
             PersistentDataContainer container = meta.getPersistentDataContainer();
             if (container.has(keyItemID)) {
                 String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                assert itemID != null;
                 if (itemID.equals("June24MoreOPSword")) {
                     if (!June24MoreOPSwordDisabledWorlds.contains(p.getWorld().getName())) {
                         int kills = container.get(keyKills, PersistentDataType.INTEGER);

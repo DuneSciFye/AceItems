@@ -86,78 +86,85 @@ public class PlayerToggleSneakListener implements Listener {
         }
 
         if (e.isSneaking()){
-            if (helmetItemID.equals("June24Helmet") &&
-                (chestplateItemID.equals("June24Chestplate") || chestplateItemID.equals("June24Elytra")) &&
-                leggingsItemID.equals("June24Leggings") &&
-                bootsItemID.equals("June24Boots")){
-                if (!June24BootsDisabledWorlds.contains(p.getWorld().getName()) &&
-                    !June24LeggingsDisabledWorlds.contains(p.getWorld().getName()) &&
-                    !June24ChestplateDisabledWorlds.contains(p.getWorld().getName()) &&
-                    !June24HelmetDisabledWorlds.contains(p.getWorld().getName())) {
-                    BukkitTask cancelTask = activeTasks.remove(p.getUniqueId());
-                    if (cancelTask != null) {
-                        cancelTask.cancel();
-                    }
+            assert helmetItemID != null;
+            if (helmetItemID.equals("June24Helmet")) {
+                assert chestplateItemID != null;
+                if ((chestplateItemID.equals("June24Chestplate") || chestplateItemID.equals("June24Elytra"))) {
+                    assert leggingsItemID != null;
+                    if (leggingsItemID.equals("June24Leggings")) {
+                        assert bootsItemID != null;
+                        if (bootsItemID.equals("June24Boots")) {
+                            if (!June24BootsDisabledWorlds.contains(p.getWorld().getName()) &&
+                                    !June24LeggingsDisabledWorlds.contains(p.getWorld().getName()) &&
+                                    !June24ChestplateDisabledWorlds.contains(p.getWorld().getName()) &&
+                                    !June24HelmetDisabledWorlds.contains(p.getWorld().getName())) {
+                                BukkitTask cancelTask = activeTasks.remove(p.getUniqueId());
+                                if (cancelTask != null) {
+                                    cancelTask.cancel();
+                                }
 
-                    if (June24ArmorSneaks.containsKey(p.getUniqueId())) {
-                        if (hasCooldown(June24ArmorBeesCooldown, p.getUniqueId())) {
-                            sendCooldownMessage(p, getRemainingCooldown(June24ArmorBeesCooldown, p.getUniqueId()));
-                        } else {
-                            if (June24ArmorSneaks.get(p.getUniqueId()) == 2) {
-                                setCooldown(June24ArmorBeesCooldown, p.getUniqueId(), Duration.ofMinutes(20));
-                                June24ArmorSneaks.remove(p.getUniqueId());
-                                p.spawnParticle(Particle.CLOUD, p.getLocation().add(0, 1, 0), 100, 1, 1, 1, 0);
-                                List<Bee> bees = new ArrayList<>();
-                                Bee bee1 = (Bee) p.getWorld().spawnEntity(p.getLocation().add(1, 2, -1), EntityType.BEE);
-                                Bee bee2 = (Bee) p.getWorld().spawnEntity(p.getLocation().add(-1, 2, 1), EntityType.BEE);
-                                Bee bee3 = (Bee) p.getWorld().spawnEntity(p.getLocation().add(1, 2, 0), EntityType.BEE);
-                                bees.add(bee1);
-                                bees.add(bee2);
-                                bees.add(bee3);
-                                BukkitTask angrybee = new BukkitRunnable() {
-                                    @Override
-                                    public void run() {
-                                        for (Bee bee : bees) {
-                                            bee.setHasStung(false);
-                                            List<Entity> nearbyEntities = bee.getNearbyEntities(5, 5, 5);
-                                            for (Entity entity : nearbyEntities) {
-                                                if (entity instanceof Player && entity != p) {
-                                                    bee.setTarget((LivingEntity) entity);
-                                                    break;
+                                if (June24ArmorSneaks.containsKey(p.getUniqueId())) {
+                                    if (hasCooldown(June24ArmorBeesCooldown, p.getUniqueId())) {
+                                        sendCooldownMessage(p, getRemainingCooldown(June24ArmorBeesCooldown, p.getUniqueId()));
+                                    } else {
+                                        if (June24ArmorSneaks.get(p.getUniqueId()) == 2) {
+                                            setCooldown(June24ArmorBeesCooldown, p.getUniqueId(), Duration.ofMinutes(20));
+                                            June24ArmorSneaks.remove(p.getUniqueId());
+                                            p.spawnParticle(Particle.CLOUD, p.getLocation().add(0, 1, 0), 100, 1, 1, 1, 0);
+                                            List<Bee> bees = new ArrayList<>();
+                                            Bee bee1 = (Bee) p.getWorld().spawnEntity(p.getLocation().add(1, 2, -1), EntityType.BEE);
+                                            Bee bee2 = (Bee) p.getWorld().spawnEntity(p.getLocation().add(-1, 2, 1), EntityType.BEE);
+                                            Bee bee3 = (Bee) p.getWorld().spawnEntity(p.getLocation().add(1, 2, 0), EntityType.BEE);
+                                            bees.add(bee1);
+                                            bees.add(bee2);
+                                            bees.add(bee3);
+                                            BukkitTask angrybee = new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    for (Bee bee : bees) {
+                                                        bee.setHasStung(false);
+                                                        List<Entity> nearbyEntities = bee.getNearbyEntities(5, 5, 5);
+                                                        for (Entity entity : nearbyEntities) {
+                                                            if (entity instanceof Player && entity != p) {
+                                                                bee.setTarget((LivingEntity) entity);
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
                                                 }
-                                            }
+                                            }.runTaskTimer(AceItems.getInstance(), 1, 60);
+                                            new BukkitRunnable() {
+                                                @Override
+                                                public void run() {
+                                                    for (Bee bee : bees)
+                                                        bee.remove();
+                                                    angrybee.cancel();
+                                                }
+                                            }.runTaskLater(AceItems.getInstance(), 200);
+
+                                        } else {
+                                            June24ArmorSneaks.put(p.getUniqueId(), 2);
                                         }
                                     }
-                                }.runTaskTimer(AceItems.getInstance(), 1, 60);
-                                new BukkitRunnable() {
+                                } else {
+                                    June24ArmorSneaks.put(p.getUniqueId(), 1);
+                                }
+                                boots.setItemMeta(bootsMeta);
+
+                                BukkitTask task = new BukkitRunnable() {
+
                                     @Override
                                     public void run() {
-                                        for (Bee bee : bees)
-                                            bee.remove();
-                                        angrybee.cancel();
+                                        June24ArmorSneaks.remove(p.getUniqueId());
                                     }
-                                }.runTaskLater(AceItems.getInstance(), 200);
+                                }.runTaskLater(AceItems.getInstance(), 50);
 
-                            } else {
-                                June24ArmorSneaks.put(p.getUniqueId(), 2);
+                                activeTasks.put(p.getUniqueId(), task);
                             }
+
                         }
-                    } else {
-                        June24ArmorSneaks.put(p.getUniqueId(), 1);
                     }
-                    boots.setItemMeta(bootsMeta);
-
-                    BukkitTask task = new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-                            June24ArmorSneaks.remove(p.getUniqueId());
-                        }
-                    }.runTaskLater(AceItems.getInstance(), 50);
-
-                    activeTasks.put(p.getUniqueId(), task);
                 }
-
             }
         }
 

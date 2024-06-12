@@ -92,38 +92,45 @@ public class EntityPotionEffectListener implements Listener {
                     }
                 }
 
-                if (helmetItemID.equals("June24Helmet") &&
-                    (chestplateItemID.equals("June24Chestplate") || chestplateItemID.equals("June24Elytra")) &&
-                    leggingsItemID.equals("June24Leggings") &&
-                    bootsItemID.equals("June24Boots")) {
+                assert helmetItemID != null;
+                if (helmetItemID.equals("June24Helmet")) {
+                    assert chestplateItemID != null;
+                    if ((chestplateItemID.equals("June24Chestplate") || chestplateItemID.equals("June24Elytra"))) {
+                        assert leggingsItemID != null;
+                        if (leggingsItemID.equals("June24Leggings")) {
+                            assert bootsItemID != null;
+                            if (bootsItemID.equals("June24Boots")) {
 
-                    if (!June24BootsDisabledWorlds.contains(p.getWorld().getName()) &&
-                        !June24LeggingsDisabledWorlds.contains(p.getWorld().getName()) &&
-                        !June24ChestplateDisabledWorlds.contains(p.getWorld().getName()) &&
-                        !June24ElytraDisabledWorlds.contains(p.getWorld().getName()) &&
-                        !June24HelmetDisabledWorlds.contains(p.getWorld().getName())) {
-                        PotionEffect effect = e.getNewEffect();
-                        if (effect != null) {
-                            if (isHarmfulEffect(potionEffectType)) {
-                                int newLevel = effect.getAmplifier() - 1;
-                                if (newLevel >= 0) {
-                                    PotionEffect newEffect = new PotionEffect(potionEffectType, effect.getDuration(), newLevel, effect.isAmbient(), effect.hasParticles(), effect.hasIcon());
-                                    handlingEvent.add(p.getUniqueId());
-                                    Bukkit.getScheduler().runTask(AceItems.getInstance(), () -> {
-                                        p.removePotionEffect(potionEffectType);
-                                        p.addPotionEffect(newEffect);
-                                        handlingEvent.remove(p.getUniqueId());
-                                    });
+                                if (!June24BootsDisabledWorlds.contains(p.getWorld().getName()) &&
+                                        !June24LeggingsDisabledWorlds.contains(p.getWorld().getName()) &&
+                                        !June24ChestplateDisabledWorlds.contains(p.getWorld().getName()) &&
+                                        !June24ElytraDisabledWorlds.contains(p.getWorld().getName()) &&
+                                        !June24HelmetDisabledWorlds.contains(p.getWorld().getName())) {
+                                    PotionEffect effect = e.getNewEffect();
+                                    if (effect != null) {
+                                        if (isHarmfulEffect(potionEffectType)) {
+                                            int newLevel = effect.getAmplifier() - 1;
+                                            if (newLevel >= 0) {
+                                                PotionEffect newEffect = new PotionEffect(potionEffectType, effect.getDuration(), newLevel, effect.isAmbient(), effect.hasParticles(), effect.hasIcon());
+                                                handlingEvent.add(p.getUniqueId());
+                                                Bukkit.getScheduler().runTask(AceItems.getInstance(), () -> {
+                                                    p.removePotionEffect(potionEffectType);
+                                                    p.addPotionEffect(newEffect);
+                                                    handlingEvent.remove(p.getUniqueId());
+                                                });
+                                            }
+                                        } else if (isBeneficialEffect(potionEffectType)) {
+                                            int newDuration = (int) (effect.getDuration() * 1.3);
+                                            PotionEffect newEffect = new PotionEffect(potionEffectType, newDuration, effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon());
+                                            handlingEvent.add(p.getUniqueId());
+                                            Bukkit.getScheduler().runTask(AceItems.getInstance(), () -> {
+                                                p.removePotionEffect(potionEffectType);
+                                                p.addPotionEffect(newEffect);
+                                                handlingEvent.remove(p.getUniqueId());
+                                            });
+                                        }
+                                    }
                                 }
-                            } else if (isBeneficialEffect(potionEffectType)) {
-                                int newDuration = (int) (effect.getDuration() * 1.3);
-                                PotionEffect newEffect = new PotionEffect(potionEffectType, newDuration, effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon());
-                                handlingEvent.add(p.getUniqueId());
-                                Bukkit.getScheduler().runTask(AceItems.getInstance(), () -> {
-                                    p.removePotionEffect(potionEffectType);
-                                    p.addPotionEffect(newEffect);
-                                    handlingEvent.remove(p.getUniqueId());
-                                });
                             }
                         }
                     }

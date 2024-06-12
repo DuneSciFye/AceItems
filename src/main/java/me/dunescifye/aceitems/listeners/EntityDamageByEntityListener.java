@@ -91,18 +91,25 @@ public class EntityDamageByEntityListener implements Listener {
                     }
                 }
 
-                if (helmetItemID.equals("June24Helmet") &&
-                    (chestplateItemID.equals("June24Chestplate") || chestplateItemID.equals("June24Elytra"))&&
-                    leggingsItemID.equals("June24Leggings") &&
-                    bootsItemID.equals("June24Boots")){
-                    if (!June24BootsDisabledWorlds.contains(p.getWorld().getName()) &&
-                        !June24LeggingsDisabledWorlds.contains(p.getWorld().getName()) &&
-                        !June24ChestplateDisabledWorlds.contains(p.getWorld().getName()) &&
-                        !June24HelmetDisabledWorlds.contains(p.getWorld().getName())) {
-                        if (p.getLocation().getBlock().getType() == Material.WATER ||
-                            p.getLocation().getBlock().getType() == Material.BUBBLE_COLUMN ||
-                            p.getLocation().getBlock().getType() == Material.KELP_PLANT) {
-                            e.setDamage(e.getDamage() * 1.3);
+                assert helmetItemID != null;
+                if (helmetItemID.equals("June24Helmet")) {
+                    assert chestplateItemID != null;
+                    if ((chestplateItemID.equals("June24Chestplate") || chestplateItemID.equals("June24Elytra"))) {
+                        assert leggingsItemID != null;
+                        if (leggingsItemID.equals("June24Leggings")) {
+                            assert bootsItemID != null;
+                            if (bootsItemID.equals("June24Boots")) {
+                                if (!June24BootsDisabledWorlds.contains(p.getWorld().getName()) &&
+                                        !June24LeggingsDisabledWorlds.contains(p.getWorld().getName()) &&
+                                        !June24ChestplateDisabledWorlds.contains(p.getWorld().getName()) &&
+                                        !June24HelmetDisabledWorlds.contains(p.getWorld().getName())) {
+                                    if (p.getLocation().getBlock().getType() == Material.WATER ||
+                                            p.getLocation().getBlock().getType() == Material.BUBBLE_COLUMN ||
+                                            p.getLocation().getBlock().getType() == Material.KELP_PLANT) {
+                                        e.setDamage(e.getDamage() * 1.3);
+                                    }
+                                }
+                            }
                         }
                     }
                 }

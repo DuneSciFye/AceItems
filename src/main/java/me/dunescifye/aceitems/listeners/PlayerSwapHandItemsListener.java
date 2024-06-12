@@ -34,6 +34,7 @@ public class PlayerSwapHandItemsListener implements Listener {
             PersistentDataContainer container = offHandItem.getItemMeta().getPersistentDataContainer();
             if (container.has(keyItemID, PersistentDataType.STRING)){
                 String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                assert itemID != null;
                 if (itemID.equals("June24Wings")){
                     if (!June24WingsDisabledWorlds.contains(p.getWorld().getName())) {
                         p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, Integer.MAX_VALUE, 0));
@@ -109,6 +110,7 @@ public class PlayerSwapHandItemsListener implements Listener {
             PersistentDataContainer container = mainHandItem.getItemMeta().getPersistentDataContainer();
             if (container.has(keyItemID, PersistentDataType.STRING)) {
                 String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                assert itemID != null;
                 if (itemID.equals("June24Wings")) {
                     p.removePotionEffect(PotionEffectType.WATER_BREATHING);
                 } else if (itemID.equals("June24Amulet")) {

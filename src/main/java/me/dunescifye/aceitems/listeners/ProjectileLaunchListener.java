@@ -31,6 +31,7 @@ public class ProjectileLaunchListener implements Listener {
                     PersistentDataContainer container = meta.getPersistentDataContainer();
                     if (container.has(keyItemID, PersistentDataType.STRING)) {
                         String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                        assert itemID != null;
                         if (itemID.equals("June24Bow")) {
                             if (!June24BowDisabledWorlds.contains(p.getWorld().getName())) {
                                 getArrowDistances().put(arrow.getUniqueId(), arrow.getLocation().distance(p.getLocation()));

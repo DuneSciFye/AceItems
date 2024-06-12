@@ -27,19 +27,18 @@ public class PlayerInteractEntityListener implements Listener {
         Player p = event.getPlayer();
         ItemStack heldItem = p.getInventory().getItemInMainHand();
 
-        if (heldItem != null){
-            if (heldItem.hasItemMeta()){
-                ItemMeta meta = heldItem.getItemMeta();
-                PersistentDataContainer container = meta.getPersistentDataContainer();
-                if (container.has(keyItemID)){
-                    String itemID = container.get(keyItemID, PersistentDataType.STRING);
-                    if (itemID.equals("June24GrowthStunter")){
-                        if (!June24GrowthStunterDisabledWorlds.contains(p.getWorld().getName())) {
-                            Entity entity = event.getRightClicked();
-                            if (entity instanceof Ageable) {
-                                ((Ageable) entity).setBaby();
-                                ((Ageable) entity).setAge(-2147483647);
-                            }
+        if (heldItem.hasItemMeta()) {
+            ItemMeta meta = heldItem.getItemMeta();
+            PersistentDataContainer container = meta.getPersistentDataContainer();
+            if (container.has(keyItemID)) {
+                String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                assert itemID != null;
+                if (itemID.equals("June24GrowthStunter")) {
+                    if (!June24GrowthStunterDisabledWorlds.contains(p.getWorld().getName())) {
+                        Entity entity = event.getRightClicked();
+                        if (entity instanceof Ageable) {
+                            ((Ageable) entity).setBaby();
+                            ((Ageable) entity).setAge(-2147483647);
                         }
                     }
                 }

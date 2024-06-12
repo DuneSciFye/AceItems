@@ -37,6 +37,7 @@ public class InventoryClickListener implements Listener {
                 PersistentDataContainer container = slotItem.getItemMeta().getPersistentDataContainer();
                 if (container.has(keyItemID, PersistentDataType.STRING)) {
                     String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                    assert itemID != null;
                     if (itemID.equals("June24Amulet")) {
                         if (!June24AmuletDisabledWorlds.contains(p.getWorld().getName())) {
                             BukkitScheduler scheduler = Bukkit.getScheduler();

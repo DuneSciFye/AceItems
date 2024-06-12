@@ -36,6 +36,7 @@ public class PlayerFishListener implements Listener {
                 PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
                 if (container.has(keyItemID, PersistentDataType.STRING)){
                     String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                    assert itemID != null;
                     if (itemID.equals("June24FishingRod")){
                         if (!June24FishingRodDisabledWorlds.contains(p.getWorld().getName())) {
                             if (ThreadLocalRandom.current().nextInt(June24FishingRodSeaLanternChance) == 0)

@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AceItems.main.iml" filepath="$PROJECT_DIR$/.idea/modules/AceItems.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/AceItems.test.iml" filepath="$PROJECT_DIR$/.idea/modules/AceItems.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/me.dunescifye.AceItems.main.iml" filepath="$PROJECT_DIR$/.idea/modules/me.dunescifye.AceItems.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/me.dunescifye.AceItems.test.iml" filepath="$PROJECT_DIR$/.idea/modules/me.dunescifye.AceItems.test.iml" />
     </modules>
   </component>
 </project>

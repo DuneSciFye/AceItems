@@ -31,6 +31,7 @@ public class EntityShootBowListener implements Listener {
                 if (container.has(keyItemID, PersistentDataType.STRING)){
                     String itemID = container.get(keyItemID, PersistentDataType.STRING);
                     Arrow projectile = (Arrow) e.getProjectile();
+                    assert itemID != null;
                     if (itemID.equals("June24Shield")){
                         if (!June24ShieldDisabledWorlds.contains(p.getWorld().getName())) {
                             int arrows = itemCount(p, Material.ARROW);
