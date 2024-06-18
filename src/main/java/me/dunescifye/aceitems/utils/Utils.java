@@ -264,6 +264,7 @@ public class Utils {
         Item itemToDrop = p.getWorld().dropItem(p.getLocation(), item);
         itemToDrop.setPickupDelay(0);
         itemToDrop.setOwner(p.getUniqueId());
+        if (item.getAmount() > 64) p.sendMessage("a");
     }
     public static int itemCount (Player p, Material item){
         int count = 0;

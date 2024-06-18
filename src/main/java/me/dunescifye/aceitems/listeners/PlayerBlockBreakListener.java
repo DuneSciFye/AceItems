@@ -156,15 +156,10 @@ public class PlayerBlockBreakListener implements Listener {
                                     }
 
                                 });
+                            } else {
+                                e.setCancelled(true);
                             }
                         }
-                    }
-                }
-
-                //3x3 Mining for all tools
-                if (container.has(keyRadius)){
-                    if (container.get(keyRadius, PersistentDataType.INTEGER) > 0){
-                        breakInRadius(b, 1, p, pickaxeWhitelist, pickaxeBlacklist);
                     }
                 }
             }
@@ -195,7 +190,5 @@ public class PlayerBlockBreakListener implements Listener {
                 }
             }
         }
-
     }
-
 }

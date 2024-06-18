@@ -3,20 +3,33 @@ package me.dunescifye.aceitems;
 import dev.jorel.commandapi.CommandAPI;
 import me.dunescifye.aceitems.commands.CustomItemsCommand;
 import me.dunescifye.aceitems.files.Config;
+import me.dunescifye.aceitems.files.JulyItemsConfig;
 import me.dunescifye.aceitems.libs.armorequip.ArmorEquipEvent;
 import me.dunescifye.aceitems.listeners.*;
 import me.dunescifye.aceitems.files.JuneItemsConfig;
 import me.dunescifye.aceitems.items.JuneItemsManager;
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class AceItems extends JavaPlugin {
 
     private static AceItems plugin;
 
+    public static final NamespacedKey keyID = new NamespacedKey("aceitems", "id");
+    //Map of all items
+    public static Map<String, ItemStack> items = new HashMap<>();
+    public static Map<NamespacedKey, PersistentDataType> dataType = new HashMap<>();
+    public static Map<NamespacedKey, Object> defaultValue = new HashMap<>();
+
     @Override
     public void onEnable() {
-        Bukkit.getLogger().info("AceItems plugin starting.");
+        Bukkit.getLogger().info("AceItems plugin loading.");
 
         plugin = this;
 
@@ -24,6 +37,14 @@ public final class AceItems extends JavaPlugin {
         JuneItemsConfig.setup();
 
         JuneItemsManager.init();
+        ArmorEquipEvent.registerListener(this);
+        registerEvents();
+        CustomItemsCommand.register();
+
+        Bukkit.getLogger().info("AceItems plugin loaded.");
+    }
+
+    public void registerEvents() {
         new PlayerBlockBreakListener().PlayerBlockBreakHandler(this);
         new PlayerInteractListener().PlayerInteractHandler(this);
         new PlayerDeathListener().PlayerDeathHandler(this);
@@ -41,10 +62,6 @@ public final class AceItems extends JavaPlugin {
         new EntityDeathListener().EntityDeathHandler(this);
         new ProjectileLaunchListener().ProjectileLaunchHandler(this);
         new ProjectileHitListener().ProjectileHitHandler(this);
-        ArmorEquipEvent.registerListener(this);
-        CustomItemsCommand.register();
-
-        Bukkit.getLogger().info("AceItems plugin finished starting.");
     }
 
     @Override
