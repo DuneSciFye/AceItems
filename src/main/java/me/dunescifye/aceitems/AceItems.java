@@ -15,6 +15,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class AceItems extends JavaPlugin {
@@ -22,10 +23,32 @@ public final class AceItems extends JavaPlugin {
     private static AceItems plugin;
 
     public static final NamespacedKey keyID = new NamespacedKey("aceitems", "id");
+    public static final NamespacedKey keyItemID = new NamespacedKey("customitems", "item-id");
+    public static final NamespacedKey keyRadius = new NamespacedKey("customitems", "radius");
+    public static final NamespacedKey keyRadiusLore = new NamespacedKey("customitems", "radiuslore");
+    public static final NamespacedKey keyKills = new NamespacedKey("customitems", "kills");
+    public static final NamespacedKey keyBlockType = new NamespacedKey("customitems", "blocktype");
+    public static final NamespacedKey keyBlockTypeLore = new NamespacedKey("customitems", "blocktypelore");
+    public static final NamespacedKey keyUses = new NamespacedKey("customitems", "uses");
+    public static final NamespacedKey keyInt = new NamespacedKey("customitems", "int");
     //Map of all items
     public static Map<String, ItemStack> items = new HashMap<>();
+    //Map of all disabled worlds for each item
+    public static Map<String, List<String>> disabledWorlds = new HashMap<>();
     public static Map<NamespacedKey, PersistentDataType> dataType = new HashMap<>();
     public static Map<NamespacedKey, Object> defaultValue = new HashMap<>();
+
+    static {
+        dataType.put(keyRadius, PersistentDataType.INTEGER);
+        defaultValue.put(keyRadius, 0);
+        dataType.put(keyRadiusLore, PersistentDataType.STRING);
+        defaultValue.put(keyRadiusLore, "1x1");
+        dataType.put(keyKills, PersistentDataType.INTEGER);
+        defaultValue.put(keyKills, 0);
+        dataType.put(keyBlockType, PersistentDataType.STRING);
+        dataType.put(keyBlockTypeLore, PersistentDataType.STRING);
+        dataType.put(keyUses, PersistentDataType.INTEGER);
+    }
 
     @Override
     public void onEnable() {
@@ -35,6 +58,7 @@ public final class AceItems extends JavaPlugin {
 
         Config.setup();
         JuneItemsConfig.setup();
+        JulyItemsConfig.setup();
 
         JuneItemsManager.init();
         ArmorEquipEvent.registerListener(this);

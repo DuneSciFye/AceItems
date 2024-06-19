@@ -204,6 +204,8 @@ public class ConfigUtils {
                 item.setItemMeta(leatherArmorMeta);
             }
         }
+        //Setting disabled worlds
+        AceItems.disabledWorlds.put(itemID, config.getStringList(itemID + ".disabledWorlds"));
 
         configUtils.save();
         item.setItemMeta(meta);
@@ -317,6 +319,8 @@ public class ConfigUtils {
                 item.setItemMeta(leatherArmorMeta);
             }
         }
+        //Setting disabled worlds
+        AceItems.disabledWorlds.put(itemID, config.getStringList(itemID + ".disabledWorlds"));
         //Save file for lore changes
         configUtils.save();
 

@@ -16,14 +16,6 @@ import static me.dunescifye.aceitems.utils.Utils.*;
 
 public class JuneItemsManager {
 
-    public static ItemStack June24LavaWaterBucket, UltraJune24LavaWaterBucket, June24MoreOPPickaxe, UltraJune24MoreOPPickaxe, June24LessOPPickaxe, June24MoreOPSword,
-        June24QuartzWand, UltraJune24QuartzWand, June24PropTool, UltraJune24PropTool, June24GrowthStunter, June24Axe,
-        UltraJune24Axe, June24TechnologicalAdvancement, UltraJune24TechnologicalAdvancement, June24LessOPSword,
-        UltraJune24MoreOPSword, June24GuardianBeam, June24Boots, June24Leggings, June24Chestplate, June24Helmet,
-        June24Shovel, June24XPBeacon, UltraJune24XPBeacon, June24BlockWand, UltraJune24BlockWand, June24LeafBlower,
-        June24Hoe, June24Amulet, UltraJune24Amulet, June24Shield, June24Elytra, June24Wings, June24Bow, June24Crossbow,
-        June24Trident, June24FishingRod, UltraJune24FishingRod;
-
     public static List<String> June24LavaWaterBucketDisabledWorlds, UltraJune24LavaWaterBucketDisabledWorlds, June24MoreOPPickaxeDisabledWorlds, UltraJune24MoreOPPickaxeDisabledWorlds, June24LessOPPickaxeDisabledWorlds, June24MoreOPSwordDisabledWorlds,
         June24QuartzWandDisabledWorlds, UltraJune24QuartzWandDisabledWorlds, June24PropToolDisabledWorlds, UltraJune24PropToolDisabledWorlds, June24GrowthStunterDisabledWorlds, June24AxeDisabledWorlds,
         UltraJune24AxeDisabledWorlds, June24TechnologicalAdvancementDisabledWorlds, UltraJune24TechnologicalAdvancementDisabledWorlds, June24LessOPSwordDisabledWorlds,
@@ -31,7 +23,7 @@ public class JuneItemsManager {
         June24ShovelDisabledWorlds, June24XPBeaconDisabledWorlds, UltraJune24XPBeaconDisabledWorlds, June24BlockWandDisabledWorlds, UltraJune24BlockWandDisabledWorlds, June24LeafBlowerDisabledWorlds,
         June24HoeDisabledWorlds, June24AmuletDisabledWorlds, UltraJune24AmuletDisabledWorlds, June24ShieldDisabledWorlds, June24ElytraDisabledWorlds, June24WingsDisabledWorlds, June24BowDisabledWorlds, June24CrossbowDisabledWorlds, June24TridentDisabledWorlds,
         June24FishingRodDisabledWorlds, UltraJune24FishingRodDisabledWorlds;
-    
+
     private static ConfigUtils configUtils;
     private static FileConfiguration config;
     public static void init(){
@@ -77,74 +69,6 @@ public class JuneItemsManager {
         createJune24LavaWaterBucket();
         createUltraJune24LavaWaterBucket();
     }
-
-    private static void createJune24LavaWaterBucket(){
-        June24LavaWaterBucket = initializeItem("June24LavaWaterBucket", configUtils);
-        June24LavaWaterBucketDisabledWorlds = config.getStringList("June24LavaWaterBucket.disabledWorlds");
-    }
-    private static void createUltraJune24LavaWaterBucket(){
-        UltraJune24LavaWaterBucket = initializeItem("UltraJune24LavaWaterBucket", configUtils);
-        UltraJune24LavaWaterBucketDisabledWorlds = config.getStringList("UltraJune24LavaWaterBucket.disabledWorlds");
-    }
-
-    private static void createJune24MoreOPPickaxe(){
-        ItemStack item = initializeItem("June24MoreOPPickaxe", configUtils);
-        ItemMeta meta = item.getItemMeta();
-
-        meta.getPersistentDataContainer().set(keyRadius, PersistentDataType.INTEGER, 0);
-        meta.getPersistentDataContainer().set(keyRadiusLore, PersistentDataType.STRING, "1x1");
-
-        item.setItemMeta(meta);
-        June24MoreOPPickaxe = item;
-        June24MoreOPPickaxeDisabledWorlds = config.getStringList("June24MoreOPPickaxe.disabledWorlds");
-    }
-
-    private static void createUltraJune24MoreOPPickaxe(){
-        ItemStack item = initializeItem("UltraJune24MoreOPPickaxe", configUtils);
-        ItemMeta meta = item.getItemMeta();
-
-        meta.getPersistentDataContainer().set(keyRadius, PersistentDataType.INTEGER, 0);
-        meta.getPersistentDataContainer().set(keyRadiusLore, PersistentDataType.STRING, "1x1");
-
-        item.setItemMeta(meta);
-        UltraJune24MoreOPPickaxe = item;
-        UltraJune24MoreOPPickaxeDisabledWorlds = config.getStringList("UltraJune24MoreOPPickaxe.disabledWorlds");
-    }
-
-    private static void createJune24LessOPPickaxe(){
-        ItemStack item = initializeItem("June24LessOPPickaxe", configUtils);
-        ItemMeta meta = item.getItemMeta();
-
-        meta.getPersistentDataContainer().set(keyRadius, PersistentDataType.INTEGER, 0);
-        meta.getPersistentDataContainer().set(keyRadiusLore, PersistentDataType.STRING, "1x1");
-
-        item.setItemMeta(meta);
-        June24LessOPPickaxe = item;
-        June24LessOPPickaxeDisabledWorlds = config.getStringList("June24LessOPPickaxe.disabledWorlds");
-    }
-    private static void createJune24MoreOPSword(){
-        ItemStack item = initializeItem("June24MoreOPSword", configUtils);
-        ItemMeta meta = item.getItemMeta();
-
-        meta.getPersistentDataContainer().set(keyKills, PersistentDataType.INTEGER, 0);
-
-        item.setItemMeta(meta);
-        June24MoreOPSword = item;
-        June24MoreOPSwordDisabledWorlds = config.getStringList("June24MoreOPSword.disabledWorlds");
-    }
-    private static void createJune24QuartzWand(){
-        ItemStack item = initializeItem("June24QuartzWand", configUtils);
-        ItemMeta meta = item.getItemMeta();
-
-        meta.getPersistentDataContainer().set(keyBlockType, PersistentDataType.STRING, "QUARTZ_BLOCK");
-        meta.getPersistentDataContainer().set(keyBlockTypeLore, PersistentDataType.STRING, "Quartz Block");
-        meta.getPersistentDataContainer().set(keyUses, PersistentDataType.INTEGER, 300);
-
-        item.setItemMeta(meta);
-        June24QuartzWand = item;
-        June24QuartzWandDisabledWorlds = config.getStringList("June24QuartzWand.disabledWorlds");
-    }
-
 
     private static void createUltraJune24QuartzWand(){
         ItemStack item = initializeItem("UltraJune24QuartzWand", configUtils);
