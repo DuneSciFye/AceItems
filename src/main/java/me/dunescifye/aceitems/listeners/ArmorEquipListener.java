@@ -15,10 +15,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.ThreadLocalRandom;
-
-import static me.dunescifye.aceitems.items.JuneItemsManager.*;
-import static me.dunescifye.aceitems.utils.Utils.*;
-
 public class ArmorEquipListener implements Listener {
 
 
@@ -31,20 +27,19 @@ public class ArmorEquipListener implements Listener {
 
         if (e.getNewArmorPiece() != null && e.getNewArmorPiece().getType() != Material.AIR) {
             ItemStack item = e.getNewArmorPiece();
-            if (item.hasItemMeta()){
+            if (item.hasItemMeta()) {
                 Player p = e.getPlayer();
                 PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-                if (container.has(keyItemID, PersistentDataType.STRING)){
-                    String itemID = container.get(keyItemID, PersistentDataType.STRING);
-                    assert itemID != null;
+                String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
+                if (itemID != null) {
                     if (itemID.equals("June24Boots") ||
                         itemID.equals("June24Leggings") ||
                         itemID.equals("June24Chestplate") ||
-                        itemID.equals("June24Helmet")){
-                        if (!June24BootsDisabledWorlds.contains(p.getWorld().getName()) &&
-                            !June24LeggingsDisabledWorlds.contains(p.getWorld().getName()) &&
-                            !June24ChestplateDisabledWorlds.contains(p.getWorld().getName()) &&
-                            !June24HelmetDisabledWorlds.contains(p.getWorld().getName())) {
+                        itemID.equals("June24Helmet")) {
+                        if (!AceItems.disabledWorlds.get("June24Boots").contains(p.getWorld().getName()) &&
+                            !AceItems.disabledWorlds.get("June24Leggings").contains(p.getWorld().getName()) &&
+                            !AceItems.disabledWorlds.get("June24Chestplate").contains(p.getWorld().getName()) &&
+                            !AceItems.disabledWorlds.get("June24Helmet").contains(p.getWorld().getName())) {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
@@ -55,10 +50,10 @@ public class ArmorEquipListener implements Listener {
 
                                     if (!p.isOnline() || helmet == null || chestplate == null || leggings == null || boots == null ||
                                         !helmet.hasItemMeta() || !chestplate.hasItemMeta() || !leggings.hasItemMeta() || !boots.hasItemMeta() ||
-                                        !(p.getInventory().getHelmet().getItemMeta().getPersistentDataContainer().get(keyItemID, PersistentDataType.STRING).equals("June24Helmet") &&
-                                            p.getInventory().getChestplate().getItemMeta().getPersistentDataContainer().get(keyItemID, PersistentDataType.STRING).equals("June24Chestplate") &&
-                                            p.getInventory().getLeggings().getItemMeta().getPersistentDataContainer().get(keyItemID, PersistentDataType.STRING).equals("June24Leggings") &&
-                                            p.getInventory().getBoots().getItemMeta().getPersistentDataContainer().get(keyItemID, PersistentDataType.STRING).equals("June24Boots"))) {
+                                        !(p.getInventory().getHelmet().getItemMeta().getPersistentDataContainer().get(AceItems.keyItemID, PersistentDataType.STRING).equals("June24Helmet") &&
+                                            p.getInventory().getChestplate().getItemMeta().getPersistentDataContainer().get(AceItems.keyItemID, PersistentDataType.STRING).equals("June24Chestplate") &&
+                                            p.getInventory().getLeggings().getItemMeta().getPersistentDataContainer().get(AceItems.keyItemID, PersistentDataType.STRING).equals("June24Leggings") &&
+                                            p.getInventory().getBoots().getItemMeta().getPersistentDataContainer().get(AceItems.keyItemID, PersistentDataType.STRING).equals("June24Boots"))) {
                                         this.cancel();
                                         return;
                                     }

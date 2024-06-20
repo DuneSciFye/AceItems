@@ -15,7 +15,6 @@ import org.bukkit.persistence.PersistentDataType;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static me.dunescifye.aceitems.items.JuneItemsManager.*;
 import static me.dunescifye.aceitems.utils.Utils.*;
 
 public class PlayerDeathListener implements Listener {
@@ -36,45 +35,44 @@ public class PlayerDeathListener implements Listener {
             if (heldItem.hasItemMeta()) {
                 ItemMeta meta = heldItem.getItemMeta();
                 PersistentDataContainer container = meta.getPersistentDataContainer();
-                if (container.has(keyItemID)) {
-                    String itemID = container.get(keyItemID, PersistentDataType.STRING);
-                    assert itemID != null;
+                String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
+                if (itemID != null) {
                     if (itemID.equals("June24MoreOPSword")){
-                        if (!June24MoreOPSwordDisabledWorlds.contains(killer.getWorld().getName())) {
-                            int kills = container.get(keyKills, PersistentDataType.INTEGER);
+                        if (!AceItems.disabledWorlds.get("June24MoreOPSword").contains(killer.getWorld().getName())) {
+                            int kills = container.get(AceItems.keyKills, PersistentDataType.INTEGER);
                             int newKills;
 
                             if (kills > 9) {
-                                meta.getPersistentDataContainer().set(keyItemID, PersistentDataType.INTEGER, 0);
+                                meta.getPersistentDataContainer().set(AceItems.keyItemID, PersistentDataType.INTEGER, 0);
                                 Utils.strikeLightningAroundLocation(killer.getLocation(), 3);
                                 newKills = 0;
                             } else {
                                 newKills = kills + 1;
-                                meta.getPersistentDataContainer().set(keyKills, PersistentDataType.INTEGER, newKills);
+                                meta.getPersistentDataContainer().set(AceItems.keyKills, PersistentDataType.INTEGER, newKills);
                             }
 
                             meta.lore(updateLore(heldItem, String.valueOf(kills), String.valueOf(newKills)));
                             heldItem.setItemMeta(meta);
                         }
                     } if (itemID.equals("UltraJune24MoreOPSword")){
-                        if (!UltraJune24MoreOPSwordDisabledWorlds.contains(killer.getWorld().getName())) {
-                            int kills = container.get(keyKills, PersistentDataType.INTEGER);
+                        if (!AceItems.disabledWorlds.get("UltraJune24MoreOPSword").contains(killer.getWorld().getName())) {
+                            int kills = container.get(AceItems.keyKills, PersistentDataType.INTEGER);
                             int newKills;
 
                             if (kills > 9) {
-                                meta.getPersistentDataContainer().set(keyItemID, PersistentDataType.INTEGER, 0);
+                                meta.getPersistentDataContainer().set(AceItems.keyItemID, PersistentDataType.INTEGER, 0);
                                 Utils.strikeLightningAroundLocation(killer.getLocation(), 3);
                                 newKills = 0;
                             } else {
                                 newKills = kills + 1;
-                                meta.getPersistentDataContainer().set(keyKills, PersistentDataType.INTEGER, newKills);
+                                meta.getPersistentDataContainer().set(AceItems.keyKills, PersistentDataType.INTEGER, newKills);
                             }
 
                             meta.lore(updateLore(heldItem, String.valueOf(kills), String.valueOf(newKills)));
                             heldItem.setItemMeta(meta);
                         }
                     } else if (itemID.equals("June24LessOPSword")) {
-                        if (!June24LessOPSwordDisabledWorlds.contains(killer.getWorld().getName())){
+                        if (!AceItems.disabledWorlds.get("June24LessOPSword").contains(killer.getWorld().getName())){
                             int random = ThreadLocalRandom.current().nextInt(300);
                             if (random < 15) {
                                 killer.getWorld().dropItemNaturally(killed.getLocation(), new ItemStack(Material.SEA_LANTERN));

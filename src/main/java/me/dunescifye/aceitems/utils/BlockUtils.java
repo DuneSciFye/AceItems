@@ -5,6 +5,10 @@ import net.coreprotect.CoreProtectAPI;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.Rotatable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -22,7 +26,7 @@ public class BlockUtils {
         pickaxeWhitelist.add(pickaxeMineable);
     }
 
-    public static List<Predicate<Block>> shovelWhitelist = Arrays.asList(
+    public static List<Predicate<Block>> shovelWhitelist = List.of(
         block -> Tag.MINEABLE_SHOVEL.isTagged(block.getType())
     );
 
@@ -163,37 +167,39 @@ public class BlockUtils {
         return leaves;
     }
 
-    private static final List<Material> crops = Arrays.asList(
-        Material.POTATOES,
-        Material.WHEAT,
-        Material.CARROTS,
-        Material.BEETROOTS
-    );
-
-    public static List<Material> getCrops(){
-        return crops;
-    }
-
-    private static List<Predicate<Block>> water = Arrays.asList(
+    private static final List<Predicate<Block>> water = List.of(
         block -> block.getType().equals(Material.WATER)
     );
 
     public static List<Predicate<Block>> getWater(){
         return water;
     }
-    private static List<Predicate<Block>> lava = Arrays.asList(
+    private static final List<Predicate<Block>> lava = List.of(
         block -> block.getType().equals(Material.LAVA)
     );
 
     public static List<Predicate<Block>> getLava(){
         return lava;
     }
-    private static List<Material> obtainableBlocks = Arrays.asList(
-        Material.LAVA
+    private static final List<Material> dirtBlocks = Arrays.asList(
+        Material.PODZOL,
+        Material.DIRT,
+        Material.COARSE_DIRT,
+        Material.FARMLAND,
+        Material.DIRT_PATH,
+        Material.GRASS_BLOCK
     );
 
-    public static List<Material> getObtainableBlocks(){
-        return obtainableBlocks;
+    public static List<Material> getDirtBlocks(){
+        return dirtBlocks;
+    }
+
+    private static final List<Predicate<Block>> unbreakableBlocks = List.of(
+        block -> block.getType().equals(Material.BEDROCK)
+    );
+
+    public static List<Predicate<Block>> getUnbreakableBlocks(){
+        return unbreakableBlocks;
     }
 
     public static void breakInRadius(Block block, int radius, Player player, List<Predicate<Block>> whitelist, List<Predicate<Block>> blacklist) {
@@ -251,6 +257,33 @@ public class BlockUtils {
         }
 
     }
+
+    public static void breakInRadiusBlacklist(Block block, int radius, Player player, List<Predicate<Block>> blacklist) {
+
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
+
+        Collection<ItemStack> drops = new ArrayList<>();
+
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                blockLoop: for (int z = -radius; z <= radius; z++) {
+                    Block b = block.getRelative(x, y, z);
+                    for (Predicate<Block> blacklisted : blacklist) {
+                        if (blacklisted.test(b)) {
+                            continue blockLoop;
+                        }
+                    }
+                    drops.addAll(b.getDrops(heldItem));
+                    b.setType(Material.AIR);
+                }
+            }
+        }
+
+        for (ItemStack item : mergeSimilarItemStacks(drops)){
+            block.getWorld().dropItemNaturally(block.getLocation(), item);
+        }
+
+    }
     public static void removeInRadius(Block block, int radius, List<Predicate<Block>> whitelist, List<Predicate<Block>> blacklist) {
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
@@ -283,16 +316,39 @@ public class BlockUtils {
             }
         }
     }
+    public static void accelerateMelonGrowth(Block block, int radius) {
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    Block b = block.getRelative(x, y, z);
+                    if (b.getType() == Material.MELON_STEM && b.getBlockData() instanceof Ageable ageable) {
+                        b.applyBoneMeal(BlockFace.UP);
+                        if (ageable.getAge() == ageable.getMaximumAge()) {
+                            List<BlockFace> faces = new ArrayList<>(Arrays.asList(BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH, BlockFace.WEST));
+                            Collections.shuffle(faces);
+                            for (BlockFace face : faces) {
+                                Block relative = b.getRelative(face);
+                                if (relative.getType() == Material.AIR) {
+                                    relative.setType(Material.MELON);
+                                    b.setType(Material.ATTACHED_MELON_STEM);
+                                    Directional blockData = (Directional) (b.getBlockData());
+                                    blockData.setFacing(face);
+                                    b.setBlockData(blockData);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public static boolean isNaturallyGenerated(Block block) {
         List<String[]> lookup = getCoreProtect().blockLookup(block, 2147483647);
         if (lookup != null && !lookup.isEmpty()) {
             CoreProtectAPI.ParseResult parseResult = getCoreProtect().parseResult(lookup.get(0));
-            if(!parseResult.getPlayer().startsWith("#") && parseResult.getActionId() == 1 && !parseResult.isRolledBack()){
-                return false;
-            } else {
-                return true;
-            }
+            return parseResult.getPlayer().startsWith("#") || parseResult.getActionId() != 1 || parseResult.isRolledBack();
         }
         return true;
     }
@@ -301,13 +357,13 @@ public class BlockUtils {
         Plugin plugin = getServer().getPluginManager().getPlugin("CoreProtect");
 
         // Check that CoreProtect is loaded
-        if (plugin == null || !(plugin instanceof CoreProtect)) {
+        if (!(plugin instanceof CoreProtect)) {
             return null;
         }
 
         // Check that the API is enabled
         CoreProtectAPI CoreProtect = ((CoreProtect) plugin).getAPI();
-        if (CoreProtect.isEnabled() == false) {
+        if (!CoreProtect.isEnabled()) {
             return null;
         }
 

@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static me.dunescifye.aceitems.items.JuneItemsManager.*;
 import static me.dunescifye.aceitems.utils.Utils.*;
 
 public class EntityPotionEffectListener implements Listener {
@@ -59,8 +58,8 @@ public class EntityPotionEffectListener implements Listener {
                     if (boots.getItemMeta() != null){
                         bootsMeta = boots.getItemMeta();
                         bootsContainer = bootsMeta.getPersistentDataContainer();
-                        if (bootsContainer.has(keyItemID)){
-                            bootsItemID = bootsContainer.get(keyItemID, PersistentDataType.STRING);
+                        if (bootsContainer.has(AceItems.keyItemID)){
+                            bootsItemID = bootsContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
                         }
                     }
                 }
@@ -68,8 +67,8 @@ public class EntityPotionEffectListener implements Listener {
                     if (leggings.getItemMeta() != null){
                         leggingsMeta = leggings.getItemMeta();
                         leggingsContainer = leggingsMeta.getPersistentDataContainer();
-                        if (leggingsContainer.has(keyItemID)){
-                            leggingsItemID = leggingsContainer.get(keyItemID, PersistentDataType.STRING);
+                        if (leggingsContainer.has(AceItems.keyItemID)){
+                            leggingsItemID = leggingsContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
                         }
                     }
                 }
@@ -77,8 +76,8 @@ public class EntityPotionEffectListener implements Listener {
                     if (chestplate.getItemMeta() != null){
                         chestplateMeta = chestplate.getItemMeta();
                         chestplateContainer = chestplateMeta.getPersistentDataContainer();
-                        if (chestplateContainer.has(keyItemID)){
-                            chestplateItemID = chestplateContainer.get(keyItemID, PersistentDataType.STRING);
+                        if (chestplateContainer.has(AceItems.keyItemID)){
+                            chestplateItemID = chestplateContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
                         }
                     }
                 }
@@ -86,8 +85,8 @@ public class EntityPotionEffectListener implements Listener {
                     if (helmet.getItemMeta() != null){
                         helmetMeta = helmet.getItemMeta();
                         helmetContainer = helmetMeta.getPersistentDataContainer();
-                        if (helmetContainer.has(keyItemID)){
-                            helmetItemID = helmetContainer.get(keyItemID, PersistentDataType.STRING);
+                        if (helmetContainer.has(AceItems.keyItemID)){
+                            helmetItemID = helmetContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
                         }
                     }
                 }
@@ -101,11 +100,11 @@ public class EntityPotionEffectListener implements Listener {
                             assert bootsItemID != null;
                             if (bootsItemID.equals("June24Boots")) {
 
-                                if (!June24BootsDisabledWorlds.contains(p.getWorld().getName()) &&
-                                        !June24LeggingsDisabledWorlds.contains(p.getWorld().getName()) &&
-                                        !June24ChestplateDisabledWorlds.contains(p.getWorld().getName()) &&
-                                        !June24ElytraDisabledWorlds.contains(p.getWorld().getName()) &&
-                                        !June24HelmetDisabledWorlds.contains(p.getWorld().getName())) {
+                                if (!AceItems.disabledWorlds.get("June24Helmet").contains(p.getWorld().getName()) &&
+                                        !AceItems.disabledWorlds.get("June24Chestplate").contains(p.getWorld().getName()) &&
+                                        !AceItems.disabledWorlds.get("June24Elytra").contains(p.getWorld().getName()) &&
+                                        !AceItems.disabledWorlds.get("June24Leggings").contains(p.getWorld().getName()) &&
+                                        !AceItems.disabledWorlds.get("June24Boots").contains(p.getWorld().getName())) {
                                     PotionEffect effect = e.getNewEffect();
                                     if (effect != null) {
                                         if (isHarmfulEffect(potionEffectType)) {

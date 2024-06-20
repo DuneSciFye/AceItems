@@ -7,11 +7,12 @@ import me.dunescifye.aceitems.files.JulyItemsConfig;
 import me.dunescifye.aceitems.libs.armorequip.ArmorEquipEvent;
 import me.dunescifye.aceitems.listeners.*;
 import me.dunescifye.aceitems.files.JuneItemsConfig;
-import me.dunescifye.aceitems.items.JuneItemsManager;
+import net.luckperms.api.LuckPerms;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -22,7 +23,6 @@ public final class AceItems extends JavaPlugin {
 
     private static AceItems plugin;
 
-    public static final NamespacedKey keyID = new NamespacedKey("aceitems", "id");
     public static final NamespacedKey keyItemID = new NamespacedKey("customitems", "item-id");
     public static final NamespacedKey keyRadius = new NamespacedKey("customitems", "radius");
     public static final NamespacedKey keyRadiusLore = new NamespacedKey("customitems", "radiuslore");
@@ -31,12 +31,15 @@ public final class AceItems extends JavaPlugin {
     public static final NamespacedKey keyBlockTypeLore = new NamespacedKey("customitems", "blocktypelore");
     public static final NamespacedKey keyUses = new NamespacedKey("customitems", "uses");
     public static final NamespacedKey keyInt = new NamespacedKey("customitems", "int");
+    public static final NamespacedKey keyString = new NamespacedKey("customitems", "string");
     //Map of all items
     public static Map<String, ItemStack> items = new HashMap<>();
     //Map of all disabled worlds for each item
     public static Map<String, List<String>> disabledWorlds = new HashMap<>();
     public static Map<NamespacedKey, PersistentDataType> dataType = new HashMap<>();
     public static Map<NamespacedKey, Object> defaultValue = new HashMap<>();
+
+    public static LuckPerms luckPerms;
 
     static {
         dataType.put(keyRadius, PersistentDataType.INTEGER);
@@ -48,6 +51,9 @@ public final class AceItems extends JavaPlugin {
         dataType.put(keyBlockType, PersistentDataType.STRING);
         dataType.put(keyBlockTypeLore, PersistentDataType.STRING);
         dataType.put(keyUses, PersistentDataType.INTEGER);
+        dataType.put(keyInt, PersistentDataType.INTEGER);
+        defaultValue.put(keyInt, 0);
+        dataType.put(keyString, PersistentDataType.STRING);
     }
 
     @Override
@@ -60,10 +66,14 @@ public final class AceItems extends JavaPlugin {
         JuneItemsConfig.setup();
         JulyItemsConfig.setup();
 
-        JuneItemsManager.init();
         ArmorEquipEvent.registerListener(this);
         registerEvents();
         CustomItemsCommand.register();
+        //Obtaining luckperms instance
+        RegisteredServiceProvider<LuckPerms> provider = Bukkit.getServicesManager().getRegistration(LuckPerms.class);
+        if (provider != null) {
+            luckPerms = provider.getProvider();
+        }
 
         Bukkit.getLogger().info("AceItems plugin loaded.");
     }

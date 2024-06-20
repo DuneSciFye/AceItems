@@ -12,7 +12,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import static me.dunescifye.aceitems.items.JuneItemsManager.*;
 import static me.dunescifye.aceitems.utils.Utils.*;
 
 public class EntityDeathListener implements Listener {
@@ -30,38 +29,38 @@ public class EntityDeathListener implements Listener {
         if (mainHand.hasItemMeta()){
             ItemMeta meta = mainHand.getItemMeta();
             PersistentDataContainer container = meta.getPersistentDataContainer();
-            if (container.has(keyItemID)) {
-                String itemID = container.get(keyItemID, PersistentDataType.STRING);
+            if (container.has(AceItems.keyItemID)) {
+                String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
                 assert itemID != null;
                 if (itemID.equals("June24MoreOPSword")) {
-                    if (!June24MoreOPSwordDisabledWorlds.contains(p.getWorld().getName())) {
-                        int kills = container.get(keyKills, PersistentDataType.INTEGER);
+                    if (!AceItems.disabledWorlds.get("June24MoreOPSword").contains(p.getWorld().getName())) {
+                        int kills = container.get(AceItems.keyKills, PersistentDataType.INTEGER);
                         int newKills;
 
                         if (kills > 9) {
-                            meta.getPersistentDataContainer().set(keyItemID, PersistentDataType.INTEGER, 0);
+                            meta.getPersistentDataContainer().set(AceItems.keyItemID, PersistentDataType.INTEGER, 0);
                             Utils.strikeLightningAroundLocation(p.getLocation(), 3);
                             newKills = 0;
                         } else {
                             newKills = kills + 1;
-                            meta.getPersistentDataContainer().set(keyKills, PersistentDataType.INTEGER, newKills);
+                            meta.getPersistentDataContainer().set(AceItems.keyKills, PersistentDataType.INTEGER, newKills);
                         }
 
                         meta.lore(updateLore(mainHand, String.valueOf(kills), String.valueOf(newKills)));
                         mainHand.setItemMeta(meta);
                     }
                 } else if (itemID.equals("UltraJune24MoreOPSword")) {
-                    if (!UltraJune24MoreOPSwordDisabledWorlds.contains(p.getWorld().getName())) {
-                        int kills = container.get(keyKills, PersistentDataType.INTEGER);
+                    if (!AceItems.disabledWorlds.get("UltraJune24MoreOPSword").contains(p.getWorld().getName())) {
+                        int kills = container.get(AceItems.keyKills, PersistentDataType.INTEGER);
                         int newKills;
 
                         if (kills > 9) {
-                            meta.getPersistentDataContainer().set(keyItemID, PersistentDataType.INTEGER, 0);
+                            meta.getPersistentDataContainer().set(AceItems.keyItemID, PersistentDataType.INTEGER, 0);
                             Utils.strikeLightningAroundLocation(p.getLocation(), 3);
                             newKills = 0;
                         } else {
                             newKills = kills + 1;
-                            meta.getPersistentDataContainer().set(keyKills, PersistentDataType.INTEGER, newKills);
+                            meta.getPersistentDataContainer().set(AceItems.keyKills, PersistentDataType.INTEGER, newKills);
                         }
 
                         meta.lore(updateLore(mainHand, String.valueOf(kills), String.valueOf(newKills)));

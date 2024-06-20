@@ -12,7 +12,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import static me.dunescifye.aceitems.items.JuneItemsManager.*;
 import static me.dunescifye.aceitems.utils.Utils.*;
 
 public class EntityShootBowListener implements Listener {
@@ -28,12 +27,12 @@ public class EntityShootBowListener implements Listener {
             if (offHandItem.hasItemMeta()){
                 ItemMeta offHandItemMeta = offHandItem.getItemMeta();
                 PersistentDataContainer container =  offHandItemMeta.getPersistentDataContainer();
-                if (container.has(keyItemID, PersistentDataType.STRING)){
-                    String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                if (container.has(AceItems.keyItemID, PersistentDataType.STRING)){
+                    String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
                     Arrow projectile = (Arrow) e.getProjectile();
                     assert itemID != null;
                     if (itemID.equals("June24Shield")){
-                        if (!June24ShieldDisabledWorlds.contains(p.getWorld().getName())) {
+                        if (!AceItems.disabledWorlds.get("June24Shield").contains(p.getWorld().getName())) {
                             int arrows = itemCount(p, Material.ARROW);
                             projectile.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
                             Bukkit.getScheduler().runTask(AceItems.getInstance(), () -> {

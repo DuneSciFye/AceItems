@@ -6,3 +6,4 @@ depend: [CommandAPI]
 softdepend:
   - PlaceholderAPI
   - LibsDisguises
+  - LuckPerms

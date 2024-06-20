@@ -17,8 +17,6 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static me.dunescifye.aceitems.files.JuneItemsConfig.*;
-import static me.dunescifye.aceitems.items.JuneItemsManager.*;
-import static me.dunescifye.aceitems.utils.Utils.*;
 
 public class EntityToggleGlideListener implements Listener {
 
@@ -34,11 +32,11 @@ public class EntityToggleGlideListener implements Listener {
             if (chestItem.hasItemMeta()){
                 ItemMeta meta = chestItem.getItemMeta();
                 PersistentDataContainer container = meta.getPersistentDataContainer();
-                if (container.has(keyItemID, PersistentDataType.STRING)){
-                    String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                if (container.has(AceItems.keyItemID, PersistentDataType.STRING)){
+                    String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
                     assert itemID != null;
                     if (itemID.equals("June24Elytra")) {
-                        if (!June24ElytraDisabledWorlds.contains(p.getWorld().getName())) {
+                        if (!AceItems.disabledWorlds.get("June24Elytra").contains(p.getWorld().getName())) {
                             Particle.DustOptions aqua = new Particle.DustOptions(Color.AQUA, 2.0F);
                             Particle.DustOptions lime = new Particle.DustOptions(Color.LIME, 2.0F);
                             if (e.isGliding()) {

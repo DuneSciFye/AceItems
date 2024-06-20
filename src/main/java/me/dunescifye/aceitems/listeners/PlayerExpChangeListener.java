@@ -11,9 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import static me.dunescifye.aceitems.items.JuneItemsManager.*;
-import static me.dunescifye.aceitems.utils.Utils.keyItemID;
-
 public class PlayerExpChangeListener implements Listener {
 
     public void PlayerExpChangeHandler(AceItems plugin){
@@ -26,16 +23,28 @@ public class PlayerExpChangeListener implements Listener {
         ItemStack offhandItem = p.getInventory().getItemInOffHand();
         if (offhandItem.hasItemMeta()) {
             PersistentDataContainer container = offhandItem.getItemMeta().getPersistentDataContainer();
-            if (container.has(keyItemID)) {
-                String itemID = container.get(keyItemID, PersistentDataType.STRING);
-                assert itemID != null;
-                if (itemID.equals("June24XPBeacon")) {
-                    if (!June24XPBeaconDisabledWorlds.contains(p.getWorld().getName())) {
-                        e.setAmount((int) (e.getAmount() * 1.5));
+            String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
+            if (itemID != null) {
+                switch (itemID) {
+                    case "June24XPBeacon" -> {
+                        if (!AceItems.disabledWorlds.get("June24XPBeacon").contains(p.getWorld().getName())) {
+                            e.setAmount((int) (e.getAmount() * 1.5));
+                        }
                     }
-                } else if (itemID.equals("UltraJune24XPBeacon")) {
-                    if (!UltraJune24XPBeaconDisabledWorlds.contains(p.getWorld().getName())) {
-                        e.setAmount((int) (e.getAmount() * 2.5));
+                    case "UltraJune24XPBeacon" -> {
+                        if (!AceItems.disabledWorlds.get("UltraJune24XPBeacon").contains(p.getWorld().getName())) {
+                            e.setAmount((int) (e.getAmount() * 2.5));
+                        }
+                    }
+                    case "July24JobsLantern" -> {
+                        if (!AceItems.disabledWorlds.get("July24JobsLantern").contains(p.getWorld().getName())) {
+                            e.setAmount((int) (e.getAmount() * 1.25));
+                        }
+                    }
+                    case "UltraJuly24JobsLantern" -> {
+                        if (!AceItems.disabledWorlds.get("UltraJuly24JobsLantern").contains(p.getWorld().getName())) {
+                            e.setAmount((int) (e.getAmount() * 1.50));
+                        }
                     }
                 }
             }

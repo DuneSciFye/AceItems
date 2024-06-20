@@ -12,7 +12,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import static me.dunescifye.aceitems.items.JuneItemsManager.*;
 import static me.dunescifye.aceitems.utils.Utils.*;
 
 public class ProjectileLaunchListener implements Listener {
@@ -29,15 +28,15 @@ public class ProjectileLaunchListener implements Listener {
                 if (item.hasItemMeta()){
                     ItemMeta meta = item.getItemMeta();
                     PersistentDataContainer container = meta.getPersistentDataContainer();
-                    if (container.has(keyItemID, PersistentDataType.STRING)) {
-                        String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                    if (container.has(AceItems.keyItemID, PersistentDataType.STRING)) {
+                        String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
                         assert itemID != null;
                         if (itemID.equals("June24Bow")) {
-                            if (!June24BowDisabledWorlds.contains(p.getWorld().getName())) {
+                            if (!AceItems.disabledWorlds.get("June24Bow").contains(p.getWorld().getName())) {
                                 getArrowDistances().put(arrow.getUniqueId(), arrow.getLocation().distance(p.getLocation()));
                             }
                         } else if (itemID.equals("June24Crossbow")) {
-                            if (!June24CrossbowDisabledWorlds.contains(p.getWorld().getName())) {
+                            if (!AceItems.disabledWorlds.get("June24Crossbow").contains(p.getWorld().getName())) {
                                 getArrowDistances().put(arrow.getUniqueId(), arrow.getLocation().distance(p.getLocation()));
                             }
                         }

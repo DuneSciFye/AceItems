@@ -1,6 +1,7 @@
 package me.dunescifye.aceitems.files;
 
 import me.dunescifye.aceitems.AceItems;
+import me.dunescifye.aceitems.utils.ConfigUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -12,12 +13,8 @@ import java.util.Set;
 
 public class Config {
 
-    public static String changeVariableMessage;
-    public static String cooldownMessageHours;
-    public static String cooldownMessageMinutes;
-    public static String cooldownMessageSeconds;
-    public static String confirmMessage;
-    private static String inClaimMessage;
+    public static String changeVariableMessage, cooldownMessageHours, cooldownMessageMinutes, cooldownMessageSeconds, confirmMessage,
+        inClaimMessage, spawnerCommand, cannotUseHereMessage;
 
     private static Set<Material> unobtainableBlocks = new HashSet<>(Arrays.asList(
         Material.BEDROCK,
@@ -112,9 +109,13 @@ public class Config {
         cooldownMessageSeconds = config.getString("Messages.CooldownMessage.Seconds");
         confirmMessage = config.getString("Messages.Confirm");
         inClaimMessage = config.getString("Messages.InClaimMessage");
+        cannotUseHereMessage = ConfigUtils.setupConfig("Message.CannotUseHere", config, "&cYou cannot use this here!", List.of("Message for when an item cannot be used. Example disabled worlds,"));
+
         for (String material : config.getStringList("unobtainableBlocks")){
             unobtainableBlocks.add(Material.getMaterial(material));
         }
+
+        spawnerCommand = ConfigUtils.setupConfig("Commands.SpawnerCommand", config, "spawner admin give %player% %type%", List.of("Command used to give spawner. %player% for player and %type% for mob type."));
 
         plugin.saveConfig();
     }

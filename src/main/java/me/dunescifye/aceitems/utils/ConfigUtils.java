@@ -4,6 +4,7 @@ import me.dunescifye.aceitems.AceItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -57,6 +58,33 @@ public class ConfigUtils {
         return this.config;
     }
 
+    //Method for checking if is integer by Jonas K https://stackoverflow.com/questions/237159/whats-the-best-way-to-check-if-a-string-represents-an-integer-in-java
+    public static boolean isInteger(String str) {
+        if (str == null) {
+            return false;
+        }
+        int length = str.length();
+        if (length == 0) {
+            return false;
+        }
+        /*
+        if (str.charAt(0) == '-') {
+            if (length == 1) {
+                return false;
+            }
+            i = 1;
+        }
+         */
+        for (int i = 0; i < length; i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    //Int with min value
     public static int setupConfig(String path, FileConfiguration config, int defaultValue, int minValue) {
         Logger logger = Bukkit.getLogger();
         if (!config.isSet(path)) {
@@ -66,7 +94,7 @@ public class ConfigUtils {
 
         String valueStr = config.getString(path);
 
-        if (!valueStr.matches("-?\\d+(\\.\\d+)?")) {
+        if (!isInteger(valueStr)) {
             logger.warning("[CustomItems] " + path + " is not a valid number. Must be a number greater than  " + minValue + ". Found " + valueStr + ". Using default value of " + defaultValue + ".");
             return defaultValue;
         }
@@ -80,6 +108,53 @@ public class ConfigUtils {
 
         return value;
     }
+
+    //Integer with min value and comment
+    public static int setupConfig(String path, FileConfiguration config, int defaultValue, int minValue, List<String> comments) {
+        if (!config.isSet(path)) {
+            int value =  setupConfig(path, config, defaultValue, minValue);
+            config.setComments(path, comments);
+            return value;
+        } else {
+            return setupConfig(path, config, defaultValue, minValue);
+        }
+    }
+    //Double with min value
+    public static double setupConfig(String path, FileConfiguration config, double defaultValue, double minValue) {
+        Logger logger = Bukkit.getLogger();
+        if (!config.isSet(path)) {
+            config.set(path, defaultValue);
+            return defaultValue;
+        }
+
+        String valueStr = config.getString(path);
+
+        if (!NumberUtils.isCreatable(valueStr)) {
+            logger.warning("[CustomItems] " + path + " is not a valid double. Must be a number greater than  " + minValue + ". Found " + valueStr + ". Using default value of " + defaultValue + ".");
+            return defaultValue;
+        }
+
+        double value = Double.parseDouble(valueStr);
+
+        if (value < minValue) {
+            logger.warning("[CustomItems] " + path + " is not a valid double. Must be a number greater than  " + minValue + ". Found " + valueStr + ". Using default value of " + defaultValue + ".");
+            return defaultValue;
+        }
+
+        return value;
+    }
+
+    //Double with min value and comment
+    public static double setupConfig(String path, FileConfiguration config, double defaultValue, double minValue, List<String> comments) {
+        if (!config.isSet(path)) {
+            double value = setupConfig(path, config, defaultValue, minValue);
+            config.setComments(path, comments);
+            return value;
+        } else {
+            return setupConfig(path, config, defaultValue, minValue);
+        }
+    }
+    //Int without bound
     public static int setupConfig(String path, FileConfiguration config, int defaultValue) {
         Logger logger = Bukkit.getLogger();
         if (!config.isSet(path)) {
@@ -96,7 +171,7 @@ public class ConfigUtils {
 
         return Integer.parseInt(valueStr);
     }
-
+    //String
     public static String setupConfig(String path, FileConfiguration config, String defaultValue) {
         if (!config.isSet(path)) {
             config.set(path, defaultValue);
@@ -104,7 +179,16 @@ public class ConfigUtils {
         }
         return config.getString(path);
     }
-
+    //String with comments
+    public static String setupConfig(String path, FileConfiguration config, String defaultValue, List<String> comments) {
+        if (!config.isSet(path)) {
+            config.set(path, defaultValue);
+            config.setComments(path, comments);
+            return defaultValue;
+        }
+        return config.getString(path);
+    }
+    //List of strings
     public static List<String> setupConfig(String path, FileConfiguration config, List<String> defaultValue) {
         if (!config.isSet(path)) {
             config.set(path, defaultValue);
@@ -112,16 +196,30 @@ public class ConfigUtils {
         }
         return config.getStringList(path);
     }
+    //List of strings with comments
+    public static List<String> setupConfig(String path, FileConfiguration config, List<String> defaultValue, List<String> comments) {
+        if (!config.isSet(path)) {
+            config.set(path, defaultValue);
+            config.setComments(path, comments);
+            return defaultValue;
+        }
+        return config.getStringList(path);
+
+    }
 
     //Item without keys
-    public static ItemStack initializeItem(String itemID, ConfigUtils configUtils){
-        FileConfiguration config = configUtils.getConfig();
-        Material material = null;
-        if (config.isSet(itemID + ".material")) material = Material.getMaterial(config.getString(itemID + ".material").toUpperCase());
-        ItemStack item = new ItemStack(material != null ? material : Material.PAPER);
+    public static ItemStack initializeItem(String itemID, FileConfiguration config){
+        Material material;
+        if (config.isSet(itemID + ".material")) {
+            material = Material.getMaterial(config.getString(itemID + ".material").toUpperCase());
+        } else {
+            config.set(itemID + ".material", "PAPER");
+            material = Material.PAPER;
+        }
+        ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
-        meta.getPersistentDataContainer().set(AceItems.keyID, PersistentDataType.STRING, itemID);
+        meta.getPersistentDataContainer().set(AceItems.keyItemID, PersistentDataType.STRING, itemID);
         if (config.isSet(itemID + ".name")) {
             String name = config.getString(itemID + ".name");
             if (name.contains("§")) {
@@ -206,8 +304,6 @@ public class ConfigUtils {
         }
         //Setting disabled worlds
         AceItems.disabledWorlds.put(itemID, config.getStringList(itemID + ".disabledWorlds"));
-
-        configUtils.save();
         item.setItemMeta(meta);
 
         AceItems.items.put(itemID, item);
@@ -216,18 +312,20 @@ public class ConfigUtils {
     }
 
     //Item with keys
-    public static ItemStack initializeItem(String itemID, ConfigUtils configUtils, NamespacedKey... data){
-        FileConfiguration config = configUtils.getConfig();
-
-        Material material = null;
-        if (config.isSet(itemID + ".material")) material = Material.getMaterial(config.getString(itemID + ".material").toUpperCase());
-
-        ItemStack item = new ItemStack(material != null ? material : Material.PAPER);
+    public static ItemStack initializeItem(String itemID, FileConfiguration config, NamespacedKey... data){
+        Material material;
+        if (config.isSet(itemID + ".material")) {
+            material = Material.getMaterial(config.getString(itemID + ".material").toUpperCase());
+        } else {
+            config.set(itemID + ".material", "PAPER");
+            material = Material.PAPER;
+        }
+        ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
 
         //Setting PDC's
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        container.set(AceItems.keyID, PersistentDataType.STRING, itemID);
+        container.set(AceItems.keyItemID, PersistentDataType.STRING, itemID);
         for (NamespacedKey key : data) {
             container.set(key, AceItems.dataType.get(key), AceItems.defaultValue.get(key));
         }
@@ -321,8 +419,6 @@ public class ConfigUtils {
         }
         //Setting disabled worlds
         AceItems.disabledWorlds.put(itemID, config.getStringList(itemID + ".disabledWorlds"));
-        //Save file for lore changes
-        configUtils.save();
 
         item.setItemMeta(meta);
         //Putting item in map

@@ -4,27 +4,22 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import me.dunescifye.aceitems.AceItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.luckperms.api.node.Node;
 import org.bukkit.*;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -117,13 +112,13 @@ public class Utils {
                 return String.valueOf(matchers[1 + i]);
             }
         }
-        return length % 2 == 1 ? "" : String.valueOf(matchers[length - 1]);
+        return String.valueOf(matchers[0]);
     }
 
     public static void changeMiningMode(Player p, ItemStack item, ItemMeta meta, Integer currentRadius, Integer maxRadius){
         sendPlayerChangeVariableMessage(p, changeVariableMessage, "Mining Mode", String.valueOf(inputOutput(currentRadius, 0, "3x3", 1, "1x1")));
-        meta.getPersistentDataContainer().set(keyRadius, PersistentDataType.INTEGER, Integer.valueOf(inputOutputCycle(currentRadius, 0, 1, 0)));
-        meta.getPersistentDataContainer().set(keyRadiusLore, PersistentDataType.STRING, String.valueOf(inputOutput(currentRadius, 0, "3x3", 1, "1x1")));
+        meta.getPersistentDataContainer().set(AceItems.keyRadius, PersistentDataType.INTEGER, Integer.valueOf(inputOutputCycle(currentRadius, 0, 1, 0)));
+        meta.getPersistentDataContainer().set(AceItems.keyRadiusLore, PersistentDataType.STRING, String.valueOf(inputOutput(currentRadius, 0, "3x3", 1, "1x1")));
         item.setItemMeta(meta);
 
 
@@ -154,13 +149,23 @@ public class Utils {
     public static void sendClaimMessage(Player p){
         p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(PlaceholderAPI.setPlaceholders(p, getInClaimMessage())));
     }
-    public static void dropItem(Player p, ItemStack item) {
-        Item itemToDrop = p.getWorld().dropItem(p.getLocation(), item);
-        itemToDrop.setPickupDelay(0);
-        itemToDrop.setOwner(p.getUniqueId());
-        if (item.getAmount() > 64) p.sendMessage("a");
+    //Drop item at player
+    public static void dropItems(Location location, ItemStack... items) {
+        for (ItemStack item : items) {
+            Item drop = location.getWorld().dropItemNaturally(location, item);
+            drop.setPickupDelay(0);
+        }
     }
-    public static int itemCount (Player p, Material item){
+
+    //Drop item with owner
+    public static void dropItems(Location location, UUID uuid, ItemStack... items) {
+        for (ItemStack item : items) {
+            Item drop = location.getWorld().dropItemNaturally(location, item);
+            drop.setPickupDelay(0);
+            drop.setOwner(uuid);
+        }
+    }
+    public static int itemCount(Player p, Material item){
         int count = 0;
         PlayerInventory inv = p.getInventory();
         for (ItemStack is : inv.all(item).values()){
@@ -171,7 +176,7 @@ public class Utils {
         return count;
     }
 
-    public static List<Component> updateLore (ItemStack item, String matcher, String replacement){
+    public static List<Component> updateLore(ItemStack item, String matcher, String replacement){
         List<Component> loreList = item.lore();
 
         TextReplacementConfig config = TextReplacementConfig.builder()
@@ -183,6 +188,50 @@ public class Utils {
             loreList.replaceAll(component -> component.replaceText(config));
 
         return loreList;
+    }
+    //Update lore and PDC for block type
+    public static void updateKeyBlockType(Player p, ItemStack item, ItemMeta meta, PersistentDataContainer container, String variable, Object... matchers){
+        //Add first two to the list again, allows for cycling back
+        List<Object> newMatchers = new ArrayList<>(Arrays.asList(matchers));
+        newMatchers.add(matchers[0]);
+        newMatchers.add(matchers[1]);
+        //Obtain current keys
+        String oldBlock = container.get(AceItems.keyBlockType, PersistentDataType.STRING);
+        String oldBlockLore = container.get(AceItems.keyBlockTypeLore, PersistentDataType.STRING);
+        //Set new keys to first values in key's get messed up
+        String newBlock =  String.valueOf(matchers[0]);
+        String newBlockLore = String.valueOf(matchers[1]);
+        //Match key to our list
+        for (int i = 0; i < newMatchers.size(); i+=2) {
+            if (Objects.equals(oldBlock, newMatchers.get(i))) {
+                newBlock = String.valueOf(newMatchers.get(i + 2));
+                newBlockLore = String.valueOf(newMatchers.get(i + 3));
+                break;
+            }
+        }
+        //Send player message
+        sendPlayerChangeVariableMessage(p, changeVariableMessage, variable, newBlockLore);
+        //Update PDC, lore, and Meta
+        container.set(AceItems.keyBlockType, PersistentDataType.STRING, newBlock);
+        container.set(AceItems.keyBlockTypeLore, PersistentDataType.STRING, newBlockLore);
+        meta.lore(updateLore(item, oldBlockLore, newBlockLore));
+        item.setItemMeta(meta);
+    }
+    //Luckperms add permission node
+    public static void addPermission(UUID userUuid, String permission) {
+        // Load, modify, then save
+        AceItems.luckPerms.getUserManager().modifyUser(userUuid, user -> {
+            // Add the permission
+            user.data().add(Node.builder(permission).build());
+        });
+    }
+    //Luckperms remove permission node
+    public static void removePermission(UUID userUuid, String permission) {
+        // Load, modify, then save
+        AceItems.luckPerms.getUserManager().modifyUser(userUuid, user -> {
+            // Add the permission
+            user.data().remove(Node.builder(permission).build());
+        });
     }
 
 }

@@ -72,18 +72,54 @@ public class JuneItemsConfig {
             );
             config.addDefault("June24MoreOPPickaxe.disabledWorlds", disabledWorlds);
         }
-
-        June24LavaWaterBucket = ConfigUtils.initializeItem("June24LavaWaterBucket", juneitems);
-        UltraJune24LavaWaterBucket = ConfigUtils.initializeItem("UltraJune24LavaWaterBucket", juneitems);
-        June24MoreOPPickaxe = ConfigUtils.initializeItem("June24MoreOPPickaxe", juneitems, AceItems.keyRadius, AceItems.keyRadiusLore);
-        UltraJune24MoreOPPickaxe = ConfigUtils.initializeItem("UltraJune24MoreOPPickaxe", juneitems, AceItems.keyRadius, AceItems.keyRadiusLore);
-        June24LessOPPickaxe = ConfigUtils.initializeItem("June24LessOPPickaxe", juneitems, AceItems.keyRadius, AceItems.keyRadiusLore);
-        June24MoreOPSword = ConfigUtils.initializeItem("June24MoreOPSword", juneitems, AceItems.keyKills);
+        //Items setup
+        June24LavaWaterBucket = ConfigUtils.initializeItem("June24LavaWaterBucket", config);
+        UltraJune24LavaWaterBucket = ConfigUtils.initializeItem("UltraJune24LavaWaterBucket", config);
+        June24MoreOPPickaxe = ConfigUtils.initializeItem("June24MoreOPPickaxe", config, AceItems.keyRadius, AceItems.keyRadiusLore);
+        UltraJune24MoreOPPickaxe = ConfigUtils.initializeItem("UltraJune24MoreOPPickaxe", config, AceItems.keyRadius, AceItems.keyRadiusLore);
+        June24LessOPPickaxe = ConfigUtils.initializeItem("June24LessOPPickaxe", config, AceItems.keyRadius, AceItems.keyRadiusLore);
+        June24MoreOPSword = ConfigUtils.initializeItem("June24MoreOPSword", config, AceItems.keyKills);
         AceItems.defaultValue.put(AceItems.keyBlockType, "QUARTZ_BLOCK");
         AceItems.defaultValue.put(AceItems.keyBlockTypeLore, "Quartz Block");
         AceItems.defaultValue.put(AceItems.keyUses, 300);
-        June24QuartzWand = ConfigUtils.initializeItem("June24QuartzWand", juneitems, AceItems.keyBlockType, AceItems.keyBlockTypeLore, AceItems.keyUses);
-        UltraJune24QuartzWand = ConfigUtils.initializeItem("UltraJune24QuartzWand", juneitems, AceItems.keyBlockType, AceItems.keyBlockTypeLore, AceItems.keyUses);
+        June24QuartzWand = ConfigUtils.initializeItem("June24QuartzWand", config, AceItems.keyBlockType, AceItems.keyBlockTypeLore, AceItems.keyUses);
+        UltraJune24QuartzWand = ConfigUtils.initializeItem("UltraJune24QuartzWand", config, AceItems.keyBlockType, AceItems.keyBlockTypeLore, AceItems.keyUses);
+        June24PropTool = ConfigUtils.initializeItem("June24PropTool", config);
+        UltraJune24PropTool = ConfigUtils.initializeItem("UltraJune24PropTool", config);
+        June24GrowthStunter = ConfigUtils.initializeItem("June24GrowthStunter", config);
+        AceItems.defaultValue.put(AceItems.keyBlockType, "");
+        AceItems.defaultValue.put(AceItems.keyBlockTypeLore, "Original");
+        June24Axe = ConfigUtils.initializeItem("June24Axe", config);
+        UltraJune24Axe = ConfigUtils.initializeItem("UltraJune24Axe", config);
+        June24TechnologicalAdvancement = ConfigUtils.initializeItem("June24TechnologicalAdvancement", config);
+        UltraJune24TechnologicalAdvancement = ConfigUtils.initializeItem("UltraJune24TechnologicalAdvancement", config);
+        June24LessOPSword = ConfigUtils.initializeItem("June24LessOPSword", config);
+        UltraJune24MoreOPSword = ConfigUtils.initializeItem("UltraJune24MoreOPSword", config, AceItems.keyKills);
+        June24GuardianBeam = ConfigUtils.initializeItem("June24GuardianBeam", config);
+        June24Boots = ConfigUtils.initializeItem("June24Boots", config, AceItems.keyInt);
+        June24Leggings = ConfigUtils.initializeItem("June24Leggings", config);
+        June24Chestplate = ConfigUtils.initializeItem("June24Chestplate", config);
+        June24Helmet = ConfigUtils.initializeItem("June24Helmet", config);
+        June24Shovel = ConfigUtils.initializeItem("June24Shovel", config, AceItems.keyRadius, AceItems.keyRadiusLore);
+        June24XPBeacon = ConfigUtils.initializeItem("June24XPBeacon", config);
+        UltraJune24XPBeacon = ConfigUtils.initializeItem("UltraJune24XPBeacon", config);
+        June24BlockWand = ConfigUtils.initializeItem("June24BlockWand", config);
+        UltraJune24BlockWand = ConfigUtils.initializeItem("UltraJune24BlockWand", config);
+        AceItems.defaultValue.put(AceItems.keyBlockType, "OAK");
+        AceItems.defaultValue.put(AceItems.keyBlockTypeLore, "Oak");
+        June24LeafBlower = ConfigUtils.initializeItem("June24LeafBlower", config, AceItems.keyBlockType, AceItems.keyBlockTypeLore, AceItems.keyUses);
+        June24Hoe = ConfigUtils.initializeItem("June24Hoe", config);
+        June24Amulet = ConfigUtils.initializeItem("June24Amulet", config);
+        UltraJune24Amulet = ConfigUtils.initializeItem("UltraJune24Amulet", config);
+        June24Shield = ConfigUtils.initializeItem("June24Shield", config);
+        June24Elytra = ConfigUtils.initializeItem("June24Elytra", config);
+        June24Wings = ConfigUtils.initializeItem("June24Wings", config);
+        June24Bow = ConfigUtils.initializeItem("June24Bow", config);
+        June24Crossbow = ConfigUtils.initializeItem("June24Crossbow", config);
+        June24Trident = ConfigUtils.initializeItem("June24Trident", config);
+        June24FishingRod = ConfigUtils.initializeItem("June24FishingRod", config);
+        UltraJune24FishingRod = ConfigUtils.initializeItem("UltraJune24FishingRod", config);
+
         config.options().copyDefaults(true);
 
         juneitems.save();
@@ -107,10 +143,8 @@ public class JuneItemsConfig {
         June24ShovelSeaLanternChance = config.getInt("June24Shovel.SeaLanternChance");
         June24ShovelGlowstoneChance = config.getInt("June24Shovel.GlowstoneChance");
         June24ShovelFroglightChance = config.getInt("June24Shovel.FroglightChance");
-    }
-
-    public static ConfigUtils getConfig(){
-        return juneitems;
+        
+        juneitems.save();
     }
 
 }

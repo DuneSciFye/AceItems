@@ -1,14 +1,16 @@
 package me.dunescifye.aceitems.listeners;
 
 import me.dunescifye.aceitems.AceItems;
+import me.dunescifye.aceitems.files.JulyItemsConfig;
+import me.dunescifye.aceitems.utils.CooldownManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.World;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -16,12 +18,12 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.time.Duration;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static me.dunescifye.aceitems.items.JuneItemsManager.*;
-import static me.dunescifye.aceitems.items.JuneItemsManager.June24HelmetDisabledWorlds;
 import static me.dunescifye.aceitems.utils.Utils.*;
 
 public class EntityDamageByEntityListener implements Listener {
@@ -36,111 +38,106 @@ public class EntityDamageByEntityListener implements Listener {
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e){
         if (e.isCancelled()) return;
 
+        //Attacker is player
         if (e.getDamager() instanceof Player p) {
             if (e.getEntity() instanceof LivingEntity livingEntity) {
-                ItemStack boots = p.getInventory().getBoots();
-                ItemStack leggings = p.getInventory().getLeggings();
-                ItemStack chestplate = p.getInventory().getChestplate();
-                ItemStack helmet = p.getInventory().getHelmet();
-                PersistentDataContainer bootsContainer = null;
-                String bootsItemID = "";
-                ItemMeta bootsMeta = null;
-                PersistentDataContainer leggingsContainer = null;
-                String leggingsItemID = "";
-                ItemMeta leggingsMeta = null;
-                PersistentDataContainer chestplateContainer = null;
-                String chestplateItemID = "";
-                ItemMeta chestplateMeta = null;
-                PersistentDataContainer helmetContainer = null;
-                String helmetItemID = "";
-                ItemMeta helmetMeta = null;
-                if (boots != null){
-                    if (boots.getItemMeta() != null){
-                        bootsMeta = boots.getItemMeta();
-                        bootsContainer = bootsMeta.getPersistentDataContainer();
-                        if (bootsContainer.has(keyItemID)){
-                            bootsItemID = bootsContainer.get(keyItemID, PersistentDataType.STRING);
-                        }
+                ItemStack helmet = p.getInventory().getHelmet(),
+                    chestplate = p.getInventory().getChestplate(),
+                    leggings = p.getInventory().getLeggings(),
+                    boots = p.getInventory().getBoots();
+                ItemMeta helmetMeta, chestplateMeta, leggingsMeta, bootsMeta;
+                PersistentDataContainer helmetContainer, chestplateContainer, leggingsContainer, bootsContainer;
+                String helmetID = "", chestplateID = "", leggingsID = "", bootsID = "";
+                //Obtaining armor info
+                if (helmet != null && helmet.hasItemMeta()) {
+                    helmetMeta = helmet.getItemMeta();
+                    helmetContainer = helmetMeta.getPersistentDataContainer();
+                    helmetID = helmetContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
+                }
+                if (chestplate != null && chestplate.hasItemMeta()) {
+                    chestplateMeta = chestplate.getItemMeta();
+                    chestplateContainer = chestplateMeta.getPersistentDataContainer();
+                    chestplateID = chestplateContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
+                }
+                if (leggings != null && leggings.hasItemMeta()) {
+                    leggingsMeta = leggings.getItemMeta();
+                    leggingsContainer = leggingsMeta.getPersistentDataContainer();
+                    leggingsID = leggingsContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
+                }
+                if (boots != null && boots.hasItemMeta()) {
+                    bootsMeta = boots.getItemMeta();
+                    bootsContainer = bootsMeta.getPersistentDataContainer();
+                    bootsID = bootsContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
+                }
+                //June 24 armor damage boost in water
+                if (Objects.equals(helmetID, "June24Helmet") && Objects.equals(chestplateID, "June24Chestplate") && Objects.equals(leggingsID, "June24Leggings") && Objects.equals(bootsID, "June24Boots")
+                    && !AceItems.disabledWorlds.get("June24Helmet").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Chestplate").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Leggings").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Boots").contains(p.getWorld().getName())) {
+                    if (p.getLocation().getBlock().getType() == Material.WATER ||
+                        p.getLocation().getBlock().getType() == Material.BUBBLE_COLUMN ||
+                        p.getLocation().getBlock().getType() == Material.KELP_PLANT) {
+                        e.setDamage(e.getDamage() * 1.3);
                     }
                 }
-                if (leggings != null){
-                    if (leggings.getItemMeta() != null){
-                        leggingsMeta = leggings.getItemMeta();
-                        leggingsContainer = leggingsMeta.getPersistentDataContainer();
-                        if (leggingsContainer.has(keyItemID)){
-                            leggingsItemID = leggingsContainer.get(keyItemID, PersistentDataType.STRING);
-                        }
+                //July 24 armor damage boost chance
+                else if (Objects.equals(helmetID, "July24Helmet") && Objects.equals(chestplateID, "July24Chestplate") && Objects.equals(leggingsID, "July24Leggings") && Objects.equals(bootsID, "July24Boots")
+                    && !AceItems.disabledWorlds.get("July24Helmet").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Chestplate").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Leggings").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Boots").contains(p.getWorld().getName())) {
+                    if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24ArmorExtraDamageChance) == 0) {
+                        e.setDamage(e.getDamage() * JulyItemsConfig.July24ArmorExtraDamagePercent);
                     }
                 }
-                if (chestplate != null){
-                    if (chestplate.getItemMeta() != null){
-                        chestplateMeta = chestplate.getItemMeta();
-                        chestplateContainer = chestplateMeta.getPersistentDataContainer();
-                        if (chestplateContainer.has(keyItemID)){
-                            chestplateItemID = chestplateContainer.get(keyItemID, PersistentDataType.STRING);
-                        }
-                    }
-                }
-                if (helmet != null){
-                    if (helmet.getItemMeta() != null){
-                        helmetMeta = helmet.getItemMeta();
-                        helmetContainer = helmetMeta.getPersistentDataContainer();
-                        if (helmetContainer.has(keyItemID)){
-                            helmetItemID = helmetContainer.get(keyItemID, PersistentDataType.STRING);
-                        }
-                    }
-                }
-
-                assert helmetItemID != null;
-                if (helmetItemID.equals("June24Helmet")) {
-                    assert chestplateItemID != null;
-                    if ((chestplateItemID.equals("June24Chestplate") || chestplateItemID.equals("June24Elytra"))) {
-                        assert leggingsItemID != null;
-                        if (leggingsItemID.equals("June24Leggings")) {
-                            assert bootsItemID != null;
-                            if (bootsItemID.equals("June24Boots")) {
-                                if (!June24BootsDisabledWorlds.contains(p.getWorld().getName()) &&
-                                        !June24LeggingsDisabledWorlds.contains(p.getWorld().getName()) &&
-                                        !June24ChestplateDisabledWorlds.contains(p.getWorld().getName()) &&
-                                        !June24HelmetDisabledWorlds.contains(p.getWorld().getName())) {
-                                    if (p.getLocation().getBlock().getType() == Material.WATER ||
-                                            p.getLocation().getBlock().getType() == Material.BUBBLE_COLUMN ||
-                                            p.getLocation().getBlock().getType() == Material.KELP_PLANT) {
-                                        e.setDamage(e.getDamage() * 1.3);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-
+                //Offhand items
                 ItemStack offHandItem = p.getInventory().getItemInOffHand();
                 if (offHandItem.hasItemMeta()){
                     ItemMeta offHandItemMeta = offHandItem.getItemMeta();
                     PersistentDataContainer container =  offHandItemMeta.getPersistentDataContainer();
-                    if (container.has(keyItemID, PersistentDataType.STRING)){
-                        String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                    String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
+                    if (itemID != null) {
+                        //June 24 Shield Damage boost
                         if (itemID.equals("June24Shield")){
-                            if (!June24ShieldDisabledWorlds.contains(p.getWorld().getName())) {
+                            if (!AceItems.disabledWorlds.get("June24Shield").contains(p.getWorld().getName()))
                                 e.setDamage(e.getDamage() * 1.3);
-                            }
-
                         }
 
                     }
                 }
-
+                //Mainhand items
                 ItemStack item = p.getInventory().getItemInMainHand();
                 if (item.hasItemMeta()){
                     PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-                    if (container.has(keyItemID, PersistentDataType.STRING)){
-                        String itemID = container.get(keyItemID, PersistentDataType.STRING);
-                        if (itemID.equals("June24Trident")){
-                            if (!June24TridentDisabledWorlds.contains(p.getWorld().getName())) {
-                                if (ThreadLocalRandom.current().nextInt(20) == 0) {
-                                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 80, 0));
-                                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 100, 1));
+                    String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
+                    if (itemID != null) {
+                        switch (itemID) {
+                            case "June24Trident" -> {
+                                if (!AceItems.disabledWorlds.get("June24Trident").contains(p.getWorld().getName())) {
+                                    if (ThreadLocalRandom.current().nextInt(20) == 0) {
+                                        livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 80, 0));
+                                        livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, 100, 1));
+                                    }
+                                }
+                            }
+                            case "July24VillagerWand" -> {
+                                if (!AceItems.disabledWorlds.get("July24VillagerWand").contains(p.getWorld().getName())) {
+                                    if (livingEntity instanceof ZombieVillager zombieVillager) {
+                                        e.setCancelled(true);
+
+                                        if (CooldownManager.hasCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId())) {
+                                            CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId()));
+                                        } else {
+                                            zombieVillager.setConversionTime(0);
+
+                                            int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
+                                            if (uses > 0) {
+                                                container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 1);
+                                            } else {
+                                                container.set(AceItems.keyUses, PersistentDataType.INTEGER, JulyItemsConfig.July24VillagerWandUses);
+                                                CooldownManager.setCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId(), Duration.ofMinutes(30));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            case "July24Saddle" -> {
+                                if (livingEntity instanceof Player target) {
                                 }
                             }
                         }
@@ -148,7 +145,9 @@ public class EntityDamageByEntityListener implements Listener {
                 }
 
             }
-        } else if (e.getDamager() instanceof Arrow arrow) {
+        }
+        //Damager is arrow
+        else if (e.getDamager() instanceof Arrow arrow) {
             UUID arrowId = arrow.getUniqueId();
             if (getArrowDistances().containsKey(arrowId)) {
                 double distance = getArrowDistances().get(arrowId);
@@ -161,10 +160,10 @@ public class EntityDamageByEntityListener implements Listener {
                 ItemStack bow = p.getInventory().getItemInMainHand();
                 if (bow.hasItemMeta()) {
                     PersistentDataContainer container = bow.getItemMeta().getPersistentDataContainer();
-                    if (container.has(keyItemID, PersistentDataType.STRING)) {
-                        String itemID = container.get(keyItemID, PersistentDataType.STRING);
+                    if (container.has(AceItems.keyItemID, PersistentDataType.STRING)) {
+                        String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
                         if (itemID.equals("June24Bow")) {
-                            if (!June24BowDisabledWorlds.contains(p.getWorld().getName())) {
+                            if (!AceItems.disabledWorlds.get("June24Bow").contains(p.getWorld().getName())) {
                                 UUID shooterUUID = p.getUniqueId();
                                 int count = June24BowHits.getOrDefault(shooterUUID, 0) + 1;
                                 June24BowHits.put(shooterUUID, count);
@@ -179,7 +178,7 @@ public class EntityDamageByEntityListener implements Listener {
                             }
                         }
                         else if (itemID.equals("June24Crossbow")) {
-                            if (!June24CrossbowDisabledWorlds.contains(p.getWorld().getName())) {
+                            if (!AceItems.disabledWorlds.get("June24Crossbow").contains(p.getWorld().getName())) {
                                 UUID shooterUUID = p.getUniqueId();
                                 int count = June24BowHits.getOrDefault(shooterUUID, 0) + 1;
                                 June24BowHits.put(shooterUUID, count);
@@ -193,6 +192,55 @@ public class EntityDamageByEntityListener implements Listener {
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+        //Player was damaged
+        if (e.getEntity() instanceof Player p && e.getDamager() instanceof Player attacker) {
+            ItemStack helmet = p.getInventory().getHelmet(),
+                chestplate = p.getInventory().getChestplate(),
+                leggings = p.getInventory().getLeggings(),
+                boots = p.getInventory().getBoots();
+            ItemMeta helmetMeta, chestplateMeta, leggingsMeta, bootsMeta;
+            PersistentDataContainer helmetContainer, chestplateContainer, leggingsContainer, bootsContainer;
+            String helmetID = "", chestplateID = "", leggingsID = "", bootsID = "";
+            //Obtaining armor info
+            if (helmet != null && helmet.hasItemMeta()) {
+                helmetMeta = helmet.getItemMeta();
+                helmetContainer = helmetMeta.getPersistentDataContainer();
+                helmetID = helmetContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
+            }
+            if (chestplate != null && chestplate.hasItemMeta()) {
+                chestplateMeta = chestplate.getItemMeta();
+                chestplateContainer = chestplateMeta.getPersistentDataContainer();
+                chestplateID = chestplateContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
+            }
+            if (leggings != null && leggings.hasItemMeta()) {
+                leggingsMeta = leggings.getItemMeta();
+                leggingsContainer = leggingsMeta.getPersistentDataContainer();
+                leggingsID = leggingsContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
+            }
+            if (boots != null && boots.hasItemMeta()) {
+                bootsMeta = boots.getItemMeta();
+                bootsContainer = bootsMeta.getPersistentDataContainer();
+                bootsID = bootsContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
+            }
+            //July 24 Armor
+            if (Objects.equals(helmetID, "July24Helmet") && Objects.equals(chestplateID, "July24Chestplate") && Objects.equals(leggingsID, "July24Leggings") && Objects.equals(bootsID, "July24Boots")
+                && !AceItems.disabledWorlds.get("July24Helmet").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Chestplate").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Leggings").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Boots").contains(p.getWorld().getName())) {
+                //July 24 Armor Chance to push attacker back
+                if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24ArmorLaunchChance) == 0)
+                    attacker.setVelocity(attacker.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().multiply(1));
+                //July 24 Armor Thorn Immunity
+                if (e.getCause() == EntityDamageEvent.DamageCause.THORNS) e.setCancelled(true);
+                else if (e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || e.getCause() == EntityDamageEvent.DamageCause.FIRE || e.getCause() == EntityDamageEvent.DamageCause.LAVA) {
+                    //Fire immunity in nether
+                    if (p.getWorld().getEnvironment() == World.Environment.NETHER) {
+                        e.setCancelled(true);
+                    } else {
+                        //Extra resistant to fire damage
+                        e.setDamage(e.getDamage() * JulyItemsConfig.July24ArmorFireDamageReductionPercent);
                     }
                 }
             }
