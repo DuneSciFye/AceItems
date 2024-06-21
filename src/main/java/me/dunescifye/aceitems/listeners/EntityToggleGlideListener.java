@@ -55,9 +55,9 @@ public class EntityToggleGlideListener implements Listener {
                                     } else {
                                         p.spawnParticle(Particle.REDSTONE, p.getLocation(), 5, 0.5, 0.5, 0.5, lime);
                                     }
-                                    if (ThreadLocalRandom.current().nextInt(1, June24ElytraTurtleEggChance) == 1)
+                                    if (ThreadLocalRandom.current().nextInt(1, June24ElytraTurtleEggChance) == 0)
                                         p.getInventory().addItem(new ItemStack(Material.TURTLE_EGG));
-                                    if (ThreadLocalRandom.current().nextInt(1, June24ElytraAxolotlSpawnEggChance) == 1)
+                                    if (ThreadLocalRandom.current().nextInt(1, June24ElytraAxolotlSpawnEggChance) == 0)
                                         p.getInventory().addItem(new ItemStack(Material.AXOLOTL_SPAWN_EGG));
 
                                 }, 0L, 5L);

@@ -13,13 +13,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.lang.reflect.Array;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -84,6 +85,22 @@ public class Utils {
         for (String command : commands){
             server.dispatchCommand(console, command);
         }
+    }
+    //Random Potion
+    private static final ItemStack potion = new ItemStack(Material.POTION);
+    private static final List<PotionType> potionTypes = new ArrayList<>(Arrays.asList(PotionType.values()));
+    static {
+        potionTypes.remove(PotionType.AWKWARD);
+        potionTypes.remove(PotionType.MUNDANE);
+        potionTypes.remove(PotionType.UNCRAFTABLE);
+        potionTypes.remove(PotionType.THICK);
+        potionTypes.remove(PotionType.WATER);
+    }
+    public static ItemStack randomPotion() {
+        PotionMeta potionMeta = (PotionMeta) potion.getItemMeta();
+        potionMeta.setBasePotionType(potionTypes.get(ThreadLocalRandom.current().nextInt(potionTypes.size())));
+        potion.setItemMeta(potionMeta);
+        return potion;
     }
 
     public static Object randomObject(Object... objects){
@@ -190,14 +207,14 @@ public class Utils {
         return loreList;
     }
     //Update lore and PDC for block type
-    public static void updateKeyBlockType(Player p, ItemStack item, ItemMeta meta, PersistentDataContainer container, String variable, Object... matchers){
+    public static void updateKeyState(Player p, ItemStack item, ItemMeta meta, PersistentDataContainer container, String variable, Object... matchers){
         //Add first two to the list again, allows for cycling back
         List<Object> newMatchers = new ArrayList<>(Arrays.asList(matchers));
         newMatchers.add(matchers[0]);
         newMatchers.add(matchers[1]);
         //Obtain current keys
-        String oldBlock = container.get(AceItems.keyBlockType, PersistentDataType.STRING);
-        String oldBlockLore = container.get(AceItems.keyBlockTypeLore, PersistentDataType.STRING);
+        String oldBlock = container.get(AceItems.keyState, PersistentDataType.STRING);
+        String oldBlockLore = container.get(AceItems.keyStateLore, PersistentDataType.STRING);
         //Set new keys to first values in key's get messed up
         String newBlock =  String.valueOf(matchers[0]);
         String newBlockLore = String.valueOf(matchers[1]);
@@ -212,8 +229,8 @@ public class Utils {
         //Send player message
         sendPlayerChangeVariableMessage(p, changeVariableMessage, variable, newBlockLore);
         //Update PDC, lore, and Meta
-        container.set(AceItems.keyBlockType, PersistentDataType.STRING, newBlock);
-        container.set(AceItems.keyBlockTypeLore, PersistentDataType.STRING, newBlockLore);
+        container.set(AceItems.keyState, PersistentDataType.STRING, newBlock);
+        container.set(AceItems.keyStateLore, PersistentDataType.STRING, newBlockLore);
         meta.lore(updateLore(item, oldBlockLore, newBlockLore));
         item.setItemMeta(meta);
     }

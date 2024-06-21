@@ -2,7 +2,6 @@ package me.dunescifye.aceitems.listeners;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.dunescifye.aceitems.AceItems;
-import me.dunescifye.aceitems.files.Config;
 import me.dunescifye.aceitems.files.JulyItemsConfig;
 import me.dunescifye.aceitems.libs.Laser;
 import me.dunescifye.aceitems.utils.BlockUtils;
@@ -79,28 +78,29 @@ public class PlayerInteractListener implements Listener {
         //Right or left click, sneaking
         if (p.isSneaking()) {
             switch (itemID) {
-                case "July24PaintBrush" -> {
-                    Utils.updateKeyBlockType(p, item, meta, container, "Color", "WHITE", "White", "LIGHT_GRAY", "Light Gray", "GRAY", "Gray", "BLACK", "Black", "BROWN", "Brown", "RED", "Red", "ORANGE", "Orange", "YELLOW", "Yellow", "LIME", "Lime", "GREEN", "Green", "CYAN", "Cyan", "LIGHT_BLUE", "Light Blue", "BLUE", "Blue", "MAGENTA", "Magenta", "PURPLE", "Purple", "PINK", "Pink");
-                }
+                case "July24PaintBrush", "UltraJuly24PaintBrush" -> Utils.updateKeyState(p, item, meta, container, "Color", "WHITE", "White", "LIGHT_GRAY", "Light Gray", "GRAY", "Gray", "BLACK", "Black", "BROWN", "Brown", "RED", "Red", "ORANGE", "Orange", "YELLOW", "Yellow", "LIME", "Lime", "GREEN", "Green", "CYAN", "Cyan", "LIGHT_BLUE", "Light Blue", "BLUE", "Blue", "MAGENTA", "Magenta", "PURPLE", "Purple", "PINK", "Pink");
             }
         }
         //Right or left click, not sneaking
         else {
-            switch (itemID) {
-                case "July24PaintBrush" -> {
-                    if (CooldownManager.hasCooldown(July24PaintBrushCooldowns, p.getUniqueId())) {
-                        CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(July24PaintBrushCooldowns, p.getUniqueId()));
-                    } else {
-
-                        int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
-                        if (uses > 1) {
-                            container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 1);
+            if (b != null) {
+                switch (itemID) {
+                    case "July24PaintBrush" -> {
+                        if (CooldownManager.hasCooldown(July24PaintBrushCooldowns, p.getUniqueId())) {
+                            CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(July24PaintBrushCooldowns, p.getUniqueId()));
                         } else {
-                            container.set(AceItems.keyUses, PersistentDataType.INTEGER, JulyItemsConfig.July24PaintBrushUses);
-                            CooldownManager.setCooldown(July24MelonWandCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.July24PaintBrushCooldown));
+                            b.setType(Objects.requireNonNull(Material.getMaterial(changeColor(b.getType().toString(), container.get(AceItems.keyState, PersistentDataType.STRING)))));
+                            int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
+                            if (uses > 1) {
+                                container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 1);
+                            } else {
+                                container.set(AceItems.keyUses, PersistentDataType.INTEGER, JulyItemsConfig.July24PaintBrushUses);
+                                CooldownManager.setCooldown(July24MelonWandCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.July24PaintBrushCooldown));
+                            }
+                            item.setItemMeta(meta);
                         }
-                        item.setItemMeta(meta);
                     }
+                    case "UltraJuly24PaintBrush" -> b.setType(Objects.requireNonNull(Material.getMaterial(changeColor(b.getType().toString(), container.get(AceItems.keyState, PersistentDataType.STRING)))));
                 }
             }
         }
@@ -134,8 +134,8 @@ public class PlayerInteractListener implements Listener {
                     "June24QuartzWand",
                     "UltraJune24QuartzWand" -> {
                     if (p.isSneaking()) {
-                        String currentVariant = container.get(AceItems.keyBlockType, PersistentDataType.STRING);
-                        String oldText = container.get(AceItems.keyBlockTypeLore, PersistentDataType.STRING);
+                        String currentVariant = container.get(AceItems.keyState, PersistentDataType.STRING);
+                        String oldText = container.get(AceItems.keyStateLore, PersistentDataType.STRING);
                         String newText = inputOutputCycle(oldText,
                             "Quartz Block",
                             "Quartz Stairs",
@@ -148,8 +148,8 @@ public class PlayerInteractListener implements Listener {
                             "Smooth Quartz Slab",
                             "Quartz Block");
                         sendPlayerChangeVariableMessage(p, changeVariableMessage, "Quartz Type", newText);
-                        meta.getPersistentDataContainer().set(AceItems.keyBlockTypeLore, PersistentDataType.STRING, newText);
-                        meta.getPersistentDataContainer().set(AceItems.keyBlockType, PersistentDataType.STRING, inputOutputCycle(currentVariant,
+                        meta.getPersistentDataContainer().set(AceItems.keyStateLore, PersistentDataType.STRING, newText);
+                        meta.getPersistentDataContainer().set(AceItems.keyState, PersistentDataType.STRING, inputOutputCycle(currentVariant,
                             "QUARTZ_BLOCK",
                             "QUARTZ_STAIRS",
                             "QUARTZ_SLAB",
@@ -201,7 +201,7 @@ public class PlayerInteractListener implements Listener {
                     "June24Axe",
                     "UltraJune24Axe" -> {
                     if (p.isSneaking()) {
-                        String oldText = meta.getPersistentDataContainer().get(AceItems.keyBlockTypeLore, PersistentDataType.STRING);
+                        String oldText = meta.getPersistentDataContainer().get(AceItems.keyStateLore, PersistentDataType.STRING);
                         String newText = inputOutputCycle(oldText,
                             "Original",
                             "Planks",
@@ -215,7 +215,7 @@ public class PlayerInteractListener implements Listener {
                             "Button",
                             "Original");
                         sendPlayerChangeVariableMessage(p, changeVariableMessage, "Drop", newText);
-                        meta.getPersistentDataContainer().set(AceItems.keyBlockType, PersistentDataType.STRING, inputOutput(oldText,
+                        meta.getPersistentDataContainer().set(AceItems.keyState, PersistentDataType.STRING, inputOutput(oldText,
                             "Original",
                             "PLANKS",
                             "Planks",
@@ -236,7 +236,7 @@ public class PlayerInteractListener implements Listener {
                             "BUTTON",
                             "Button",
                             ""));
-                        meta.getPersistentDataContainer().set(AceItems.keyBlockTypeLore, PersistentDataType.STRING, newText);
+                        meta.getPersistentDataContainer().set(AceItems.keyStateLore, PersistentDataType.STRING, newText);
                         meta.lore(updateLore(item, oldText, newText));
                         item.setItemMeta(meta);
                     }
@@ -359,11 +359,11 @@ public class PlayerInteractListener implements Listener {
                     "June24LeafBlower" -> {
                     if (!AceItems.disabledWorlds.get("June24LeafBlower").contains(p.getWorld().getName())) {
                         Bukkit.getScheduler().runTask(AceItems.getInstance(), () -> {
-                            String leafType = container.get(AceItems.keyBlockType, PersistentDataType.STRING);
+                            String leafType = container.get(AceItems.keyState, PersistentDataType.STRING);
                             if (p.isSneaking()) {
                                 sendPlayerChangeVariableMessage(p, changeVariableMessage, "Leaf Type", inputOutput(leafType, "OAK", "Spruce", "SPRUCE", "Jungle", "JUNGLE", "Dark Oak", "DARK_OAK", "Birch", "BIRCH", "Acacia", "ACACIA", "Mangrove", "MANGROVE", "Cherry", "CHERRY", "Azalea", "AZALEA", "Flowering Azalea", "FLOWERING_AZALEA", "Oak"));
-                                meta.getPersistentDataContainer().set(AceItems.keyBlockType, PersistentDataType.STRING, inputOutputCycle(leafType, "OAK", "SPRUCE", "JUNGLE", "DARK_OAK", "BIRCH", "ACACIA", "MANGROVE", "CHERRY", "AZALEA", "FLOWERING_AZALEA", "OAK"));
-                                meta.getPersistentDataContainer().set(AceItems.keyBlockTypeLore, PersistentDataType.STRING, inputOutput(leafType, "OAK", "Spruce", "SPRUCE", "Jungle", "JUNGLE", "Dark Oak", "DARK_OAK", "Birch", "BIRCH", "Acacia", "ACACIA", "Mangrove", "MANGROVE", "Cherry", "CHERRY", "Azalea", "AZALEA", "Flowering Azalea", "FLOWERING_AZALEA", "Oak"));
+                                meta.getPersistentDataContainer().set(AceItems.keyState, PersistentDataType.STRING, inputOutputCycle(leafType, "OAK", "SPRUCE", "JUNGLE", "DARK_OAK", "BIRCH", "ACACIA", "MANGROVE", "CHERRY", "AZALEA", "FLOWERING_AZALEA", "OAK"));
+                                meta.getPersistentDataContainer().set(AceItems.keyStateLore, PersistentDataType.STRING, inputOutput(leafType, "OAK", "Spruce", "SPRUCE", "Jungle", "JUNGLE", "Dark Oak", "DARK_OAK", "Birch", "BIRCH", "Acacia", "ACACIA", "Mangrove", "MANGROVE", "Cherry", "CHERRY", "Azalea", "AZALEA", "Flowering Azalea", "FLOWERING_AZALEA", "Oak"));
                                 item.setItemMeta(meta);
                             } else if (b != null) {
                                 Block blockRelative = b.getRelative(e.getBlockFace());
@@ -453,7 +453,7 @@ public class PlayerInteractListener implements Listener {
                 }
                 case "July24DirtWand" -> {
                     if (p.isSneaking()) {
-                        updateKeyBlockType(p, item, meta, container, "Dirt Type", "PODZOL", "Podzol", "DIRT", "Dirt", "COARSE_DIRT", "Coarse Dirt", "FARMLAND", "Farmland", "DIRT_PATH", "Dirt Path", "GRASS_BLOCK", "Grass Block");
+                        Utils.updateKeyState(p, item, meta, container, "Dirt Type", "PODZOL", "Podzol", "DIRT", "Dirt", "COARSE_DIRT", "Coarse Dirt", "FARMLAND", "Farmland", "DIRT_PATH", "Dirt Path", "GRASS_BLOCK", "Grass Block");
                     }
                 }
                 case "July24MelonWand" -> {
@@ -513,6 +513,11 @@ public class PlayerInteractListener implements Listener {
                                 BlockUtils.breakInRadiusBlacklist(p.getLocation().getBlock(), JulyItemsConfig.July24LessOPPickaxeExplosionRadius, p, BlockUtils.getUnbreakableBlocks());
                             }
                         }
+                    }
+                }
+                case "July24AIDisabler" -> {
+                    if (p.isSneaking()) {
+                        Utils.updateKeyState(p, item, meta, container, "AI mode", "enable", "Enable", "disable", "Disable");
                     }
                 }
             }
@@ -629,7 +634,7 @@ public class PlayerInteractListener implements Listener {
                                     Duration timeLeft = getRemainingCooldown(June24QuartzWandCooldowns, p.getUniqueId());
                                     if (timeLeft.isZero() || timeLeft.isNegative()) {
                                         int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
-                                        b.setType(Material.valueOf(container.get(AceItems.keyBlockType, PersistentDataType.STRING)));
+                                        b.setType(Material.valueOf(container.get(AceItems.keyState, PersistentDataType.STRING)));
                                         if (uses < 2) {
                                             meta.getPersistentDataContainer().set(AceItems.keyUses, PersistentDataType.INTEGER, 300);
                                             setCooldown(June24QuartzWandCooldowns, p.getUniqueId(), Duration.ofMinutes(30));
@@ -651,7 +656,7 @@ public class PlayerInteractListener implements Listener {
                         if (!AceItems.disabledWorlds.get("UltraJune24QuartzWand").contains(p.getWorld().getName())) {
                             for (Predicate<Block> quartzBlock : quartzBlocks) {
                                 if (quartzBlock.test(b)) {
-                                    b.setType(Material.valueOf(container.get(AceItems.keyBlockType, PersistentDataType.STRING)));
+                                    b.setType(Material.valueOf(container.get(AceItems.keyState, PersistentDataType.STRING)));
                                     break;
                                 }
                             }
@@ -703,7 +708,7 @@ public class PlayerInteractListener implements Listener {
                     }
                     case "July24DirtWand" -> {
                         if (BlockUtils.getDirtBlocks().contains(b.getType())) {
-                            String blockType = container.get(AceItems.keyBlockType, PersistentDataType.STRING);
+                            String blockType = container.get(AceItems.keyState, PersistentDataType.STRING);
                             if (blockType != null) {
                                 Material material = Material.getMaterial(blockType);
                                 if (material != null)

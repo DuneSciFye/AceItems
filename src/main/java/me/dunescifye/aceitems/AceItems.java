@@ -27,8 +27,8 @@ public final class AceItems extends JavaPlugin {
     public static final NamespacedKey keyRadius = new NamespacedKey("customitems", "radius");
     public static final NamespacedKey keyRadiusLore = new NamespacedKey("customitems", "radiuslore");
     public static final NamespacedKey keyKills = new NamespacedKey("customitems", "kills");
-    public static final NamespacedKey keyBlockType = new NamespacedKey("customitems", "blocktype");
-    public static final NamespacedKey keyBlockTypeLore = new NamespacedKey("customitems", "blocktypelore");
+    public static final NamespacedKey keyState = new NamespacedKey("customitems", "state");
+    public static final NamespacedKey keyStateLore = new NamespacedKey("customitems", "statelore");
     public static final NamespacedKey keyUses = new NamespacedKey("customitems", "uses");
     public static final NamespacedKey keyInt = new NamespacedKey("customitems", "int");
     public static final NamespacedKey keyString = new NamespacedKey("customitems", "string");
@@ -48,8 +48,8 @@ public final class AceItems extends JavaPlugin {
         defaultValue.put(keyRadiusLore, "1x1");
         dataType.put(keyKills, PersistentDataType.INTEGER);
         defaultValue.put(keyKills, 0);
-        dataType.put(keyBlockType, PersistentDataType.STRING);
-        dataType.put(keyBlockTypeLore, PersistentDataType.STRING);
+        dataType.put(keyState, PersistentDataType.STRING);
+        dataType.put(keyStateLore, PersistentDataType.STRING);
         dataType.put(keyUses, PersistentDataType.INTEGER);
         dataType.put(keyInt, PersistentDataType.INTEGER);
         defaultValue.put(keyInt, 0);

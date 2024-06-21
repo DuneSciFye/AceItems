@@ -110,7 +110,7 @@ public class InventoryClickListener implements Listener {
                         case
                             "June24Wings" -> {
                             if (!AceItems.disabledWorlds.get("June24Wings").contains(p.getWorld().getName())) {
-                                p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, Integer.MAX_VALUE, 0));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, -1, 0));
                             }
                         }
                         case "July24JobsLantern" -> {
@@ -121,6 +121,28 @@ public class InventoryClickListener implements Listener {
                             if (!AceItems.disabledWorlds.get("UltraJuly24JobsLantern").contains(p.getWorld().getName()))
                                 Utils.addPermission(p.getUniqueId(), JulyItemsConfig.UltraJuly24JobsLanternIncomeBoostPerm);
                         }
+                        case "July24PocketBeacon" -> {
+                            if (!JulyItemsConfig.July24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, -1, 0));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 0));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, 0));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, -1, 0));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, 0));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, -1, 0));
+                            }
+                        }
+                        case "UltraJuly24PocketBeacon" -> {
+                            if (!JulyItemsConfig.UltraJuly24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, -1, 1));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 1));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, 1));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, -1, 1));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, -1, 1));
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, -1, 1));
+                            }
+                        }
+                        case "July24MoreOPPickaxe" -> p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 0));
+                        case "UltraJuly24MoreOPPickaxe" -> p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 1));
                     }
                 }
             }
@@ -141,6 +163,27 @@ public class InventoryClickListener implements Listener {
                             if (!AceItems.disabledWorlds.get("UltraJuly24JobsLantern").contains(p.getWorld().getName()))
                                 Utils.removePermission(p.getUniqueId(), JulyItemsConfig.UltraJuly24JobsLanternIncomeBoostPerm);
                         }
+                        case "July24PocketBeacon" -> {
+                            if (!JulyItemsConfig.July24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
+                                p.removePotionEffect(PotionEffectType.SPEED);
+                                p.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                                p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                                p.removePotionEffect(PotionEffectType.JUMP);
+                                p.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+                                p.removePotionEffect(PotionEffectType.REGENERATION);
+                            }
+                        }
+                        case "UltraJuly24PocketBeacon" -> {
+                            if (!JulyItemsConfig.UltraJuly24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
+                                p.removePotionEffect(PotionEffectType.SPEED);
+                                p.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                                p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                                p.removePotionEffect(PotionEffectType.JUMP);
+                                p.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+                                p.removePotionEffect(PotionEffectType.REGENERATION);
+                            }
+                        }
+                        case "July24MoreOPPickaxe", "UltraJuly24MoreOPPickaxe" -> p.removePotionEffect(PotionEffectType.FAST_DIGGING);
                     }
                 }
             }

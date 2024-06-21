@@ -32,6 +32,8 @@ public class CooldownManager {
     public static final Map<UUID, Instant> July24MelonWandCooldowns = new HashMap<>();
     public static final Map<UUID, Instant> UltraJuly24MelonWandCooldowns = new HashMap<>();
     public static final Map<UUID, Instant> July24PaintBrushCooldowns = new HashMap<>();
+    public static final Map<UUID, Instant> July24GrapplingHookSelfLaunchCooldowns = new HashMap<>();
+    public static final Map<UUID, Instant> July24GrapplingHookTargetLaunchCooldowns = new HashMap<>();
 
     // Set cooldown
     public static void setCooldown(Map<UUID, Instant>map, UUID key, Duration duration) {

@@ -1,7 +1,6 @@
 package me.dunescifye.aceitems.listeners;
 
 import me.dunescifye.aceitems.AceItems;
-import me.dunescifye.aceitems.files.Config;
 import me.dunescifye.aceitems.files.JulyItemsConfig;
 import me.dunescifye.aceitems.utils.Utils;
 import org.bukkit.Bukkit;
@@ -59,35 +58,35 @@ public class PlayerBlockBreakListener implements Listener {
                     case
                         "June24MoreOPPickaxe" -> {
                         if (!AceItems.disabledWorlds.get("June24MoreOPPickaxe").contains(p.getWorld().getName())) {
-                            if (ThreadLocalRandom.current().nextInt(1, June24MoreOPPickaxeWaterBreathingPotionChance) == 1)
+                            if (ThreadLocalRandom.current().nextInt(1, June24MoreOPPickaxeWaterBreathingPotionChance) == 0)
                                 p.getWorld().dropItemNaturally(b.getLocation(), waterBreathingPotion);
-                            if (ThreadLocalRandom.current().nextInt(1, June24MoreOPPickaxeSeaLanternChance) == 1)
+                            if (ThreadLocalRandom.current().nextInt(1, June24MoreOPPickaxeSeaLanternChance) == 0)
                                 p.getWorld().dropItemNaturally(b.getLocation(), seaLantern);
-                            if (ThreadLocalRandom.current().nextInt(1, June24MoreOPPickaxeFishSpawnerChance) == 1)
+                            if (ThreadLocalRandom.current().nextInt(1, June24MoreOPPickaxeFishSpawnerChance) == 0)
                                 Utils.runConsoleCommand("silkspawners:ss give " + p.getName() + Utils.randomObject("tropical_fish", "pufferfish", "salmon", "cod")); //1 in 6k
                         }
                     }
                     case
                         "June24LessOPPickaxe" -> {
                         if (!AceItems.disabledWorlds.get("June24LessOPPickaxe").contains(p.getWorld().getName())) {
-                            if (ThreadLocalRandom.current().nextInt(1, June24LessOPPickaxeWaterBreathingPotionChance) == 1)
+                            if (ThreadLocalRandom.current().nextInt(1, June24LessOPPickaxeWaterBreathingPotionChance) == 0)
                                 p.getWorld().dropItemNaturally(b.getLocation(), waterBreathingPotion);
-                            if (ThreadLocalRandom.current().nextInt(1, June24LessOPPickaxeSeaLanternChance) == 1)
+                            if (ThreadLocalRandom.current().nextInt(1, June24LessOPPickaxeSeaLanternChance) == 0)
                                 p.getWorld().dropItemNaturally(b.getLocation(), seaLantern);
-                            if (ThreadLocalRandom.current().nextInt(1, June24LessOPPickaxeFishSpawnerChance) == 1)
+                            if (ThreadLocalRandom.current().nextInt(1, June24LessOPPickaxeFishSpawnerChance) == 0)
                                 Utils.runConsoleCommand("silkspawners:ss give " + p.getName() + Utils.randomObject("tropical_fish", "pufferfish", "salmon", "cod"));
-                            if (ThreadLocalRandom.current().nextInt(1, June24LessOPPickaxeGuardianSpawnerChance) == 1)
+                            if (ThreadLocalRandom.current().nextInt(1, June24LessOPPickaxeGuardianSpawnerChance) == 0)
                                 Utils.runConsoleCommand("silkspawners:ss give " + p.getName() + "guardian");
                         }
                     }
                     case
                         "June24Axe" -> {
                         if (!AceItems.disabledWorlds.get("June24Axe").contains(p.getWorld().getName())) {
-                            if (container.has(AceItems.keyBlockType, PersistentDataType.STRING)) {
+                            if (container.has(AceItems.keyState, PersistentDataType.STRING)) {
                                 for (Predicate<Block> log : logs) {
                                     if (log.test(b)) {
                                         e.setDropItems(false);
-                                        String drop = container.get(AceItems.keyBlockType, PersistentDataType.STRING);
+                                        String drop = container.get(AceItems.keyState, PersistentDataType.STRING);
                                         String material = b.getType().toString();
                                         ItemStack drops;
 
@@ -110,7 +109,7 @@ public class PlayerBlockBreakListener implements Listener {
                             for (Predicate<Block> log : logs) {
                                 if (log.test(b)) {
                                     e.setDropItems(false);
-                                    String drop = container.get(AceItems.keyBlockType, PersistentDataType.STRING);
+                                    String drop = container.get(AceItems.keyState, PersistentDataType.STRING);
                                     String material = b.getType().toString();
                                     ItemStack drops;
 
@@ -132,9 +131,9 @@ public class PlayerBlockBreakListener implements Listener {
                             if (container.get(AceItems.keyRadius, PersistentDataType.INTEGER) > 0) {
                                 breakInRadius(b, 1, p, shovelWhitelist);
                             }
-                            if (ThreadLocalRandom.current().nextInt(1, June24ShovelGlowstoneChance) == 1)
+                            if (ThreadLocalRandom.current().nextInt(1, June24ShovelGlowstoneChance) == 0)
                                 p.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(Material.GLOWSTONE));
-                            if (ThreadLocalRandom.current().nextInt(1, June24ShovelFroglightChance) == 1) {
+                            if (ThreadLocalRandom.current().nextInt(1, June24ShovelFroglightChance) == 0) {
                                 int random = ThreadLocalRandom.current().nextInt(0, 2);
                                 if (random == 0)
                                     p.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(Material.OCHRE_FROGLIGHT));
@@ -143,7 +142,7 @@ public class PlayerBlockBreakListener implements Listener {
                                 else
                                     p.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(Material.VERDANT_FROGLIGHT));
                             }
-                            if (ThreadLocalRandom.current().nextInt(1, June24ShovelSeaLanternChance) == 1)
+                            if (ThreadLocalRandom.current().nextInt(1, June24ShovelSeaLanternChance) == 0)
                                 p.getWorld().dropItemNaturally(b.getLocation(), new ItemStack(Material.SEA_LANTERN));
                         }
                     }
@@ -176,9 +175,9 @@ public class PlayerBlockBreakListener implements Listener {
                     }
                     case "July24LessOPPickaxe" -> {
                         if (!AceItems.disabledWorlds.get("July24LessOPPickaxe").contains(p.getWorld().getName())) {
-                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24LessOPPickaxeSquidSpawnerChance) == 1)
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24LessOPPickaxeSquidSpawnerChance) == 0)
                                 Utils.runConsoleCommand(spawnerCommand.replace("%player%", p.getName()).replace("%type%", "SQUID"));
-                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24LessOPPickaxeGlowSquidSpawnerChance) == 1)
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24LessOPPickaxeGlowSquidSpawnerChance) == 0)
                                 Utils.runConsoleCommand(spawnerCommand.replace("%player%", p.getName()).replace("%type%", "GLOW_SQUID"));
                         }
                     }

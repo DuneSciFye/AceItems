@@ -2,7 +2,8 @@ name: AceItems
 version: '1.0.0'
 main: me.dunescifye.aceitems.AceItems
 api-version: '1.20'
-depend: [CommandAPI]
+depend: [CommandAPI, NBTAPI]
 softdepend:
   - PlaceholderAPI
   - LibsDisguises
+  - LuckPerms

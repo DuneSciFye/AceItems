@@ -1,18 +1,22 @@
 package me.dunescifye.aceitems.listeners;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.dunescifye.aceitems.AceItems;
+import me.dunescifye.aceitems.files.Config;
 import me.dunescifye.aceitems.files.JulyItemsConfig;
 import me.dunescifye.aceitems.utils.CooldownManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.World;
+import me.dunescifye.aceitems.utils.Utils;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -85,21 +89,6 @@ public class EntityDamageByEntityListener implements Listener {
                         e.setDamage(e.getDamage() * JulyItemsConfig.July24ArmorExtraDamagePercent);
                     }
                 }
-                //Offhand items
-                ItemStack offHandItem = p.getInventory().getItemInOffHand();
-                if (offHandItem.hasItemMeta()){
-                    ItemMeta offHandItemMeta = offHandItem.getItemMeta();
-                    PersistentDataContainer container =  offHandItemMeta.getPersistentDataContainer();
-                    String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
-                    if (itemID != null) {
-                        //June 24 Shield Damage boost
-                        if (itemID.equals("June24Shield")){
-                            if (!AceItems.disabledWorlds.get("June24Shield").contains(p.getWorld().getName()))
-                                e.setDamage(e.getDamage() * 1.3);
-                        }
-
-                    }
-                }
                 //Mainhand items
                 ItemStack item = p.getInventory().getItemInMainHand();
                 if (item.hasItemMeta()){
@@ -140,7 +129,35 @@ public class EntityDamageByEntityListener implements Listener {
                                 if (livingEntity instanceof Player target) {
                                 }
                             }
+                            case "July24MoreOPSword" -> {
+                                if (e.isCritical()) {
+                                    Location loc = p.getLocation();
+                                    Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+                                    FireworkMeta fwm = fw.getFireworkMeta();
+
+                                    fwm.addEffect(FireworkEffect.builder().withColor(Color.fromRGB(ThreadLocalRandom.current().nextInt(0, 256), ThreadLocalRandom.current().nextInt(0, 256), ThreadLocalRandom.current().nextInt(0, 256))).build());
+
+                                    fw.setFireworkMeta(fwm);
+                                    fw.setMetadata("nodamage", new FixedMetadataValue(AceItems.getInstance(), true));
+                                    fw.detonate();
+                                }
+                            }
                         }
+                    }
+                }
+                //Offhand items
+                ItemStack offHandItem = p.getInventory().getItemInOffHand();
+                if (offHandItem.hasItemMeta()){
+                    ItemMeta offHandItemMeta = offHandItem.getItemMeta();
+                    PersistentDataContainer container =  offHandItemMeta.getPersistentDataContainer();
+                    String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
+                    if (itemID != null) {
+                        //June 24 Shield Damage boost
+                        if (itemID.equals("June24Shield")){
+                            if (!AceItems.disabledWorlds.get("June24Shield").contains(p.getWorld().getName()))
+                                e.setDamage(e.getDamage() * 1.3);
+                        }
+
                     }
                 }
 
@@ -195,6 +212,10 @@ public class EntityDamageByEntityListener implements Listener {
                     }
                 }
             }
+        }
+        //Prevent custom firework damage
+        else if (e.getDamager() instanceof Firework fw) {
+            if (fw.hasMetadata("nodamage")) e.setCancelled(true);
         }
         //Player was damaged
         if (e.getEntity() instanceof Player p && e.getDamager() instanceof Player attacker) {

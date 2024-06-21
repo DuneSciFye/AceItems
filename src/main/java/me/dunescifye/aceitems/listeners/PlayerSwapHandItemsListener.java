@@ -117,6 +117,26 @@ public class PlayerSwapHandItemsListener implements Listener {
                         if (!AceItems.disabledWorlds.get("UltraJuly24JobsLantern").contains(p.getWorld().getName()))
                             Utils.addPermission(p.getUniqueId(), JulyItemsConfig.UltraJuly24JobsLanternIncomeBoostPerm);
                     }
+                    case "July24PocketBeacon" -> {
+                        if (!JulyItemsConfig.July24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0));
+                        }
+                    }
+                    case "UltraJuly24PocketBeacon" -> {
+                        if (!JulyItemsConfig.UltraJuly24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 1));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 1));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, Integer.MAX_VALUE, 1));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 1));
+                        }
+                    }
                 }
             }
         }
@@ -143,6 +163,26 @@ public class PlayerSwapHandItemsListener implements Listener {
                     case "UltraJuly24JobsLantern" -> {
                         if (!AceItems.disabledWorlds.get("UltraJuly24JobsLantern").contains(p.getWorld().getName()))
                             Utils.removePermission(p.getUniqueId(), JulyItemsConfig.UltraJuly24JobsLanternIncomeBoostPerm);
+                    }
+                    case "July24PocketBeacon" -> {
+                        if (!JulyItemsConfig.July24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
+                            p.removePotionEffect(PotionEffectType.SPEED);
+                            p.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                            p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                            p.removePotionEffect(PotionEffectType.JUMP);
+                            p.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+                            p.removePotionEffect(PotionEffectType.REGENERATION);
+                        }
+                    }
+                    case "UltraJuly24PocketBeacon" -> {
+                        if (!JulyItemsConfig.UltraJuly24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
+                            p.removePotionEffect(PotionEffectType.SPEED);
+                            p.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                            p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                            p.removePotionEffect(PotionEffectType.JUMP);
+                            p.removePotionEffect(PotionEffectType.INCREASE_DAMAGE);
+                            p.removePotionEffect(PotionEffectType.REGENERATION);
+                        }
                     }
                 }
             }

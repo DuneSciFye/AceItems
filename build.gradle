@@ -28,6 +28,7 @@ repositories {
         url = 'https://repo.md-5.net/content/groups/public/'
     }
     maven { url = 'https://jitpack.io' }
+
 }
 dependencies {
     implementation "net.kyori:adventure-api:4.17.0"
@@ -38,6 +39,7 @@ dependencies {
     compileOnly 'LibsDisguises:LibsDisguises:10.0.44'
     implementation 'com.github.GriefPrevention:GriefPrevention:16.18.3'
     compileOnly 'net.luckperms:api:5.4'
+    compileOnly("de.tr7zw:item-nbt-api-plugin:2.13.1")
 }
 def targetJavaVersion = 17
 java {

@@ -389,4 +389,13 @@ public class BlockUtils {
         }
         return mergedStacksMap.values();
     }
+    public static String changeColor(String input, String newColor) {
+        String regexColor = "(?i)\\b(WHITE|LIGHT_GRAY|GRAY|BLACK|BROWN|RED|ORANGE|YELLOW|LIME|GREEN|CYAN|LIGHT_BLUE|BLUE|PURPLE|MAGENTA|PINK)(_(\\w+))";
+        if (input.matches(regexColor)){
+            return input.replaceAll(regexColor, newColor + "$2");
+        } else {
+            if (input.equalsIgnoreCase("GLASS")) input = "STAINED_" + input;
+            return newColor + "_" + input;
+        }
+    }
 }

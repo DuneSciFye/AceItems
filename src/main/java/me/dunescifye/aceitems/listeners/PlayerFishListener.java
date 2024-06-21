@@ -1,6 +1,8 @@
 package me.dunescifye.aceitems.listeners;
 
 import me.dunescifye.aceitems.AceItems;
+import me.dunescifye.aceitems.files.JulyItemsConfig;
+import me.dunescifye.aceitems.utils.CooldownManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -11,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.time.Duration;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static me.dunescifye.aceitems.files.JuneItemsConfig.*;
@@ -28,22 +31,39 @@ public class PlayerFishListener implements Listener {
     public void onPlayerFish(PlayerFishEvent e) {
         PlayerFishEvent.State state = e.getState();
         Player p = e.getPlayer();
-        if (state == PlayerFishEvent.State.CAUGHT_FISH){
-            ItemStack item = p.getInventory().getItemInMainHand();
-            if (item.hasItemMeta()){
-                PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-                if (container.has(AceItems.keyItemID, PersistentDataType.STRING)){
-                    String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
-                    assert itemID != null;
-                    if (itemID.equals("June24FishingRod")){
-                        if (!AceItems.disabledWorlds.get("June24FishingRod").contains(p.getWorld().getName())) {
+        ItemStack item = p.getInventory().getItemInMainHand();
+
+        if (!item.hasItemMeta()) return;
+
+        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+        String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
+        if (itemID == null) return;
+
+
+        switch (state) {
+            case CAUGHT_FISH -> {
+                switch (itemID) {
+                    case "June24FishingRod" -> {
+                        if (!AceItems.disabledWorlds.get("June24FishingRod").contains(p.getWorld().getName()))
                             June24FishingRod(p, June24FishingRodSeaLanternChance, June24FishingRodFishSpawnEggChance, June24FishingRodFroglightChance);
-                        }
-                    } else if (itemID.equals("UltraJune24FishingRod")) {
+                    }
+                    case "UltraJune24FishingRod" -> {
                         if (!AceItems.disabledWorlds.get("UltraJune24FishingRod").contains(p.getWorld().getName())) {
                             June24FishingRod(p, UltraJune24FishingRodSeaLanternChance, UltraJune24FishingRodFishSpawnEggChance, UltraJune24FishingRodFroglightChance);
                             if (ThreadLocalRandom.current().nextInt(UltraJune24FishingRodGuardianSpawnEggChance) == 0)
                                 p.getWorld().dropItemNaturally(p.getLocation(), new ItemStack(Material.GUARDIAN_SPAWN_EGG));
+                        }
+                    }
+                }
+            }
+            case IN_GROUND -> {
+                switch (itemID) {
+                    case "July24GrapplingHook" -> {
+                        if (CooldownManager.hasCooldown(CooldownManager.July24GrapplingHookSelfLaunchCooldowns, p.getUniqueId())) {
+                            CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.July24GrapplingHookSelfLaunchCooldowns, p.getUniqueId()));
+                        } else {
+                            p.setVelocity(e.getHook().getLocation().toVector().subtract(p.getLocation().toVector()).normalize().multiply(JulyItemsConfig.July24GrapplingHookSelfLaunchStrength));
+                            CooldownManager.setCooldown(CooldownManager.July24GrapplingHookSelfLaunchCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.July24GrapplingHookSelfLaunchCooldown));
                         }
                     }
                 }

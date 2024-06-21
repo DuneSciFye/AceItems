@@ -1,8 +1,12 @@
 package me.dunescifye.aceitems.listeners;
 
+import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.NBTEntity;
 import me.dunescifye.aceitems.AceItems;
 import me.dunescifye.aceitems.files.JulyItemsConfig;
 import me.dunescifye.aceitems.utils.CooldownManager;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
@@ -16,8 +20,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 
 import java.time.Duration;
+import java.util.Objects;
 
 public class PlayerInteractEntityListener implements Listener {
 
@@ -71,7 +77,32 @@ public class PlayerInteractEntityListener implements Listener {
             }
             //July 24 Saddle right click any mob to ride them
             case "July24Saddle" -> {
-                entity.addPassenger(p);
+                if (!(entity instanceof Player)) {
+                    entity.addPassenger(p);
+                }
+            }
+            case "July24GrapplingHook" -> {
+                if (entity instanceof Player target) {
+                    if (CooldownManager.hasCooldown(CooldownManager.July24GrapplingHookTargetLaunchCooldowns, p.getUniqueId())) {
+                        CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.July24GrapplingHookTargetLaunchCooldowns, p.getUniqueId()));
+                    } else {
+                        target.setVelocity(new Vector(0, JulyItemsConfig.July24GrapplingHookTargetLaunchStrength, 0));
+                        CooldownManager.setCooldown(CooldownManager.July24GrapplingHookTargetLaunchCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.July24GrapplingHookTargetLaunchCooldown));
+                    }
+                }
+            }
+            case "July24AIDisabler" -> {
+                if (Objects.equals(container.get(AceItems.keyState, PersistentDataType.STRING), "enable")) {
+                    NBT.modify(entity, nbt -> {
+                        nbt.setBoolean("Bukkit.Aware", true);
+                        p.sendMessage(Component.text("You have enabled this mob's AI.", NamedTextColor.GREEN));
+                    });
+                } else {
+                    NBT.modify(entity, nbt -> {
+                        nbt.setBoolean("Bukkit.Aware", false);
+                        p.sendMessage(Component.text("You have disabled this mob's AI.", NamedTextColor.GREEN));
+                    });
+                }
             }
         }
     }
