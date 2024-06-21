@@ -4,13 +4,9 @@ import me.dunescifye.aceitems.AceItems;
 import me.dunescifye.aceitems.utils.ConfigUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static me.dunescifye.aceitems.utils.Utils.*;
 
 public class JuneItemsConfig {
 

@@ -16,7 +16,7 @@ public class Config {
     public static String changeVariableMessage, cooldownMessageHours, cooldownMessageMinutes, cooldownMessageSeconds, confirmMessage,
         inClaimMessage, spawnerCommand, cannotUseHereMessage;
 
-    private static Set<Material> unobtainableBlocks = new HashSet<>(Arrays.asList(
+    private static final Set<Material> unobtainableBlocks = new HashSet<>(Arrays.asList(
         Material.BEDROCK,
         Material.END_PORTAL_FRAME,
         Material.END_PORTAL,
