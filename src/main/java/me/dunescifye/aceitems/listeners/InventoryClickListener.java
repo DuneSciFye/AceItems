@@ -3,7 +3,6 @@ package me.dunescifye.aceitems.listeners;
 import me.dunescifye.aceitems.AceItems;
 import me.dunescifye.aceitems.files.JulyItemsConfig;
 import me.dunescifye.aceitems.utils.Utils;
-import net.luckperms.api.model.user.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -30,8 +30,8 @@ public class InventoryClickListener implements Listener {
     public void onInventoryClick(InventoryClickEvent e) {
         ItemStack cursorItem = e.getCurrentItem();
         ItemStack slotItem = e.getCursor();
+        Player p = (Player) e.getWhoClicked();
         if (e.getSlotType() == InventoryType.SlotType.QUICKBAR && e.getSlot() == 40){
-            Player p = (Player) e.getWhoClicked();
 
             if (slotItem.hasItemMeta()) {
                 PersistentDataContainer container = slotItem.getItemMeta().getPersistentDataContainer();
@@ -113,16 +113,19 @@ public class InventoryClickListener implements Listener {
                                 p.addPotionEffect(new PotionEffect(PotionEffectType.WATER_BREATHING, -1, 0));
                             }
                         }
-                        case "July24JobsLantern" -> {
+                        case
+                            "July24JobsLantern" -> {
                             if (!AceItems.disabledWorlds.get("July24JobsLantern").contains(p.getWorld().getName()))
                                 Utils.addPermission(p.getUniqueId(), JulyItemsConfig.July24JobsLanternIncomeBoostPerm);
                         }
-                        case "UltraJuly24JobsLantern" -> {
+                        case
+                            "UltraJuly24JobsLantern" -> {
                             if (!AceItems.disabledWorlds.get("UltraJuly24JobsLantern").contains(p.getWorld().getName()))
                                 Utils.addPermission(p.getUniqueId(), JulyItemsConfig.UltraJuly24JobsLanternIncomeBoostPerm);
                         }
-                        case "July24PocketBeacon" -> {
-                            if (!JulyItemsConfig.July24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
+                        case
+                            "July24PocketBeacon" -> {
+                            if (JulyItemsConfig.July24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
                                 p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, -1, 0));
                                 p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 0));
                                 p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, 0));
@@ -131,8 +134,9 @@ public class InventoryClickListener implements Listener {
                                 p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, -1, 0));
                             }
                         }
-                        case "UltraJuly24PocketBeacon" -> {
-                            if (!JulyItemsConfig.UltraJuly24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
+                        case
+                            "UltraJuly24PocketBeacon" -> {
+                            if (JulyItemsConfig.UltraJuly24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
                                 p.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, -1, 1));
                                 p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 1));
                                 p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, -1, 1));
@@ -141,8 +145,10 @@ public class InventoryClickListener implements Listener {
                                 p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, -1, 1));
                             }
                         }
-                        case "July24MoreOPPickaxe" -> p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 0));
-                        case "UltraJuly24MoreOPPickaxe" -> p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 1));
+                        case "July24Fireball" -> {
+                            if (!AceItems.disabledWorlds.get("July24Fireball").contains(p.getWorld().getName()))
+                                p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, -1, 0));
+                        }
                     }
                 }
             }
@@ -183,11 +189,56 @@ public class InventoryClickListener implements Listener {
                                 p.removePotionEffect(PotionEffectType.REGENERATION);
                             }
                         }
-                        case "July24MoreOPPickaxe", "UltraJuly24MoreOPPickaxe" -> p.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                        case "July24Fireball" -> {
+                            if (!AceItems.disabledWorlds.get("July24Fireball").contains(p.getWorld().getName()))
+                                p.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
+                        }
                     }
                 }
             }
 
+        }
+        //Click is in selected slot
+        else if (p.getInventory().getHeldItemSlot() == e.getSlot()) {
+            //Item going out of slot
+            if (cursorItem != null && cursorItem.hasItemMeta()) {
+                ItemMeta meta = cursorItem.getItemMeta();
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+                String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
+                if (itemID != null) {
+                    switch (itemID) {
+                        case "July24MoreOPPickaxe", "UltraJuly24MoreOPPickaxe" -> {
+                            p.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
+                            p.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                        }
+                        case "July24SpeedVoucher" ->
+                            Utils.removePermission(p.getUniqueId(), JulyItemsConfig.July24SpeedVoucherPerm);
+                    }
+                }
+            }
+            //Item going into slot
+            if (slotItem.hasItemMeta()) {
+                ItemMeta meta = slotItem.getItemMeta();
+                PersistentDataContainer container = meta.getPersistentDataContainer();
+                String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
+                if (itemID != null) {
+                    switch (itemID) {
+                        case
+                            "July24MoreOPPickaxe" -> {
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 0));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, -1, 0));
+
+                        }
+                        case
+                            "UltraJuly24MoreOPPickaxe" -> {
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 1));
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, -1, 0));
+                        }
+                        case "July24SpeedVoucher" ->
+                            Utils.addPermission(p.getUniqueId(), JulyItemsConfig.July24SpeedVoucherPerm);
+                    }
+                }
+            }
         }
 
     }

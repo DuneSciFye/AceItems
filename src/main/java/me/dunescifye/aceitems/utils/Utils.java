@@ -8,12 +8,13 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.luckperms.api.node.Node;
 import org.bukkit.*;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
@@ -192,6 +193,22 @@ public class Utils {
         }
         return count;
     }
+    public static int itemCountStrictAndRemove(Player p, Material item, int max){
+        int count = 0;
+        PlayerInventory inv = p.getInventory();
+        for (ItemStack is : inv.all(item).values()){
+            if (is != null && is.getType() == item && !is.hasItemMeta()){
+                int amount = is.getAmount();
+                if (amount + count > max) {
+                    is.setAmount(max - count);
+                    return max;
+                }
+                is.setAmount(0);
+                count += is.getAmount();
+            }
+        }
+        return count;
+    }
 
     public static List<Component> updateLore(ItemStack item, String matcher, String replacement){
         List<Component> loreList = item.lore();
@@ -207,31 +224,31 @@ public class Utils {
         return loreList;
     }
     //Update lore and PDC for block type
-    public static void updateKeyState(Player p, ItemStack item, ItemMeta meta, PersistentDataContainer container, String variable, Object... matchers){
+    public static void updateKey(Player p, ItemStack item, ItemMeta meta, PersistentDataContainer container, NamespacedKey key, NamespacedKey keyLore, String variable, Object... matchers){
         //Add first two to the list again, allows for cycling back
         List<Object> newMatchers = new ArrayList<>(Arrays.asList(matchers));
         newMatchers.add(matchers[0]);
         newMatchers.add(matchers[1]);
         //Obtain current keys
-        String oldBlock = container.get(AceItems.keyState, PersistentDataType.STRING);
-        String oldBlockLore = container.get(AceItems.keyStateLore, PersistentDataType.STRING);
+        Object oldState = container.get(key, AceItems.dataType.get(key));
+        Object oldStateLore = container.get(keyLore, AceItems.dataType.get(keyLore));
         //Set new keys to first values in key's get messed up
-        String newBlock =  String.valueOf(matchers[0]);
-        String newBlockLore = String.valueOf(matchers[1]);
+        Object newState =  matchers[0];
+        Object newStateLore = matchers[1];
         //Match key to our list
         for (int i = 0; i < newMatchers.size(); i+=2) {
-            if (Objects.equals(oldBlock, newMatchers.get(i))) {
-                newBlock = String.valueOf(newMatchers.get(i + 2));
-                newBlockLore = String.valueOf(newMatchers.get(i + 3));
+            if (Objects.equals(oldState, newMatchers.get(i))) {
+                newState = newMatchers.get(i + 2);
+                newStateLore = newMatchers.get(i + 3);
                 break;
             }
         }
         //Send player message
-        sendPlayerChangeVariableMessage(p, changeVariableMessage, variable, newBlockLore);
+        sendPlayerChangeVariableMessage(p, changeVariableMessage, variable, String.valueOf(newStateLore));
         //Update PDC, lore, and Meta
-        container.set(AceItems.keyState, PersistentDataType.STRING, newBlock);
-        container.set(AceItems.keyStateLore, PersistentDataType.STRING, newBlockLore);
-        meta.lore(updateLore(item, oldBlockLore, newBlockLore));
+        container.set(key, AceItems.dataType.get(key), newState);
+        container.set(keyLore, AceItems.dataType.get(keyLore), newStateLore);
+        meta.lore(updateLore(item, String.valueOf(oldStateLore), String.valueOf(newStateLore)));
         item.setItemMeta(meta);
     }
     //Luckperms add permission node
@@ -251,4 +268,28 @@ public class Utils {
         });
     }
 
+
+    public static void spawnNoDamageFirework(Entity entity) {
+        Location loc = entity.getLocation();
+        Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+        FireworkMeta fwm = fw.getFireworkMeta();
+
+        fwm.addEffect(FireworkEffect.builder().withColor(Color.fromRGB(ThreadLocalRandom.current().nextInt(0, 256), ThreadLocalRandom.current().nextInt(0, 256), ThreadLocalRandom.current().nextInt(0, 256))).build());
+
+        fw.setFireworkMeta(fwm);
+        fw.setMetadata("nodamage", new FixedMetadataValue(AceItems.getInstance(), true));
+        fw.detonate();
+    }
+
+    public static void spawnNoDamageFirework(Entity entity, Color color) {
+        Location loc = entity.getLocation();
+        Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
+        FireworkMeta fwm = fw.getFireworkMeta();
+
+        fwm.addEffect(FireworkEffect.builder().withColor(color).build());
+
+        fw.setFireworkMeta(fwm);
+        fw.setMetadata("nodamage", new FixedMetadataValue(AceItems.getInstance(), true));
+        fw.detonate();
+    }
 }

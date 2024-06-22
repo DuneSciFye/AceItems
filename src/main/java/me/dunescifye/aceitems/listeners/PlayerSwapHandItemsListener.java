@@ -7,8 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -137,6 +139,16 @@ public class PlayerSwapHandItemsListener implements Listener {
                             p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 1));
                         }
                     }
+                    case "July24Fireball" -> {
+                        if (!AceItems.disabledWorlds.get("July24Fireball").contains(p.getWorld().getName()))
+                            p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, -1, 0));
+                    }
+                    case "July24MoreOPPickaxe", "UltraJuly24MoreOPPickaxe" -> {
+                        p.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                        p.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
+                    }
+                    case "July24SpeedVoucher" ->
+                        Utils.removePermission(p.getUniqueId(), JulyItemsConfig.July24SpeedVoucherPerm);
                 }
             }
         }
@@ -184,10 +196,28 @@ public class PlayerSwapHandItemsListener implements Listener {
                             p.removePotionEffect(PotionEffectType.REGENERATION);
                         }
                     }
+                    case
+                        "July24MoreOPPickaxe" -> {
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 0));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, -1, 0));
+
+                    }
+                    case
+                        "UltraJuly24MoreOPPickaxe" -> {
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, -1, 1));
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, -1, 0));
+                    }
+                    case "July24Fireball" -> {
+                        if (!AceItems.disabledWorlds.get("July24Fireball").contains(p.getWorld().getName()))
+                            p.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
+                    }
+                    case "July24SpeedVoucher" ->
+                        Utils.addPermission(p.getUniqueId(), JulyItemsConfig.July24SpeedVoucherPerm);
                 }
             }
         }
 
     }
+
 
 }

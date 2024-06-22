@@ -1,12 +1,9 @@
 package me.dunescifye.aceitems.listeners;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.dunescifye.aceitems.AceItems;
-import me.dunescifye.aceitems.files.Config;
 import me.dunescifye.aceitems.files.JulyItemsConfig;
 import me.dunescifye.aceitems.utils.CooldownManager;
 import me.dunescifye.aceitems.utils.Utils;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -14,9 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -32,7 +27,7 @@ import static me.dunescifye.aceitems.utils.Utils.*;
 
 public class EntityDamageByEntityListener implements Listener {
 
-    private static HashMap<UUID, Integer> June24BowHits = new HashMap<>();
+    private static final HashMap<UUID, Integer> June24BowHits = new HashMap<>();
 
     public void EntityDamageByEntityHandler(AceItems plugin){
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -41,10 +36,11 @@ public class EntityDamageByEntityListener implements Listener {
     @EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent e){
         if (e.isCancelled()) return;
+        Entity entity = e.getEntity();
 
         //Attacker is player
         if (e.getDamager() instanceof Player p) {
-            if (e.getEntity() instanceof LivingEntity livingEntity) {
+            if (entity instanceof LivingEntity livingEntity) {
                 ItemStack helmet = p.getInventory().getHelmet(),
                     chestplate = p.getInventory().getChestplate(),
                     leggings = p.getInventory().getLeggings(),
@@ -131,15 +127,7 @@ public class EntityDamageByEntityListener implements Listener {
                             }
                             case "July24MoreOPSword" -> {
                                 if (e.isCritical()) {
-                                    Location loc = p.getLocation();
-                                    Firework fw = (Firework) loc.getWorld().spawnEntity(loc, EntityType.FIREWORK);
-                                    FireworkMeta fwm = fw.getFireworkMeta();
-
-                                    fwm.addEffect(FireworkEffect.builder().withColor(Color.fromRGB(ThreadLocalRandom.current().nextInt(0, 256), ThreadLocalRandom.current().nextInt(0, 256), ThreadLocalRandom.current().nextInt(0, 256))).build());
-
-                                    fw.setFireworkMeta(fwm);
-                                    fw.setMetadata("nodamage", new FixedMetadataValue(AceItems.getInstance(), true));
-                                    fw.detonate();
+                                    Utils.spawnNoDamageFirework(p);
                                 }
                             }
                         }
@@ -152,12 +140,15 @@ public class EntityDamageByEntityListener implements Listener {
                     PersistentDataContainer container =  offHandItemMeta.getPersistentDataContainer();
                     String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
                     if (itemID != null) {
-                        //June 24 Shield Damage boost
-                        if (itemID.equals("June24Shield")){
-                            if (!AceItems.disabledWorlds.get("June24Shield").contains(p.getWorld().getName()))
-                                e.setDamage(e.getDamage() * 1.3);
+                        switch (itemID) {
+                            //June 24 Shield Damage boost
+                            case "June24Shield" -> {
+                                if (!AceItems.disabledWorlds.get("June24Shield").contains(p.getWorld().getName()))
+                                    e.setDamage(e.getDamage() * 1.3);
+                            }
+                            case "July24Shield" ->
+                                livingEntity.setFireTicks(ThreadLocalRandom.current().nextInt(20, 80));
                         }
-
                     }
                 }
 
@@ -177,37 +168,41 @@ public class EntityDamageByEntityListener implements Listener {
                 ItemStack bow = p.getInventory().getItemInMainHand();
                 if (bow.hasItemMeta()) {
                     PersistentDataContainer container = bow.getItemMeta().getPersistentDataContainer();
-                    if (container.has(AceItems.keyItemID, PersistentDataType.STRING)) {
-                        String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
-                        if (itemID.equals("June24Bow")) {
-                            if (!AceItems.disabledWorlds.get("June24Bow").contains(p.getWorld().getName())) {
-                                UUID shooterUUID = p.getUniqueId();
-                                int count = June24BowHits.getOrDefault(shooterUUID, 0) + 1;
-                                June24BowHits.put(shooterUUID, count);
-                                if (count > 5) {
-                                    if (e.getEntity() instanceof LivingEntity livingEntity) {
-                                        June24BowHits.remove(shooterUUID);
-                                        if (ThreadLocalRandom.current().nextInt(2) == 0) {
-                                            livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 600, 0));
+                    String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
+                    if (itemID != null) {
+                        switch (itemID) {
+                            case "June24Bow" -> {
+                                if (!AceItems.disabledWorlds.get("June24Bow").contains(p.getWorld().getName())) {
+                                    UUID shooterUUID = p.getUniqueId();
+                                    int count = June24BowHits.getOrDefault(shooterUUID, 0) + 1;
+                                    June24BowHits.put(shooterUUID, count);
+                                    if (count > 5) {
+                                        if (e.getEntity() instanceof LivingEntity livingEntity) {
+                                            June24BowHits.remove(shooterUUID);
+                                            if (ThreadLocalRandom.current().nextInt(2) == 0) {
+                                                livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 600, 0));
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        else if (itemID.equals("June24Crossbow")) {
-                            if (!AceItems.disabledWorlds.get("June24Crossbow").contains(p.getWorld().getName())) {
-                                UUID shooterUUID = p.getUniqueId();
-                                int count = June24BowHits.getOrDefault(shooterUUID, 0) + 1;
-                                June24BowHits.put(shooterUUID, count);
-                                if (count > 5) {
-                                    if (e.getEntity() instanceof LivingEntity livingEntity) {
-                                        June24BowHits.remove(shooterUUID);
-                                        if (ThreadLocalRandom.current().nextInt(2) == 0) {
-                                            livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 600, 0));
+                            case "June24Crossbow" -> {
+                                if (!AceItems.disabledWorlds.get("June24Crossbow").contains(p.getWorld().getName())) {
+                                    UUID shooterUUID = p.getUniqueId();
+                                    int count = June24BowHits.getOrDefault(shooterUUID, 0) + 1;
+                                    June24BowHits.put(shooterUUID, count);
+                                    if (count > 5) {
+                                        if (e.getEntity() instanceof LivingEntity livingEntity) {
+                                            June24BowHits.remove(shooterUUID);
+                                            if (ThreadLocalRandom.current().nextInt(2) == 0) {
+                                                livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 600, 0));
+                                            }
                                         }
                                     }
                                 }
                             }
+                            case "July24Bow" ->
+                                spawnNoDamageFirework(entity);
                         }
                     }
                 }

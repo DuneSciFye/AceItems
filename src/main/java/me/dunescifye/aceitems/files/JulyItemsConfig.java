@@ -12,7 +12,9 @@ public class JulyItemsConfig {
     public static ItemStack July24VillagerWand, July24Boots, July24Leggings, July24Chestplate, July24Helmet, July24JobsLantern,
         UltraJuly24JobsLantern, July24Saddle, July24SpawnerBundle, July24DirtWand, July24LessOPPickaxe, July24MelonWand,
         UltraJuly24MelonWand, July24PaintBrush, UltraJuly24PaintBrush, July24GrapplingHook, July24PocketBeacon, UltraJuly24PocketBeacon,
-        July24AIDisabler, UltraJuly24AIDisabler, July24MoreOPSword, July24LessOPSWord, July24MoreOPPickaxe, UltraJuly24MoreOPPickaxe;
+        July24AIDisabler, UltraJuly24AIDisabler, July24MoreOPSword, July24LessOPSWord, July24MoreOPPickaxe, UltraJuly24MoreOPPickaxe,
+        July24Shield, July24Hoe, UltraJuly24Hoe, July24Grill, UltraJuly24Grill, July24Fireball, July24FishingRod, July24Bow, July24XBow,
+        July24Elytra, July24BeachMaker, UltraJuly24BeachMaker, July24SpeedVoucher, July24SlimeWand;
     public static int July24VillagerWandUses, July24ArmorLaunchChance, July24ArmorLaunchStrength, July24ArmorJumpStrength,
         July24ArmorExtraDamageChance, July24SaddleLaunchCooldown, July24SaddleJumpBoostCooldown, July24LessOPPickaxeSquidSpawnerChance,
         July24LessOPPickaxeGlowSquidSpawnerChance, July24LessOPPickaxeExplosionRadius, July24LessOPPickaxeExplosionCooldown,
@@ -20,10 +22,14 @@ public class JulyItemsConfig {
         July24PaintBrushCooldown, July24PaintBrushUses, July24GrapplingHookSelfLaunchStrength, July24GrapplingHookSelfLaunchCooldown,
         July24GrapplingHookTargetLaunchStrength, July24GrapplingHookTargetLaunchCooldown, July24AIDisablerUses, July24MoreOPSwordSlayerPointsCommandChance,
         July24MoreOPSwordKillAnnouncementChance, July24MoreOPSwordBlazeSpawnerChance, July24MoreOPSwordMagmaCubeSpawnerChance,
-        July24LessOPSWordPlayerRandomPotionChance, July24LessOPSWordEntityRandomPotionChance;
+        July24LessOPSWordPlayerRandomPotionChance, July24LessOPSWordEntityRandomPotionChance, July24HoeNoSeedReplantChance, July24HoeBlazeSpawnEggChance,
+        UltraJuly24HoeNoSeedReplantChance, UltraJuly24HoeBlazeSpawnEggChance, UltraJuly24HoeGuardianSpawnEggChance, July24FishingRodFishKeyChance,
+        July24FishingRodSalmonSpawnEggChance, July24FishingRodAxolotlSpawnEggChance, July24FishingRodTurtleSpawnEggChance, July24FishingRodSquidSpawnEggChance,
+        July24BeachMakerCooldown, July24SlimeWandDefaultUses;
     public static double July24ArmorExtraDamagePercent, July24ArmorFireDamageReductionPercent, July24SaddleLaunchStrength;
     public static String July24JobsLanternIncomeBoostPerm, UltraJuly24JobsLanternIncomeBoostPerm, July24MoreOPSwordSlayerPointsCommand,
-        July24MoreOPSwordKillAnnouncement;
+        July24MoreOPSwordKillAnnouncement, July24FishingRodFishKeyCommand, July24SpeedVoucherPerm, July24SlimeWandMissingSlimeBallsMessage,
+        July24SlimeWandAddedSlimeBallsMessage, July24SlimeWandOutOfUsesMessage;
     public static List<String> July24SpawnerBundleMobTypes, July24LessOPPickaxeExplosionAllowedWorlds, July24PocketBeaconWhitelistedWorlds,
         UltraJuly24PocketBeaconWhitelistedWorlds;
 
@@ -119,6 +125,51 @@ public class JulyItemsConfig {
 
         July24MoreOPPickaxe = ConfigUtils.initializeItem("July24MoreOPPickaxe", config, AceItems.keyRadius, AceItems.keyRadiusLore);
         UltraJuly24MoreOPPickaxe = ConfigUtils.initializeItem("UltraJuly24MoreOPPickaxe", config, AceItems.keyRadius, AceItems.keyRadiusLore);
+
+        July24Shield = ConfigUtils.initializeItem("July24Shield", config);
+
+        July24Hoe = ConfigUtils.initializeItem("July24Hoe", config, AceItems.keyRadius, AceItems.keyRadiusLore);
+        UltraJuly24Hoe = ConfigUtils.initializeItem("UltraJuly24Hoe", config, AceItems.keyRadius, AceItems.keyRadiusLore);
+        July24HoeNoSeedReplantChance = ConfigUtils.setupConfig("July24Hoe.NoSeedReplantChance", config, 6, 1, List.of("Chance for replant without seeds."));
+        July24HoeBlazeSpawnEggChance = ConfigUtils.setupConfig("July24Hoe.BlazeSpawnEggChance", config, 1000, 1, List.of("Chance for blaze spawn egg to be given."));
+        UltraJuly24HoeNoSeedReplantChance = ConfigUtils.setupConfig("UltraJuly24Hoe.NoSeedReplantChance", config, 3, 1, List.of("Chance for replant without seeds."));
+        UltraJuly24HoeBlazeSpawnEggChance = ConfigUtils.setupConfig("UltraJuly24Hoe.BlazeSpawnEggChance", config, 800, 1, List.of("Chance for blaze spawn egg to be given."));
+        UltraJuly24HoeGuardianSpawnEggChance = ConfigUtils.setupConfig("UltraJuly24Hoe.GuardianSpawnEggChance", config, 1000, 1, List.of("Chance for guardian spawn egg to be given."));
+
+        July24Grill = ConfigUtils.initializeItem("July24Grill", config);
+        UltraJuly24Grill = ConfigUtils.initializeItem("UltraJuly24Grill", config);
+
+        July24Fireball = ConfigUtils.initializeItem("July24Fireball", config);
+
+        July24FishingRod = ConfigUtils.initializeItem("July24FishingRod", config);
+        July24FishingRodFishKeyChance = ConfigUtils.setupConfig("July24FishingRod.FishKeyChance", config, 100, 1, List.of("Chance for fish key to be fished up"));
+        July24FishingRodFishKeyCommand = ConfigUtils.setupConfig("July24FishingRod.FishKeyCommand", config, "crates key give %player% Fish 1", List.of("Command to be ran for Fish key. %player% for player name"));
+        July24FishingRodSalmonSpawnEggChance = ConfigUtils.setupConfig("July24FishingRod.SalmonSpawnEggChance", config, 50, 1, List.of("Chance for salmon spawn egg to be fished up"));
+        July24FishingRodAxolotlSpawnEggChance = ConfigUtils.setupConfig("July24FishingRod.AxolotlSpawnEggChance", config, 50, 1, List.of("Chance for axolotl spawn egg to be fished up"));
+        July24FishingRodTurtleSpawnEggChance = ConfigUtils.setupConfig("July24FishingRod.TurtleSpawnEggChance", config, 50, 1, List.of("Chance for turtle spawn egg to be fished up"));
+        July24FishingRodSquidSpawnEggChance = ConfigUtils.setupConfig("July24FishingRod.SquidSpawnEggChance", config, 50, 1, List.of("Chance for squid spawn egg to be fished up"));
+
+        July24Bow = ConfigUtils.initializeItem("July24Bow", config);
+        July24XBow = ConfigUtils.initializeItem("July24XBow", config);
+
+        AceItems.defaultValue.put(AceItems.keyState, "16733525");
+        AceItems.defaultValue.put(AceItems.keyStateLore, "Red");
+        July24Elytra = ConfigUtils.initializeItem("July24Elytra", config, AceItems.keyState, AceItems.keyStateLore);
+
+        July24BeachMaker = ConfigUtils.initializeItem("July24BeachMaker", config);
+        UltraJuly24BeachMaker = ConfigUtils.initializeItem("UltraJuly24BeachMaker", config);
+        July24BeachMakerCooldown = ConfigUtils.setupConfig("July24BeachMaker.Cooldown", config, 30, 0, List.of("Cooldown for ability in seconds."));
+
+        July24SpeedVoucher = ConfigUtils.initializeItem("July24SpeedVoucher", config);
+        July24SpeedVoucherPerm = ConfigUtils.setupConfig("July24SpeedVoucher.Perm", config, "essentials.flyspeed.4", List.of("Permission node to be given when held"));
+
+        July24SlimeWandDefaultUses = ConfigUtils.setupConfig("July24SlimeWand.DefaultUses", config, 64, 0, List.of("Default number of uses this item has when obtaining it."));
+        AceItems.defaultValue.put(AceItems.keyUses, July24SlimeWandDefaultUses);
+        July24SlimeWand = ConfigUtils.initializeItem("July24SlimeWand", config, AceItems.keyUses);
+        config.setComments("July24SlimeWand", List.of("Use the default uses number in your lore (default 64) and it will auto update."));
+        July24SlimeWandMissingSlimeBallsMessage = ConfigUtils.setupConfig("July24SlimeWand.MissingSlimeBallsMessage", config, "&cYou don't have any slime balls to reload!", List.of("Error message for when player tries reloading item but doesn't have any slime balls."));
+        July24SlimeWandAddedSlimeBallsMessage = ConfigUtils.setupConfig("July24SlimeWand.AddedSlimeBallsMessage", config, "&aSuccessfully added %amount% slime balls!", List.of("Success message for when player reloads with slime balls. %amount% for amount."));
+        July24SlimeWandOutOfUsesMessage = ConfigUtils.setupConfig("July24SlimeWand.OutOfUsesMessage", config, "&cNot enough uses! Reload this item with slime balls!", List.of("Error message for when player tries to activate ability but out of uses."));
 
         julyitems.save();
 

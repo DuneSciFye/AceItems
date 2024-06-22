@@ -1,12 +1,16 @@
 package me.dunescifye.aceitems.listeners;
 
+import com.jeff_media.customblockdata.CustomBlockData;
 import me.dunescifye.aceitems.AceItems;
 import me.dunescifye.aceitems.files.JulyItemsConfig;
+import me.dunescifye.aceitems.utils.BlockUtils;
 import me.dunescifye.aceitems.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,6 +25,8 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
@@ -50,6 +56,22 @@ public class PlayerBlockBreakListener implements Listener {
         Player p = e.getPlayer();
         ItemStack item = p.getInventory().getItemInMainHand();
         Block b = e.getBlock();
+
+        PersistentDataContainer blockContainer = new CustomBlockData(b, AceItems.getInstance());
+        String blockID = blockContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
+        if (blockID != null) {
+            switch (blockID) {
+                case "July24Grill" -> {
+                    e.setDropItems(false);
+                    b.getWorld().dropItemNaturally(b.getLocation(), JulyItemsConfig.July24Grill);
+                }
+                case "UltraJuly24Grill" -> {
+                    e.setDropItems(false);
+                    b.getWorld().dropItemNaturally(b.getLocation(), JulyItemsConfig.UltraJuly24Grill);
+                }
+            }
+        }
+
         if (item.hasItemMeta()){
             PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
             String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
@@ -179,6 +201,105 @@ public class PlayerBlockBreakListener implements Listener {
                                 Utils.runConsoleCommand(spawnerCommand.replace("%player%", p.getName()).replace("%type%", "SQUID"));
                             if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24LessOPPickaxeGlowSquidSpawnerChance) == 0)
                                 Utils.runConsoleCommand(spawnerCommand.replace("%player%", p.getName()).replace("%type%", "GLOW_SQUID"));
+                        }
+                    }
+                    case "July24MoreOPPickaxe", "UltraJuly24MoreOPPickaxe" -> {
+                        if (!AceItems.disabledWorlds.get("July24MoreOPPickaxe").contains(p.getWorld().getName())) {
+                            int radius = container.get(AceItems.keyRadius, PersistentDataType.INTEGER);
+                            Collection<ItemStack> drops = new ArrayList<>();
+
+                            for (int x = -radius; x <= radius; x++) {
+                                for (int y = -radius; y <= radius; y++) {
+                                    for (int z = -radius; z <= radius; z++) {
+                                        Block block = b.getRelative(x, y, z);
+                                        for (Predicate<Block> whitelisted : pickaxeWhitelist) {
+                                            if (whitelisted.test(b)) {
+                                                for (Predicate<Block> blacklisted : pickaxeBlacklist) {
+                                                    if (!blacklisted.test(block)) {
+                                                        drops.addAll(b.getDrops(item));
+                                                        if (p.getWorld().getEnvironment() == World.Environment.NETHER &&  BlockUtils.isNaturallyGenerated(block))
+                                                            drops.addAll(b.getDrops(item));
+                                                        block.setType(Material.AIR);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (ItemStack drop : mergeSimilarItemStacks(drops)){
+                                b.getWorld().dropItemNaturally(b.getLocation(), drop);
+                            }
+                        }
+                    }
+                    case "July24Hoe" -> {
+                        Material material = b.getType();
+                        int radius = container.get(AceItems.keyRadius, PersistentDataType.INTEGER);
+                        Collection<ItemStack> drops = new ArrayList<>();
+
+                        if (b.getBlockData() instanceof Ageable ageable && ageable.getAge() == ageable.getMaximumAge()) {
+                            Bukkit.getScheduler().runTask(AceItems.getInstance(), () -> b.setType(material));
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24HoeBlazeSpawnEggChance) == 0) {
+                                drops.add(new ItemStack(Material.BLAZE_SPAWN_EGG));
+                            }
+                        }
+                        else e.setCancelled(true);
+
+                        for (int x = -radius; x <= radius; x++){
+                            for (int z = -radius; z <= radius; z++){
+                                Block block = b.getRelative(x, 0, z);
+                                BlockData blockData = block.getBlockData();
+                                if (blockData instanceof Ageable ageable && ageable.getAge() == ageable.getMaximumAge()) {
+                                    Collection<ItemStack> blockDrops = block.getDrops(item);
+                                    for (ItemStack drop : blockDrops) {
+                                        if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24HoeNoSeedReplantChance) != 1 && drop.getType().equals(blockData.getPlacementMaterial()))
+                                            drop.setAmount(drop.getAmount() - 1);
+                                    }
+                                    drops.addAll(blockDrops);
+                                    ageable.setAge(0);
+                                    block.setBlockData(ageable);
+                                }
+                            }
+                        }
+
+                        for (ItemStack drop : mergeSimilarItemStacks(drops)){
+                            p.getWorld().dropItemNaturally(b.getLocation(), drop);
+                        }
+                    }
+                    case "UltraJuly24Hoe" -> {
+                        Material material = b.getType();
+                        int radius = container.get(AceItems.keyRadius, PersistentDataType.INTEGER);
+                        Collection<ItemStack> drops = new ArrayList<>();
+
+                        if (b.getBlockData() instanceof Ageable ageable && ageable.getAge() == ageable.getMaximumAge()) {
+                            Bukkit.getScheduler().runTask(AceItems.getInstance(), () -> b.setType(material));
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.UltraJuly24HoeBlazeSpawnEggChance) == 0)
+                                drops.add(new ItemStack(Material.BLAZE_SPAWN_EGG));
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.UltraJuly24HoeGuardianSpawnEggChance) == 0)
+                                drops.add(new ItemStack(Material.GUARDIAN_SPAWN_EGG));
+                        }
+                        else e.setCancelled(true);
+
+                        for (int x = -radius; x <= radius; x++){
+                            for (int z = -radius; z <= radius; z++){
+                                Block block = b.getRelative(x, 0, z);
+                                BlockData blockData = block.getBlockData();
+                                if (blockData instanceof Ageable ageable && ageable.getAge() == ageable.getMaximumAge()) {
+                                    Collection<ItemStack> blockDrops = block.getDrops(item);
+                                    for (ItemStack drop : blockDrops) {
+                                        if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.UltraJuly24HoeNoSeedReplantChance) != 1 && drop.getType().equals(blockData.getPlacementMaterial()))
+                                            drop.setAmount(drop.getAmount() - 1);
+                                    }
+                                    drops.addAll(blockDrops);
+                                    ageable.setAge(0);
+                                    block.setBlockData(ageable);
+                                }
+                            }
+                        }
+
+                        for (ItemStack drop : mergeSimilarItemStacks(drops)){
+                            p.getWorld().dropItemNaturally(b.getLocation(), drop);
                         }
                     }
                 }

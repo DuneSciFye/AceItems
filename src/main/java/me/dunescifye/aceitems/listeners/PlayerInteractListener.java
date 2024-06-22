@@ -17,6 +17,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -78,7 +79,7 @@ public class PlayerInteractListener implements Listener {
         //Right or left click, sneaking
         if (p.isSneaking()) {
             switch (itemID) {
-                case "July24PaintBrush", "UltraJuly24PaintBrush" -> Utils.updateKeyState(p, item, meta, container, "Color", "WHITE", "White", "LIGHT_GRAY", "Light Gray", "GRAY", "Gray", "BLACK", "Black", "BROWN", "Brown", "RED", "Red", "ORANGE", "Orange", "YELLOW", "Yellow", "LIME", "Lime", "GREEN", "Green", "CYAN", "Cyan", "LIGHT_BLUE", "Light Blue", "BLUE", "Blue", "MAGENTA", "Magenta", "PURPLE", "Purple", "PINK", "Pink");
+                case "July24PaintBrush", "UltraJuly24PaintBrush" -> Utils.updateKey(p, item, meta, container, AceItems.keyState, AceItems.keyStateLore, "Color", "WHITE", "White", "LIGHT_GRAY", "Light Gray", "GRAY", "Gray", "BLACK", "Black", "BROWN", "Brown", "RED", "Red", "ORANGE", "Orange", "YELLOW", "Yellow", "LIME", "Lime", "GREEN", "Green", "CYAN", "Cyan", "LIGHT_BLUE", "Light Blue", "BLUE", "Blue", "MAGENTA", "Magenta", "PURPLE", "Purple", "PINK", "Pink");
             }
         }
         //Right or left click, not sneaking
@@ -429,7 +430,8 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                 }
-                case "July24Saddle" -> {
+                case
+                    "July24Saddle" -> {
                     if (p.isSneaking()) {
                         if (CooldownManager.hasCooldown(July24SaddleLaunchCooldowns, p.getUniqueId())) {
                             CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(July24SaddleLaunchCooldowns, p.getUniqueId()));
@@ -439,7 +441,8 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                 }
-                case "July24SpawnerBundle" -> {
+                case
+                    "July24SpawnerBundle" -> {
                     if (container.has(AceItems.keyUses, PersistentDataType.INTEGER)) {
                         Utils.runConsoleCommand(spawnerCommand.replace("%player%", p.getName()).replace("%type%", randomObject(JulyItemsConfig.July24SpawnerBundleMobTypes).toString()));
                         int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
@@ -451,12 +454,14 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                 }
-                case "July24DirtWand" -> {
+                case
+                    "July24DirtWand" -> {
                     if (p.isSneaking()) {
-                        Utils.updateKeyState(p, item, meta, container, "Dirt Type", "PODZOL", "Podzol", "DIRT", "Dirt", "COARSE_DIRT", "Coarse Dirt", "FARMLAND", "Farmland", "DIRT_PATH", "Dirt Path", "GRASS_BLOCK", "Grass Block");
+                        Utils.updateKey(p, item, meta, container, AceItems.keyState, AceItems.keyStateLore, "Dirt Type", "PODZOL", "Podzol", "DIRT", "Dirt", "COARSE_DIRT", "Coarse Dirt", "FARMLAND", "Farmland", "DIRT_PATH", "Dirt Path", "GRASS_BLOCK", "Grass Block");
                     }
                 }
-                case "July24MelonWand" -> {
+                case
+                    "July24MelonWand" -> {
                     if (p.isSneaking()) {
                         if (CooldownManager.hasCooldown(July24MelonWandCooldowns, p.getUniqueId())) {
                             CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(July24MelonWandCooldowns, p.getUniqueId()));
@@ -466,7 +471,8 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                 }
-                case "UltraJuly24MelonWand" -> {
+                case
+                    "UltraJuly24MelonWand" -> {
                     if (p.isSneaking()) {
                         if (CooldownManager.hasCooldown(UltraJuly24MelonWandCooldowns, p.getUniqueId())) {
                             CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(UltraJuly24MelonWandCooldowns, p.getUniqueId()));
@@ -476,11 +482,92 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                 }
+                case
+                    "July24MoreOPPickaxe" ->
+                    Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Mining Mode", 0, "1x1", 1, "3x3");
+                case
+                    "UltraJuly24MoreOPPickaxe" ->
+                    Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Mining Mode", 0, "1x1", 1, "3x3", 2, "5x5");
+                case
+                    "July24Hoe" ->
+                    Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Farming Mode", 0, "1x1", 1, "3x3");
+                case
+                    "UltraJuly24Hoe" ->
+                    Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Farming Mode", 0, "1x1", 1, "3x3", 2, "5x5");
+                case
+                    "July24BeachMaker" -> {
+                    if (p.isSneaking() && !AceItems.disabledWorlds.get("July24BeachMaker").contains(p.getWorld().getName())) {
+                        if (CooldownManager.hasCooldown(July24BeachMakerCooldowns, p.getUniqueId())) {
+                            CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(July24BeachMakerCooldowns, p.getUniqueId()));
+                        } else {
+                            CooldownManager.setCooldown(July24BeachMakerCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.July24BeachMakerCooldown));
+                            July24BeachMaker(p, 5);
+                        }
+                    }
+                }
+                case "UltraJuly24BeachMaker" -> {
+                    if (p.isSneaking() && !AceItems.disabledWorlds.get("July24BeachMaker").contains(p.getWorld().getName())) {
+                        July24BeachMaker(p, 10);
+                    }
+                }
+                case "July24SlimeWand" -> {
+                    if (p.isSneaking()) {
+                        int currentUses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
+                        if (currentUses < 64) {
+                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(JulyItemsConfig.July24SlimeWandOutOfUsesMessage));
+                        } else {
+                            container.set(AceItems.keyUses, PersistentDataType.INTEGER, currentUses - 64);
+                            meta.lore(updateLore(item, String.valueOf(currentUses), String.valueOf(currentUses - 64)));
+                            item.setItemMeta(meta);
+                            List<Slime> slimes = new ArrayList<>();
+                            //Spawn slimes
+                            for (int i = 0; i < 5; i++) {
+                                slimes.add(p.getWorld().spawn(p.getLocation(), Slime.class));
+                            }
+                            Bukkit.getScheduler().runTaskLater(AceItems.getInstance(), () -> {
+                                for (Slime slime : slimes) {
+                                    slime.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, slime.getLocation(), 3);
+                                    for (Entity entity : slime.getNearbyEntities(3, 3, 3)) {
+                                        if (entity instanceof LivingEntity livingEntity && livingEntity != p) {
+                                            livingEntity.damage(10, p);
+                                        }
+                                    }
+                                    slime.remove();
+                                }
+                            }, 100L);
+                        }
+                    }
+                }
             }
         }
         //Left click
         else if (action.isLeftClick()){
             switch (itemID) {
+                case "July24SlimeWand" -> {
+                    int currentUses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
+                    if (p.isSneaking()) {
+                        int slimeBalls = Utils.itemCountStrictAndRemove(p, Material.SLIME_BALL, 64);
+                        if (slimeBalls > 0) {
+                            container.set(AceItems.keyUses, PersistentDataType.INTEGER, currentUses + slimeBalls);
+                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(JulyItemsConfig.July24SlimeWandAddedSlimeBallsMessage.replace("%amount%", String.valueOf(slimeBalls))));
+                            meta.lore(updateLore(item, String.valueOf(currentUses), String.valueOf(currentUses + slimeBalls)));
+                            item.setItemMeta(meta);
+                        }
+                        else {
+                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(JulyItemsConfig.July24SlimeWandMissingSlimeBallsMessage));
+                        }
+                    } else {
+                        if (currentUses < 1) {
+                            p.sendMessage(LegacyComponentSerializer.legacyAmpersand().deserialize(JulyItemsConfig.July24SlimeWandOutOfUsesMessage));
+                        } else {
+                            Snowball snowball = p.launchProjectile(Snowball.class);
+                            snowball.setItem(new ItemStack(Material.SLIME_BALL));
+                            container.set(AceItems.keyUses, PersistentDataType.INTEGER, currentUses - 1);
+                            meta.lore(updateLore(item, String.valueOf(currentUses), String.valueOf(currentUses - 1)));
+                            item.setItemMeta(meta);
+                        }
+                    }
+                }
                 case "July24JobsLantern", "UltraJuly24JobsLantern" -> {
                     String currentMode = container.get(AceItems.keyString, PersistentDataType.STRING);
                     if (currentMode != null) {
@@ -517,7 +604,12 @@ public class PlayerInteractListener implements Listener {
                 }
                 case "July24AIDisabler" -> {
                     if (p.isSneaking()) {
-                        Utils.updateKeyState(p, item, meta, container, "AI mode", "enable", "Enable", "disable", "Disable");
+                        Utils.updateKey(p, item, meta, container, AceItems.keyState, AceItems.keyStateLore, "AI mode", "enable", "Enable", "disable", "Disable");
+                    }
+                }
+                case "July24Elytra" -> {
+                    if (p.isSneaking()) {
+                        Utils.updateKey(p, item, meta, container, AceItems.keyState, AceItems.keyStateLore, "Firework Color", "16733525", "Red", "16777215", "White", "5592575", "Blue");
                     }
                 }
             }
@@ -716,6 +808,32 @@ public class PlayerInteractListener implements Listener {
                             }
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private void July24BeachMaker(Player p, int radius) {
+        Block center = p.getLocation().getBlock();
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                for (int y = radius; y >= -radius; y--) {
+                    Block relative = center.getRelative(x, y, z);
+                    Block blockAbove = relative.getRelative(0, 1, 0);
+                    if (relative.getType() != Material.AIR && blockAbove.getType() == Material.AIR) {
+                        blockAbove.setType(Material.SAND);
+                        break;
+                    }
+                }
+            }
+        }
+        for (int x = -radius; x <= radius; x++) {
+            for (int z = -radius; z <= radius; z++) {
+                for (int y = radius; y >= -radius; y--) {
+                    Block relative = center.getRelative(x, y, z);
+                    Material relativeType = relative.getType();
+                    if (relativeType == Material.STONE || relativeType == Material.DIRT || relativeType == Material.GRAVEL)
+                        relative.setType(ThreadLocalRandom.current().nextInt(2) == 0 ? Material.SAND : Material.SANDSTONE);
                 }
             }
         }

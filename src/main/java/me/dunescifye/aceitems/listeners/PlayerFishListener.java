@@ -3,6 +3,7 @@ package me.dunescifye.aceitems.listeners;
 import me.dunescifye.aceitems.AceItems;
 import me.dunescifye.aceitems.files.JulyItemsConfig;
 import me.dunescifye.aceitems.utils.CooldownManager;
+import me.dunescifye.aceitems.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -52,6 +53,20 @@ public class PlayerFishListener implements Listener {
                             June24FishingRod(p, UltraJune24FishingRodSeaLanternChance, UltraJune24FishingRodFishSpawnEggChance, UltraJune24FishingRodFroglightChance);
                             if (ThreadLocalRandom.current().nextInt(UltraJune24FishingRodGuardianSpawnEggChance) == 0)
                                 p.getWorld().dropItemNaturally(p.getLocation(), new ItemStack(Material.GUARDIAN_SPAWN_EGG));
+                        }
+                    }
+                    case "July24FishingRod" -> {
+                        if (!AceItems.disabledWorlds.get("July24FishingRod").contains(p.getWorld().getName())) {
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24FishingRodFishKeyChance) == 0)
+                                Utils.runConsoleCommand(JulyItemsConfig.July24FishingRodFishKeyCommand.replace("%player%", p.getName()));
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24FishingRodSalmonSpawnEggChance) == 0)
+                                Utils.dropItems(p.getLocation(), p.getUniqueId(), new ItemStack(Material.SALMON_SPAWN_EGG));
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24FishingRodAxolotlSpawnEggChance) == 0)
+                                Utils.dropItems(p.getLocation(), p.getUniqueId(), new ItemStack(Material.AXOLOTL_SPAWN_EGG));
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24FishingRodTurtleSpawnEggChance) == 0)
+                                Utils.dropItems(p.getLocation(), p.getUniqueId(), new ItemStack(Material.TURTLE_SPAWN_EGG));
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24FishingRodSquidSpawnEggChance) == 0)
+                                Utils.dropItems(p.getLocation(), p.getUniqueId(), new ItemStack(Material.SQUID_SPAWN_EGG));
                         }
                     }
                 }

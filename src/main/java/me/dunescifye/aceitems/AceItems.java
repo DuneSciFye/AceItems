@@ -1,5 +1,6 @@
 package me.dunescifye.aceitems;
 
+import com.jeff_media.customblockdata.CustomBlockData;
 import dev.jorel.commandapi.CommandAPI;
 import me.dunescifye.aceitems.commands.CustomItemsCommand;
 import me.dunescifye.aceitems.files.Config;
@@ -74,6 +75,7 @@ public final class AceItems extends JavaPlugin {
         if (provider != null) {
             luckPerms = provider.getProvider();
         }
+        CustomBlockData.registerListener(plugin);
 
         Bukkit.getLogger().info("AceItems plugin loaded.");
     }
@@ -96,6 +98,9 @@ public final class AceItems extends JavaPlugin {
         new EntityDeathListener().EntityDeathHandler(this);
         new ProjectileLaunchListener().ProjectileLaunchHandler(this);
         new ProjectileHitListener().ProjectileHitHandler(this);
+        new PlayerItemHeldListener().playerItemHeldHandler(this);
+        new BlockPlaceListener().blockPlaceHandler(this);
+        new FurnaceSmeltListener().furnaceSmeltHandler(this);
     }
 
     @Override
