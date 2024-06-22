@@ -130,6 +130,16 @@ public class EntityDamageByEntityListener implements Listener {
                                     Utils.spawnNoDamageFirework(p);
                                 }
                             }
+                            //Extra damage boost in water
+                            case "July24Trident" -> {
+                                if (!AceItems.disabledWorlds.get("July24Trident").contains(p.getWorld().getName())) {
+                                    if (p.getLocation().getBlock().getType() == Material.WATER ||
+                                            p.getLocation().getBlock().getType() == Material.BUBBLE_COLUMN ||
+                                            p.getLocation().getBlock().getType() == Material.KELP_PLANT) {
+                                        e.setDamage(e.getDamage() * JulyItemsConfig.July24TridentExtraDamagePercent);
+                                    }
+                                }
+                            }
                         }
                     }
                 }

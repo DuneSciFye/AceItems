@@ -122,29 +122,18 @@ public class BlockUtils {
         quartzBlocks.add(smoothQuartzSlab);
     }
 
-    public static List<Predicate<Block>> logs = new ArrayList<>();
-    static {
-        Predicate<Block> oakLog = block -> block.getType().equals(Material.OAK_LOG);
-        Predicate<Block> spruceLog = block -> block.getType().equals(Material.SPRUCE_LOG);
-        Predicate<Block> birchLog = block -> block.getType().equals(Material.BIRCH_LOG);
-        Predicate<Block> jungleLog = block -> block.getType().equals(Material.JUNGLE_LOG);
-        Predicate<Block> acaciaLog = block -> block.getType().equals(Material.ACACIA_LOG);
-        Predicate<Block> darkOakLog = block -> block.getType().equals(Material.DARK_OAK_LOG);
-        Predicate<Block> mangroveLog = block -> block.getType().equals(Material.MANGROVE_LOG);
-        Predicate<Block> cherryLog = block -> block.getType().equals(Material.CHERRY_LOG);
-        Predicate<Block> crimsonStem = block -> block.getType().equals(Material.CRIMSON_STEM);
-        Predicate<Block> warpedStem = block -> block.getType().equals(Material.WARPED_STEM);
-        logs.add(oakLog);
-        logs.add(spruceLog);
-        logs.add(birchLog);
-        logs.add(jungleLog);
-        logs.add(acaciaLog);
-        logs.add(darkOakLog);
-        logs.add(mangroveLog);
-        logs.add(cherryLog);
-        logs.add(crimsonStem);
-        logs.add(warpedStem);
-    }
+    public static final List<Predicate<Block>> logs = List.of(
+            block -> block.getType().equals(Material.OAK_LOG),
+            block -> block.getType().equals(Material.SPRUCE_LOG),
+            block -> block.getType().equals(Material.BIRCH_LOG),
+            block -> block.getType().equals(Material.JUNGLE_LOG),
+            block -> block.getType().equals(Material.ACACIA_LOG),
+            block -> block.getType().equals(Material.DARK_OAK_LOG),
+            block -> block.getType().equals(Material.MANGROVE_LOG),
+            block -> block.getType().equals(Material.CHERRY_LOG),
+            block -> block.getType().equals(Material.CRIMSON_STEM),
+            block -> block.getType().equals(Material.WARPED_STEM)
+    );
     private static final List<Predicate<Block>> leaves = new ArrayList<>();
     static {
         Predicate<Block> oakLeaves = block -> block.getType().equals(Material.OAK_LEAVES);
@@ -402,6 +391,20 @@ public class BlockUtils {
         } else {
             if (input.equalsIgnoreCase("GLASS")) input = "STAINED_" + input;
             return newColor + "_" + input;
+        }
+    }
+    public static void veinMine(Block b, List<Predicate<Block>> predicateList) {
+        Collection<ItemStack> drops = new ArrayList<>();
+
+        for (Predicate<Block> blockPredicate : predicateList) {
+            if (blockPredicate.test(b)) {
+
+                break;
+            }
+        }
+
+        for (ItemStack drop : mergeSimilarItemStacks(drops)) {
+            b.getWorld().dropItemNaturally(b.getLocation(), drop);
         }
     }
 }

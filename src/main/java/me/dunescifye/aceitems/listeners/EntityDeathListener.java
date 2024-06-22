@@ -110,6 +110,14 @@ public class EntityDeathListener implements Listener {
                         }
                     }
                 }
+                case "July24Trident" -> {
+                    if (livingEntity instanceof Player) {
+                        if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24TridentPVPKeyChance) == 0)
+                            Utils.runConsoleCommand(Config.keyCommand.replace("%player%", p.getName()).replace("%type%", JulyItemsConfig.July24TridentPVPKeyID));
+                        if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24TridentFishKeyChance) == 0)
+                            Utils.runConsoleCommand(Config.keyCommand.replace("%player%", p.getName()).replace("%type%", JulyItemsConfig.July24TridentFishKeyID));
+                    }
+                }
             }
         }
     }

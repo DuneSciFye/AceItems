@@ -193,18 +193,18 @@ public class Utils {
         }
         return count;
     }
-    public static int itemCountStrictAndRemove(Player p, Material item, int max){
+    public static int itemCountStrictAndRemove(Player p, Material material, int max){
         int count = 0;
         PlayerInventory inv = p.getInventory();
-        for (ItemStack is : inv.all(item).values()){
-            if (is != null && is.getType() == item && !is.hasItemMeta()){
+        for (ItemStack is : inv.all(material).values()){
+            if (is != null && is.getType() == material && !is.hasItemMeta()){
                 int amount = is.getAmount();
                 if (amount + count > max) {
-                    is.setAmount(max - count);
+                    is.setAmount(amount - max + count);
                     return max;
                 }
-                is.setAmount(0);
                 count += is.getAmount();
+                is.setAmount(0);
             }
         }
         return count;

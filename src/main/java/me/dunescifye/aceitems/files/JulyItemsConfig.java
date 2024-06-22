@@ -14,7 +14,7 @@ public class JulyItemsConfig {
         UltraJuly24MelonWand, July24PaintBrush, UltraJuly24PaintBrush, July24GrapplingHook, July24PocketBeacon, UltraJuly24PocketBeacon,
         July24AIDisabler, UltraJuly24AIDisabler, July24MoreOPSword, July24LessOPSWord, July24MoreOPPickaxe, UltraJuly24MoreOPPickaxe,
         July24Shield, July24Hoe, UltraJuly24Hoe, July24Grill, UltraJuly24Grill, July24Fireball, July24FishingRod, July24Bow, July24XBow,
-        July24Elytra, July24BeachMaker, UltraJuly24BeachMaker, July24SpeedVoucher, July24SlimeWand;
+        July24Elytra, July24BeachMaker, UltraJuly24BeachMaker, July24SpeedVoucher, July24SlimeWand, July24Trident, July24Axe;
     public static int July24VillagerWandUses, July24ArmorLaunchChance, July24ArmorLaunchStrength, July24ArmorJumpStrength,
         July24ArmorExtraDamageChance, July24SaddleLaunchCooldown, July24SaddleJumpBoostCooldown, July24LessOPPickaxeSquidSpawnerChance,
         July24LessOPPickaxeGlowSquidSpawnerChance, July24LessOPPickaxeExplosionRadius, July24LessOPPickaxeExplosionCooldown,
@@ -25,11 +25,11 @@ public class JulyItemsConfig {
         July24LessOPSWordPlayerRandomPotionChance, July24LessOPSWordEntityRandomPotionChance, July24HoeNoSeedReplantChance, July24HoeBlazeSpawnEggChance,
         UltraJuly24HoeNoSeedReplantChance, UltraJuly24HoeBlazeSpawnEggChance, UltraJuly24HoeGuardianSpawnEggChance, July24FishingRodFishKeyChance,
         July24FishingRodSalmonSpawnEggChance, July24FishingRodAxolotlSpawnEggChance, July24FishingRodTurtleSpawnEggChance, July24FishingRodSquidSpawnEggChance,
-        July24BeachMakerCooldown, July24SlimeWandDefaultUses;
-    public static double July24ArmorExtraDamagePercent, July24ArmorFireDamageReductionPercent, July24SaddleLaunchStrength;
+        July24BeachMakerCooldown, July24SlimeWandDefaultUses, July24TridentPVPKeyChance, July24TridentFishKeyChance, July24AxeFireworkDamage;
+    public static double July24ArmorExtraDamagePercent, July24ArmorFireDamageReductionPercent, July24SaddleLaunchStrength, July24TridentExtraDamagePercent;
     public static String July24JobsLanternIncomeBoostPerm, UltraJuly24JobsLanternIncomeBoostPerm, July24MoreOPSwordSlayerPointsCommand,
         July24MoreOPSwordKillAnnouncement, July24FishingRodFishKeyCommand, July24SpeedVoucherPerm, July24SlimeWandMissingSlimeBallsMessage,
-        July24SlimeWandAddedSlimeBallsMessage, July24SlimeWandOutOfUsesMessage;
+        July24SlimeWandAddedSlimeBallsMessage, July24SlimeWandOutOfUsesMessage, July24TridentPVPKeyID, July24TridentFishKeyID;
     public static List<String> July24SpawnerBundleMobTypes, July24LessOPPickaxeExplosionAllowedWorlds, July24PocketBeaconWhitelistedWorlds,
         UltraJuly24PocketBeaconWhitelistedWorlds;
 
@@ -170,6 +170,16 @@ public class JulyItemsConfig {
         July24SlimeWandMissingSlimeBallsMessage = ConfigUtils.setupConfig("July24SlimeWand.MissingSlimeBallsMessage", config, "&cYou don't have any slime balls to reload!", List.of("Error message for when player tries reloading item but doesn't have any slime balls."));
         July24SlimeWandAddedSlimeBallsMessage = ConfigUtils.setupConfig("July24SlimeWand.AddedSlimeBallsMessage", config, "&aSuccessfully added %amount% slime balls!", List.of("Success message for when player reloads with slime balls. %amount% for amount."));
         July24SlimeWandOutOfUsesMessage = ConfigUtils.setupConfig("July24SlimeWand.OutOfUsesMessage", config, "&cNot enough uses! Reload this item with slime balls!", List.of("Error message for when player tries to activate ability but out of uses."));
+
+        July24Trident = ConfigUtils.initializeItem("July24Trident", config);
+        July24TridentExtraDamagePercent = ConfigUtils.setupConfig("July24Trident.ExtraDamagePercent", config, 1.3, 0, List.of("How much extra damage to deal. This number is multiplied by original damage. 1.3 = 30% more damage."));
+        July24TridentFishKeyChance = ConfigUtils.setupConfig("July24Trident.FishKeyChance", config, 10000, 1);
+        July24TridentPVPKeyChance = ConfigUtils.setupConfig("July24Trident.PVPKeyChance", config, 10000, 1);
+        July24TridentFishKeyID = ConfigUtils.setupConfig("July24Trident.FishKeyID", config, "Fish", List.of("ID of Fish Key"));
+        July24TridentPVPKeyID = ConfigUtils.setupConfig("July24Trident.PVPKeyID", config, "PVP", List.of("ID of PVP Key"));
+
+        July24Axe = ConfigUtils.initializeItem("July24Axe", config, AceItems.keyInt);
+        July24AxeFireworkDamage = ConfigUtils.setupConfig("July24Axe.FireworkDamage", config, 5, 0, List.of("How much damage the firework should do"));
 
         julyitems.save();
 

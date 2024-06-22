@@ -14,7 +14,7 @@ import java.util.Set;
 public class Config {
 
     public static String changeVariableMessage, cooldownMessageHours, cooldownMessageMinutes, cooldownMessageSeconds, confirmMessage,
-        inClaimMessage, spawnerCommand, cannotUseHereMessage;
+        inClaimMessage, spawnerCommand, cannotUseHereMessage, keyCommand;
 
     private static final Set<Material> unobtainableBlocks = new HashSet<>(Arrays.asList(
         Material.BEDROCK,
@@ -116,6 +116,7 @@ public class Config {
         }
 
         spawnerCommand = ConfigUtils.setupConfig("Commands.SpawnerCommand", config, "spawner admin give %player% %type%", List.of("Command used to give spawner. %player% for player and %type% for mob type."));
+        keyCommand = ConfigUtils.setupConfig("Commands.KeyCommand", config, "crazy crates key give %player% %type%", List.of("Command used to give key. %player% for player name and %type% for name of key."));
 
         plugin.saveConfig();
     }

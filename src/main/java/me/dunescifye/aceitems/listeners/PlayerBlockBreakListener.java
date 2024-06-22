@@ -302,6 +302,10 @@ public class PlayerBlockBreakListener implements Listener {
                             p.getWorld().dropItemNaturally(b.getLocation(), drop);
                         }
                     }
+                    case "July24Axe" -> {
+                        if (!AceItems.disabledWorlds.get("July24Axe").contains(p.getWorld().getName())) {
+                        }
+                    }
                 }
             }
         }
