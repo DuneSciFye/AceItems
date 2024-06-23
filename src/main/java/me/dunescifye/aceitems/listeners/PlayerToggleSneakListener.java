@@ -47,6 +47,7 @@ public class PlayerToggleSneakListener implements Listener {
             helmetMeta = helmet.getItemMeta();
             helmetContainer = helmetMeta.getPersistentDataContainer();
             helmetID = helmetContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
+            if (helmetID == null) helmetID = helmetContainer.get(AceItems.keyEIID, PersistentDataType.STRING);
         }
         if (chestplate != null && chestplate.hasItemMeta()) {
             chestplateMeta = chestplate.getItemMeta();
@@ -94,7 +95,7 @@ public class PlayerToggleSneakListener implements Listener {
             }
         }
         //June Armor
-        else if (Objects.equals(helmetID, "June24Helmet") && Objects.equals(chestplateID, "June24Chestplate") && Objects.equals(leggingsID, "June24Leggings") && Objects.equals(bootsID, "June24Boots")
+        else if ((Objects.equals(helmetID, "June24Helmet") || Objects.equals(helmetID, "June24CrocHat"))&& Objects.equals(chestplateID, "June24Chestplate") && Objects.equals(leggingsID, "June24Leggings") && Objects.equals(bootsID, "June24Boots")
             && !AceItems.disabledWorlds.get("June24Helmet").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Chestplate").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Leggings").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Boots").contains(p.getWorld().getName())) {
             BukkitTask cancelTask = activeTasks.remove(p.getUniqueId());
             if (cancelTask != null) {

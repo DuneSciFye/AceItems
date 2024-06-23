@@ -25,6 +25,7 @@ public final class AceItems extends JavaPlugin {
     private static AceItems plugin;
 
     public static final NamespacedKey keyItemID = new NamespacedKey("customitems", "item-id");
+    public static final NamespacedKey keyEIID = new NamespacedKey("executableitems", "ei-id");
     public static final NamespacedKey keyRadius = new NamespacedKey("customitems", "radius");
     public static final NamespacedKey keyRadiusLore = new NamespacedKey("customitems", "radiuslore");
     public static final NamespacedKey keyKills = new NamespacedKey("customitems", "kills");

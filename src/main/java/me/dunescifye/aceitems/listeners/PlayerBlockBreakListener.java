@@ -77,9 +77,10 @@ public class PlayerBlockBreakListener implements Listener {
             String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
             if (itemID != null) {
                 switch (itemID) {
-                    case
-                        "June24MoreOPPickaxe" -> {
+                    case "June24MoreOPPickaxe" -> {
                         if (!AceItems.disabledWorlds.get("June24MoreOPPickaxe").contains(p.getWorld().getName())) {
+                            int radius = container.get(AceItems.keyRadius, PersistentDataType.INTEGER);
+                            BlockUtils.breakInRadius(b, radius, p, pickaxeWhitelist, pickaxeBlacklist);
                             if (ThreadLocalRandom.current().nextInt(1, June24MoreOPPickaxeWaterBreathingPotionChance) == 0)
                                 p.getWorld().dropItemNaturally(b.getLocation(), waterBreathingPotion);
                             if (ThreadLocalRandom.current().nextInt(1, June24MoreOPPickaxeSeaLanternChance) == 0)
@@ -304,6 +305,15 @@ public class PlayerBlockBreakListener implements Listener {
                     }
                     case "July24Axe" -> {
                         if (!AceItems.disabledWorlds.get("July24Axe").contains(p.getWorld().getName())) {
+                            BlockUtils.veinMine(b, b.getType(), item);
+                        }
+                    }
+                    case "July24Shovel" -> {
+                        if (!AceItems.disabledWorlds.get("July24Shovel").contains(p.getWorld().getName())) {
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24ShovelBedrockChance) == 0)
+                                Utils.dropItems(b.getLocation(), new ItemStack(Material.BEDROCK));
+                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24ShovelReinforcedDeepslateChance) == 0)
+                                Utils.dropItems(b.getLocation(), new ItemStack(Material.REINFORCED_DEEPSLATE));
                         }
                     }
                 }

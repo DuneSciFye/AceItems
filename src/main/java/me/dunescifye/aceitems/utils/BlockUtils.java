@@ -1,25 +1,18 @@
 package me.dunescifye.aceitems.utils;
 
-import me.dunescifye.aceitems.AceItems;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.Rotatable;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 
 import static org.bukkit.Bukkit.getServer;
@@ -58,47 +51,48 @@ public class BlockUtils {
         pickaxeBlacklist.add(shulkerBoxes);
     }
 
-    public static List<Predicate<Block>> ores = new ArrayList<>();
-    static {
-        Predicate<Block> goldOre = block -> block.getType().equals(Material.GOLD_ORE);
-        Predicate<Block> deepslateGoldOre = block -> block.getType().equals(Material.DEEPSLATE_GOLD_ORE);
-        Predicate<Block> ironOre = block -> block.getType().equals(Material.IRON_ORE);
-        Predicate<Block> deepslateIronOre = block -> block.getType().equals(Material.DEEPSLATE_IRON_ORE);
-        Predicate<Block> coalOre = block -> block.getType().equals(Material.COAL_ORE);
-        Predicate<Block> deepslateCoalOre = block -> block.getType().equals(Material.DEEPSLATE_COAL_ORE);
-        Predicate<Block> copperOre = block -> block.getType().equals(Material.COPPER_ORE);
-        Predicate<Block> deepslateCopperOre = block -> block.getType().equals(Material.DEEPSLATE_COPPER_ORE);
-        Predicate<Block> redstoneOre = block -> block.getType().equals(Material.REDSTONE_ORE);
-        Predicate<Block> deepslateRedstoneOre = block -> block.getType().equals(Material.DEEPSLATE_REDSTONE_ORE);
-        Predicate<Block> lapisOre = block -> block.getType().equals(Material.LAPIS_ORE);
-        Predicate<Block> deepslateLapisOre = block -> block.getType().equals(Material.DEEPSLATE_LAPIS_ORE);
-        Predicate<Block> diamondOre = block -> block.getType().equals(Material.DIAMOND_ORE);
-        Predicate<Block> deepslateDiamondOre = block -> block.getType().equals(Material.DEEPSLATE_DIAMOND_ORE);
-        Predicate<Block> emeraldOre = block -> block.getType().equals(Material.EMERALD_ORE);
-        Predicate<Block> deepslateEmeraldOre = block -> block.getType().equals(Material.DEEPSLATE_EMERALD_ORE);
-        Predicate<Block> netherGoldOre = block -> block.getType().equals(Material.NETHER_GOLD_ORE);
-        Predicate<Block> netherQuartzOre = block -> block.getType().equals(Material.NETHER_QUARTZ_ORE);
-        Predicate<Block> ancientDebris = block -> block.getType().equals(Material.ANCIENT_DEBRIS);
-        ores.add(goldOre);
-        ores.add(deepslateGoldOre);
-        ores.add(ironOre);
-        ores.add(deepslateIronOre);
-        ores.add(coalOre);
-        ores.add(deepslateCoalOre);
-        ores.add(copperOre);
-        ores.add(deepslateCopperOre);
-        ores.add(redstoneOre);
-        ores.add(deepslateRedstoneOre);
-        ores.add(lapisOre);
-        ores.add(deepslateLapisOre);
-        ores.add(diamondOre);
-        ores.add(deepslateDiamondOre);
-        ores.add(emeraldOre);
-        ores.add(deepslateEmeraldOre);
-        ores.add(netherGoldOre);
-        ores.add(netherQuartzOre);
-        ores.add(ancientDebris);
-    }
+    public static List<Predicate<Block>> ores = List.of(
+        block -> block.getType().equals(Material.GOLD_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_GOLD_ORE),
+        block -> block.getType().equals(Material.IRON_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_IRON_ORE),
+        block -> block.getType().equals(Material.COAL_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_COAL_ORE),
+        block -> block.getType().equals(Material.COPPER_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_COPPER_ORE),
+        block -> block.getType().equals(Material.REDSTONE_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_REDSTONE_ORE),
+        block -> block.getType().equals(Material.LAPIS_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_LAPIS_ORE),
+        block -> block.getType().equals(Material.DIAMOND_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_DIAMOND_ORE),
+        block -> block.getType().equals(Material.EMERALD_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_EMERALD_ORE),
+        block -> block.getType().equals(Material.NETHER_GOLD_ORE),
+        block -> block.getType().equals(Material.NETHER_QUARTZ_ORE),
+        block -> block.getType().equals(Material.ANCIENT_DEBRIS)
+    );
+
+    public static List<Predicate<Block>> regularOres = List.of(
+        block -> block.getType().equals(Material.GOLD_ORE),
+        block -> block.getType().equals(Material.IRON_ORE),
+        block -> block.getType().equals(Material.COAL_ORE),
+        block -> block.getType().equals(Material.COPPER_ORE),
+        block -> block.getType().equals(Material.REDSTONE_ORE),
+        block -> block.getType().equals(Material.LAPIS_ORE),
+        block -> block.getType().equals(Material.DIAMOND_ORE),
+        block -> block.getType().equals(Material.EMERALD_ORE)
+    );
+    public static List<Predicate<Block>> deepslateOres = List.of(
+        block -> block.getType().equals(Material.DEEPSLATE_GOLD_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_IRON_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_COAL_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_COPPER_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_REDSTONE_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_LAPIS_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_DIAMOND_ORE),
+        block -> block.getType().equals(Material.DEEPSLATE_EMERALD_ORE)
+    );
 
     public static List<Predicate<Block>> quartzBlocks = new ArrayList<>();
     static {
@@ -393,18 +387,47 @@ public class BlockUtils {
             return newColor + "_" + input;
         }
     }
-    public static void veinMine(Block b, List<Predicate<Block>> predicateList) {
+    public static void veinMine(Block block, Material blockType, ItemStack heldItem) {
+        Set<Block> blocksToBreak = new HashSet<>();
         Collection<ItemStack> drops = new ArrayList<>();
+        findVein(block, blockType, blocksToBreak);
 
-        for (Predicate<Block> blockPredicate : predicateList) {
-            if (blockPredicate.test(b)) {
-
-                break;
-            }
+        // Break all collected blocks
+        for (Block b : blocksToBreak) {
+            drops.addAll(b.getDrops(heldItem));
+            b.setType(Material.AIR);
         }
 
-        for (ItemStack drop : mergeSimilarItemStacks(drops)) {
-            b.getWorld().dropItemNaturally(b.getLocation(), drop);
+        for (ItemStack drop : mergeSimilarItemStacks(drops)){
+            block.getWorld().dropItemNaturally(block.getLocation(), drop);
         }
+    }
+
+    private static void findVein(Block block, Material blockType, Set<Block> blocksToBreak) {
+        if (block.getType() != blockType || blocksToBreak.contains(block)) {
+            return;
+        }
+
+        blocksToBreak.add(block);
+
+        for (Block adjacent : getAdjacentBlocks(block)) {
+            findVein(adjacent, blockType, blocksToBreak);
+        }
+    }
+
+    private static Set<Block> getAdjacentBlocks(Block block) {
+        Set<Block> adjacentBlocks = new HashSet<>();
+        int[][] directions = {
+            {1, 0, 0}, {-1, 0, 0},
+            {0, 1, 0}, {0, -1, 0},
+            {0, 0, 1}, {0, 0, -1}
+        };
+
+        for (int[] dir : directions) {
+            Block adjacent = block.getRelative(dir[0], dir[1], dir[2]);
+            adjacentBlocks.add(adjacent);
+        }
+
+        return adjacentBlocks;
     }
 }

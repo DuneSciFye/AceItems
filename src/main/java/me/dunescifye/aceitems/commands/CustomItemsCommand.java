@@ -84,6 +84,8 @@ public class CustomItemsCommand {
             )
             .then(new LiteralArgument("remove")
             )
+            .withAliases("ci")
+            .withPermission("customitems.command")
             .register();
 
         new CommandAPICommand("customitems")
@@ -108,6 +110,7 @@ public class CustomItemsCommand {
 
                 p.sendMessage("Cleared cooldowns.");
             })
+            .withPermission("customitems.command")
             .register();
     }
 

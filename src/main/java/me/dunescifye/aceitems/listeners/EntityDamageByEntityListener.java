@@ -70,7 +70,7 @@ public class EntityDamageByEntityListener implements Listener {
                     bootsID = bootsContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
                 }
                 //June 24 armor damage boost in water
-                if (Objects.equals(helmetID, "June24Helmet") && Objects.equals(chestplateID, "June24Chestplate") && Objects.equals(leggingsID, "June24Leggings") && Objects.equals(bootsID, "June24Boots")
+                if ((Objects.equals(helmetID, "June24Helmet") || Objects.equals(helmetID, "June24CrocHat")) && Objects.equals(chestplateID, "June24Chestplate") && Objects.equals(leggingsID, "June24Leggings") && Objects.equals(bootsID, "June24Boots")
                     && !AceItems.disabledWorlds.get("June24Helmet").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Chestplate").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Leggings").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Boots").contains(p.getWorld().getName())) {
                     if (p.getLocation().getBlock().getType() == Material.WATER ||
                         p.getLocation().getBlock().getType() == Material.BUBBLE_COLUMN ||
@@ -137,6 +137,24 @@ public class EntityDamageByEntityListener implements Listener {
                                             p.getLocation().getBlock().getType() == Material.BUBBLE_COLUMN ||
                                             p.getLocation().getBlock().getType() == Material.KELP_PLANT) {
                                         e.setDamage(e.getDamage() * JulyItemsConfig.July24TridentExtraDamagePercent);
+                                    }
+                                }
+                            }
+                            //Every 5th crit explodes fireworks
+                            case "July24Axe" -> {
+                                if (entity instanceof Player target) {
+                                    if (e.isCritical()) {
+                                        int crits = container.get(AceItems.keyInt, PersistentDataType.INTEGER);
+                                        if (crits > 4) {
+                                            container.set(AceItems.keyInt, PersistentDataType.INTEGER, 0);
+                                            Utils.spawnNoDamageFirework(target);
+                                            target.damage(JulyItemsConfig.July24AxeFireworkDamage);
+                                        } else {
+                                            container.set(AceItems.keyInt, PersistentDataType.INTEGER, crits + 1);
+                                        }
+                                    }
+                                    if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24AxeIgnoreArmorChance) == 0) {
+                                        e.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0);
                                     }
                                 }
                             }

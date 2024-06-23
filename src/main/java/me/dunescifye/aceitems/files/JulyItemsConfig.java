@@ -14,7 +14,8 @@ public class JulyItemsConfig {
         UltraJuly24MelonWand, July24PaintBrush, UltraJuly24PaintBrush, July24GrapplingHook, July24PocketBeacon, UltraJuly24PocketBeacon,
         July24AIDisabler, UltraJuly24AIDisabler, July24MoreOPSword, July24LessOPSWord, July24MoreOPPickaxe, UltraJuly24MoreOPPickaxe,
         July24Shield, July24Hoe, UltraJuly24Hoe, July24Grill, UltraJuly24Grill, July24Fireball, July24FishingRod, July24Bow, July24XBow,
-        July24Elytra, July24BeachMaker, UltraJuly24BeachMaker, July24SpeedVoucher, July24SlimeWand, July24Trident, July24Axe;
+        July24Elytra, July24BeachMaker, UltraJuly24BeachMaker, July24SpeedVoucher, July24SlimeWand, July24Trident, July24Axe, July24Shovel;
+
     public static int July24VillagerWandUses, July24ArmorLaunchChance, July24ArmorLaunchStrength, July24ArmorJumpStrength,
         July24ArmorExtraDamageChance, July24SaddleLaunchCooldown, July24SaddleJumpBoostCooldown, July24LessOPPickaxeSquidSpawnerChance,
         July24LessOPPickaxeGlowSquidSpawnerChance, July24LessOPPickaxeExplosionRadius, July24LessOPPickaxeExplosionCooldown,
@@ -25,7 +26,8 @@ public class JulyItemsConfig {
         July24LessOPSWordPlayerRandomPotionChance, July24LessOPSWordEntityRandomPotionChance, July24HoeNoSeedReplantChance, July24HoeBlazeSpawnEggChance,
         UltraJuly24HoeNoSeedReplantChance, UltraJuly24HoeBlazeSpawnEggChance, UltraJuly24HoeGuardianSpawnEggChance, July24FishingRodFishKeyChance,
         July24FishingRodSalmonSpawnEggChance, July24FishingRodAxolotlSpawnEggChance, July24FishingRodTurtleSpawnEggChance, July24FishingRodSquidSpawnEggChance,
-        July24BeachMakerCooldown, July24SlimeWandDefaultUses, July24TridentPVPKeyChance, July24TridentFishKeyChance, July24AxeFireworkDamage;
+        July24BeachMakerCooldown, July24SlimeWandDefaultUses, July24TridentPVPKeyChance, July24TridentFishKeyChance, July24AxeFireworkDamage,
+        July24AxeIgnoreArmorChance, July24ShovelBedrockChance, July24ShovelReinforcedDeepslateChance;
     public static double July24ArmorExtraDamagePercent, July24ArmorFireDamageReductionPercent, July24SaddleLaunchStrength, July24TridentExtraDamagePercent;
     public static String July24JobsLanternIncomeBoostPerm, UltraJuly24JobsLanternIncomeBoostPerm, July24MoreOPSwordSlayerPointsCommand,
         July24MoreOPSwordKillAnnouncement, July24FishingRodFishKeyCommand, July24SpeedVoucherPerm, July24SlimeWandMissingSlimeBallsMessage,
@@ -180,6 +182,11 @@ public class JulyItemsConfig {
 
         July24Axe = ConfigUtils.initializeItem("July24Axe", config, AceItems.keyInt);
         July24AxeFireworkDamage = ConfigUtils.setupConfig("July24Axe.FireworkDamage", config, 5, 0, List.of("How much damage the firework should do"));
+        July24AxeIgnoreArmorChance = ConfigUtils.setupConfig("July24Axe.IgnoreArmorChance", config, 7, 1, List.of("Chance for axe to ignore armor"));
+
+        July24Shovel = ConfigUtils.initializeItem("July24Shovel", config, AceItems.keyRadius, AceItems.keyRadiusLore);
+        July24ShovelBedrockChance = ConfigUtils.setupConfig("July24Shovel.BedrockChance", config, 5000, 1, List.of("Chance to dig up bedrock."));
+        July24ShovelReinforcedDeepslateChance = ConfigUtils.setupConfig("July24Shovel.ReinforcedDeepslateChance", config, 3000, 1, List.of("Chance to dig up reinforced deepslate."));
 
         julyitems.save();
 

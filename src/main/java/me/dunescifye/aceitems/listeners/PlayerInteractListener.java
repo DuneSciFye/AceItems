@@ -14,10 +14,7 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -538,6 +535,8 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                 }
+                case "July24Shovel" ->
+                    Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Mining Mode", 0, "1x1", 1, "3x3");
             }
         }
         //Left click

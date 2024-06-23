@@ -64,7 +64,7 @@ public class ArmorEquipListener implements Listener {
             bootsID = bootsContainer.get(AceItems.keyItemID, PersistentDataType.STRING);
         }
         //June armor
-        if (Objects.equals(helmetID, "June24Helmet") && Objects.equals(chestplateID, "June24Chestplate") && Objects.equals(leggingsID, "June24Leggings") && Objects.equals(bootsID, "June24Boots")
+        if ((Objects.equals(helmetID, "June24Helmet") || Objects.equals(helmetID, "June24CrocHat")) && Objects.equals(chestplateID, "June24Chestplate") && Objects.equals(leggingsID, "June24Leggings") && Objects.equals(bootsID, "June24Boots")
                 && !AceItems.disabledWorlds.get("June24Helmet").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Chestplate").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Leggings").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("June24Boots").contains(p.getWorld().getName())) {
             new BukkitRunnable() {
                 @Override
