@@ -15,6 +15,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static me.dunescifye.aceitems.files.JuneItemsConfig.*;
@@ -90,8 +91,8 @@ public class PlayerFishListener implements Listener {
         if (ThreadLocalRandom.current().nextInt(SeaLanternChance) == 0)
             p.getWorld().dropItemNaturally(p.getLocation(), new ItemStack(Material.SEA_LANTERN));
         if (ThreadLocalRandom.current().nextInt(FishSpawnEggChance) == 0)
-            p.getWorld().dropItemNaturally(p.getLocation(), new ItemStack((Material) randomObject(Material.TROPICAL_FISH_SPAWN_EGG, Material.PUFFERFISH_SPAWN_EGG, Material.SALMON_SPAWN_EGG, Material.COD_SPAWN_EGG)));
+            p.getWorld().dropItemNaturally(p.getLocation(), new ItemStack((Material) randomObject(List.of(Material.TROPICAL_FISH_SPAWN_EGG, Material.PUFFERFISH_SPAWN_EGG, Material.SALMON_SPAWN_EGG, Material.COD_SPAWN_EGG))));
         if (ThreadLocalRandom.current().nextInt(FroglightChance) == 0)
-            p.getWorld().dropItemNaturally(p.getLocation(), new ItemStack((Material) randomObject(Material.OCHRE_FROGLIGHT, Material.PEARLESCENT_FROGLIGHT, Material.VERDANT_FROGLIGHT)));
+            p.getWorld().dropItemNaturally(p.getLocation(), new ItemStack((Material) randomObject(List.of(Material.OCHRE_FROGLIGHT, Material.PEARLESCENT_FROGLIGHT, Material.VERDANT_FROGLIGHT))));
     }
 }

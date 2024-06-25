@@ -26,6 +26,8 @@ public class CooldownManager {
     public static final Map<UUID, Instant> June24LavaWaterBucketCooldowns = new HashMap<>();
     public static final Map<UUID, Instant> UltraJune24LavaWaterBucketCooldowns = new HashMap<>();
     public static final Map<UUID, Instant> July24VillagerWandCooldowns = new HashMap<>();
+    public static final Map<UUID, Instant> UltraJuly24VillagerWandCooldowns = new HashMap<>();
+    public static final Map<UUID, Instant> UltraJuly24VillagerWandEmeraldCooldowns = new HashMap<>();
     public static final Map<UUID, Instant> July24SaddleLaunchCooldowns = new HashMap<>();
     public static final Map<UUID, Instant> July24SaddleJumpBoostCooldowns = new HashMap<>();
     public static final Map<UUID, Instant> July24LessOPPickaxeCooldowns = new HashMap<>();

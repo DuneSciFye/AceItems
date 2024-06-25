@@ -62,15 +62,19 @@ public class PlayerInteractEntityListener implements Listener {
                             CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId()));
                         } else {
                             villager.zombify();
-
-                            int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
-                            if (uses > 0) {
-                                container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 1);
-                            } else {
-                                container.set(AceItems.keyUses, PersistentDataType.INTEGER, JulyItemsConfig.July24VillagerWandUses);
-                                CooldownManager.setCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId(), Duration.ofMinutes(30));
-                            }
-                            heldItem.setItemMeta(meta);
+                            CooldownManager.setCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId(), Duration.ofMinutes(JulyItemsConfig.July24VillagerWandCooldown));
+                        }
+                    }
+                }
+            }
+            case "UltraJuly24VillagerWand" -> {
+                if (entity instanceof Villager villager) {
+                    if (!AceItems.disabledWorlds.get("UltraJuly24VillagerWand").contains(p.getWorld().getName())) {
+                        if (CooldownManager.hasCooldown(CooldownManager.UltraJuly24VillagerWandCooldowns, p.getUniqueId())) {
+                            CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.UltraJuly24VillagerWandCooldowns, p.getUniqueId()));
+                        } else {
+                            villager.zombify();
+                            CooldownManager.setCooldown(CooldownManager.UltraJuly24VillagerWandCooldowns, p.getUniqueId(), Duration.ofMinutes(JulyItemsConfig.UltraJuly24VillagerWandCooldown));
                         }
                     }
                 }

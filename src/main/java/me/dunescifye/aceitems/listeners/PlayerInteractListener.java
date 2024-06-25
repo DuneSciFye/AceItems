@@ -438,10 +438,9 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                 }
-                case
-                    "July24SpawnerBundle" -> {
+                case "July24SpawnerBundle" -> {
                     if (container.has(AceItems.keyUses, PersistentDataType.INTEGER)) {
-                        Utils.runConsoleCommand(spawnerCommand.replace("%player%", p.getName()).replace("%type%", randomObject(JulyItemsConfig.July24SpawnerBundleMobTypes).toString()));
+                        Utils.runConsoleCommand(spawnerCommand.replace("%player%", p.getName()).replace("%type%", randomString(JulyItemsConfig.July24SpawnerBundleMobTypes).toString()));
                         int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
                         if (uses < 1) {
                             item.setAmount(item.getAmount() - 1);
@@ -537,6 +536,16 @@ public class PlayerInteractListener implements Listener {
                 }
                 case "July24Shovel" ->
                     Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Mining Mode", 0, "1x1", 1, "3x3");
+                case "UltraJuly24VillagerWand" -> {
+                    if (p.isSneaking()) {
+                        if (CooldownManager.hasCooldown(CooldownManager.UltraJuly24VillagerWandEmeraldCooldowns, p.getUniqueId())) {
+                            CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.UltraJuly24VillagerWandEmeraldCooldowns, p.getUniqueId()));
+                        } else {
+                            CooldownManager.setCooldown(CooldownManager.UltraJuly24VillagerWandEmeraldCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.UltraJuly24VillagerWandEmeraldCooldown));
+                            dropItems(p.getLocation(), p.getUniqueId(), new ItemStack(Material.EMERALD, 16));
+                        }
+                    }
+                }
             }
         }
         //Left click
@@ -601,9 +610,9 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                 }
-                case "July24AIDisabler" -> {
+                case "July24AIDisabler", "UltraJuly24AIDisabler" -> {
                     if (p.isSneaking()) {
-                        Utils.updateKey(p, item, meta, container, AceItems.keyState, AceItems.keyStateLore, "AI mode", "enable", "Enable", "disable", "Disable");
+                        Utils.updateKey(p, item, meta, container, AceItems.keyState, AceItems.keyStateLore, "AI mode", "enabled", "Enabled", "disabled", "Disabled");
                     }
                 }
                 case "July24Elytra" -> {

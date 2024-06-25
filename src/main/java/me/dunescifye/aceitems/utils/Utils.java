@@ -104,9 +104,11 @@ public class Utils {
         return potion;
     }
 
-    public static Object randomObject(Object... objects){
-        List<Object> objectList = Arrays.asList(objects);
-        return objectList.get(ThreadLocalRandom.current().nextInt(objects.length));
+    public static Object randomObject(List<Object> objectList){
+        return objectList.get(ThreadLocalRandom.current().nextInt(objectList.size()));
+    }
+    public static Object randomString(List<String> stringList){
+        return stringList.get(ThreadLocalRandom.current().nextInt(stringList.size()));
     }
 
     public static void sendPlayerChangeVariableMessage(Player player, String message, String variable, String content){
