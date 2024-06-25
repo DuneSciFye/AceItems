@@ -58,11 +58,11 @@ public class PlayerInteractEntityListener implements Listener {
             case "July24VillagerWand" -> {
                 if (entity instanceof Villager villager) {
                     if (!AceItems.disabledWorlds.get("July24VillagerWand").contains(p.getWorld().getName())) {
-                        if (CooldownManager.hasCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId())) {
-                            CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId()));
+                        if (CooldownManager.hasCooldown(CooldownManager.July24VillagerWandZombifyCooldowns, p.getUniqueId())) {
+                            CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.July24VillagerWandZombifyCooldowns, p.getUniqueId()));
                         } else {
                             villager.zombify();
-                            CooldownManager.setCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId(), Duration.ofMinutes(JulyItemsConfig.July24VillagerWandCooldown));
+                            CooldownManager.setCooldown(CooldownManager.July24VillagerWandZombifyCooldowns, p.getUniqueId(), Duration.ofMinutes(JulyItemsConfig.July24VillagerWandZombifyCooldown));
                         }
                     }
                 }
@@ -70,12 +70,7 @@ public class PlayerInteractEntityListener implements Listener {
             case "UltraJuly24VillagerWand" -> {
                 if (entity instanceof Villager villager) {
                     if (!AceItems.disabledWorlds.get("UltraJuly24VillagerWand").contains(p.getWorld().getName())) {
-                        if (CooldownManager.hasCooldown(CooldownManager.UltraJuly24VillagerWandCooldowns, p.getUniqueId())) {
-                            CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.UltraJuly24VillagerWandCooldowns, p.getUniqueId()));
-                        } else {
-                            villager.zombify();
-                            CooldownManager.setCooldown(CooldownManager.UltraJuly24VillagerWandCooldowns, p.getUniqueId(), Duration.ofMinutes(JulyItemsConfig.UltraJuly24VillagerWandCooldown));
-                        }
+                        villager.zombify();
                     }
                 }
             }

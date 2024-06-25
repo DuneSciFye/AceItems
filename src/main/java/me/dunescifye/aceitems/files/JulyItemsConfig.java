@@ -27,8 +27,8 @@ public class JulyItemsConfig {
         UltraJuly24HoeNoSeedReplantChance, UltraJuly24HoeBlazeSpawnEggChance, UltraJuly24HoeGuardianSpawnEggChance, July24FishingRodFishKeyChance,
         July24FishingRodSalmonSpawnEggChance, July24FishingRodAxolotlSpawnEggChance, July24FishingRodTurtleSpawnEggChance, July24FishingRodSquidSpawnEggChance,
         July24BeachMakerCooldown, July24SlimeWandDefaultUses, July24TridentPVPKeyChance, July24TridentFishKeyChance, July24AxeFireworkDamage,
-        July24AxeIgnoreArmorChance, July24ShovelBedrockChance, July24ShovelReinforcedDeepslateChance, July24VillagerWandCooldown, UltraJuly24VillagerWandCooldown,
-        UltraJuly24VillagerWandEmeraldCooldown;
+        July24AxeIgnoreArmorChance, July24ShovelBedrockChance, July24ShovelReinforcedDeepslateChance, July24VillagerWandCureCooldown, July24VillagerWandZombifyCooldown,
+        UltraJuly24VillagerWandCooldown, UltraJuly24VillagerWandEmeraldCooldown;
     public static double July24ArmorExtraDamagePercent, July24ArmorFireDamageReductionPercent, July24SaddleLaunchStrength, July24TridentExtraDamagePercent;
     public static String July24JobsLanternIncomeBoostPerm, UltraJuly24JobsLanternIncomeBoostPerm, July24MoreOPSwordSlayerPointsCommand,
         July24MoreOPSwordKillAnnouncement, July24FishingRodFishKeyCommand, July24SpeedVoucherPerm, July24SlimeWandMissingSlimeBallsMessage,
@@ -40,10 +40,10 @@ public class JulyItemsConfig {
         ConfigUtils julyitems = new ConfigUtils(AceItems.getInstance(), "items/julyitems.yml");
         FileConfiguration config = julyitems.getConfig();
 
-        July24VillagerWandCooldown = ConfigUtils.setupConfig("July24VillagerWand.Cooldown", config, 300, 0);
+        July24VillagerWandCureCooldown = ConfigUtils.setupConfig("July24VillagerWand.CureCooldown", config, 300, 0);
+        July24VillagerWandZombifyCooldown = ConfigUtils.setupConfig("July24VillagerWand.ZombifyCooldown", config, 300, 0);
         July24VillagerWand = ConfigUtils.initializeItem("July24VillagerWand", config);
         UltraJuly24VillagerWand = ConfigUtils.initializeItem("UltraJuly24VillagerWand", config);
-        UltraJuly24VillagerWandCooldown = ConfigUtils.setupConfig("UltraJuly24VillagerWand.Cooldown", config, 0, 0);
         UltraJuly24VillagerWandEmeraldCooldown = ConfigUtils.setupConfig("UltraJuly24VillagerWand.EmeraldCooldown", config, 600, 0);
 
         July24ArmorLaunchChance = ConfigUtils.setupConfig("July24Armor.LaunchChance", config, 10, 1, List.of("Chance for attacker to be launched away."));
