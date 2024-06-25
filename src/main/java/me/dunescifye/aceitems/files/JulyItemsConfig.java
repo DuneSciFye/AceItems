@@ -9,14 +9,14 @@ import java.util.List;
 
 public class JulyItemsConfig {
 
-    public static ItemStack July24VillagerWand, July24Boots, July24Leggings, July24Chestplate, July24Helmet, July24JobsLantern,
+    public static ItemStack July24VillagerWand, UltraJuly24VillagerWand, July24Boots, July24Leggings, July24Chestplate, July24Helmet, July24JobsLantern,
         UltraJuly24JobsLantern, July24Saddle, July24SpawnerBundle, July24DirtWand, July24LessOPPickaxe, July24MelonWand,
         UltraJuly24MelonWand, July24PaintBrush, UltraJuly24PaintBrush, July24GrapplingHook, July24PocketBeacon, UltraJuly24PocketBeacon,
         July24AIDisabler, UltraJuly24AIDisabler, July24MoreOPSword, July24LessOPSWord, July24MoreOPPickaxe, UltraJuly24MoreOPPickaxe,
         July24Shield, July24Hoe, UltraJuly24Hoe, July24Grill, UltraJuly24Grill, July24Fireball, July24FishingRod, July24Bow, July24XBow,
         July24Elytra, July24BeachMaker, UltraJuly24BeachMaker, July24SpeedVoucher, July24SlimeWand, July24Trident, July24Axe, July24Shovel;
 
-    public static int July24VillagerWandUses, July24ArmorLaunchChance, July24ArmorLaunchStrength, July24ArmorJumpStrength,
+    public static int July24ArmorLaunchChance, July24ArmorLaunchStrength, July24ArmorJumpStrength,
         July24ArmorExtraDamageChance, July24SaddleLaunchCooldown, July24SaddleJumpBoostCooldown, July24LessOPPickaxeSquidSpawnerChance,
         July24LessOPPickaxeGlowSquidSpawnerChance, July24LessOPPickaxeExplosionRadius, July24LessOPPickaxeExplosionCooldown,
         July24MelonWandRadius, July24MelonWandCooldown, UltraJuly24MelonWandRadius, UltraJuly24MelonWandCooldown, July24SpawnerBundleUses,
@@ -27,7 +27,8 @@ public class JulyItemsConfig {
         UltraJuly24HoeNoSeedReplantChance, UltraJuly24HoeBlazeSpawnEggChance, UltraJuly24HoeGuardianSpawnEggChance, July24FishingRodFishKeyChance,
         July24FishingRodSalmonSpawnEggChance, July24FishingRodAxolotlSpawnEggChance, July24FishingRodTurtleSpawnEggChance, July24FishingRodSquidSpawnEggChance,
         July24BeachMakerCooldown, July24SlimeWandDefaultUses, July24TridentPVPKeyChance, July24TridentFishKeyChance, July24AxeFireworkDamage,
-        July24AxeIgnoreArmorChance, July24ShovelBedrockChance, July24ShovelReinforcedDeepslateChance;
+        July24AxeIgnoreArmorChance, July24ShovelBedrockChance, July24ShovelReinforcedDeepslateChance, July24VillagerWandCooldown, UltraJuly24VillagerWandCooldown,
+        UltraJuly24VillagerWandEmeraldCooldown;
     public static double July24ArmorExtraDamagePercent, July24ArmorFireDamageReductionPercent, July24SaddleLaunchStrength, July24TridentExtraDamagePercent;
     public static String July24JobsLanternIncomeBoostPerm, UltraJuly24JobsLanternIncomeBoostPerm, July24MoreOPSwordSlayerPointsCommand,
         July24MoreOPSwordKillAnnouncement, July24FishingRodFishKeyCommand, July24SpeedVoucherPerm, July24SlimeWandMissingSlimeBallsMessage,
@@ -39,10 +40,11 @@ public class JulyItemsConfig {
         ConfigUtils julyitems = new ConfigUtils(AceItems.getInstance(), "items/julyitems.yml");
         FileConfiguration config = julyitems.getConfig();
 
-        July24VillagerWandUses = ConfigUtils.setupConfig("July24VillagerWand.DefaultUses", config, 16, 1);
-
-        AceItems.defaultValue.put(AceItems.keyUses, July24VillagerWandUses);
-        July24VillagerWand = ConfigUtils.initializeItem("July24VillagerWand", config, AceItems.keyUses);
+        July24VillagerWandCooldown = ConfigUtils.setupConfig("July24VillagerWand.Cooldown", config, 300, 0);
+        July24VillagerWand = ConfigUtils.initializeItem("July24VillagerWand", config);
+        UltraJuly24VillagerWand = ConfigUtils.initializeItem("UltraJuly24VillagerWand", config);
+        UltraJuly24VillagerWandCooldown = ConfigUtils.setupConfig("UltraJuly24VillagerWand.Cooldown", config, 0, 0);
+        UltraJuly24VillagerWandEmeraldCooldown = ConfigUtils.setupConfig("UltraJuly24VillagerWand.EmeraldCooldown", config, 600, 0);
 
         July24ArmorLaunchChance = ConfigUtils.setupConfig("July24Armor.LaunchChance", config, 10, 1, List.of("Chance for attacker to be launched away."));
         July24ArmorLaunchStrength = ConfigUtils.setupConfig("July24Armor.LaunchStrength", config, 1, 0, List.of("How much attacker will be launched away."));
@@ -106,8 +108,8 @@ public class JulyItemsConfig {
         July24PocketBeaconWhitelistedWorlds = ConfigUtils.setupConfig("July24PocketBeacon.WhitelistedWorlds", config, List.of("resource_world", "resourceworld", "world", "spawn"), List.of("Worlds the explosion can be used in"));
         UltraJuly24PocketBeaconWhitelistedWorlds = ConfigUtils.setupConfig("UltraJuly24PocketBeacon.WhitelistedWorlds", config, List.of("resource_world", "resourceworld", "world", "spawn"), List.of("Worlds the explosion can be used in"));
 
-        AceItems.defaultValue.put(AceItems.keyState, "disable");
-        AceItems.defaultValue.put(AceItems.keyStateLore, "Disable");
+        AceItems.defaultValue.put(AceItems.keyState, "disabled");
+        AceItems.defaultValue.put(AceItems.keyStateLore, "Disabled");
         July24AIDisablerUses = ConfigUtils.setupConfig("July24AIDisabler.Uses", config, 1000, 1, List.of("How many default uses this item has"));
         AceItems.defaultValue.put(AceItems.keyUses, July24AIDisablerUses);
         July24AIDisabler = ConfigUtils.initializeItem("July24AIDisabler", config, AceItems.keyState, AceItems.keyStateLore, AceItems.keyUses);

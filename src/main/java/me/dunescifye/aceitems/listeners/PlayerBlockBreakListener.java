@@ -27,6 +27,7 @@ import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
@@ -86,7 +87,7 @@ public class PlayerBlockBreakListener implements Listener {
                             if (ThreadLocalRandom.current().nextInt(1, June24MoreOPPickaxeSeaLanternChance) == 0)
                                 p.getWorld().dropItemNaturally(b.getLocation(), seaLantern);
                             if (ThreadLocalRandom.current().nextInt(1, June24MoreOPPickaxeFishSpawnerChance) == 0)
-                                Utils.runConsoleCommand("silkspawners:ss give " + p.getName() + Utils.randomObject("tropical_fish", "pufferfish", "salmon", "cod")); //1 in 6k
+                                Utils.runConsoleCommand("silkspawners:ss give " + p.getName() + Utils.randomObject(List.of("tropical_fish", "pufferfish", "salmon", "cod"))); //1 in 6k
                         }
                     }
                     case
@@ -97,7 +98,7 @@ public class PlayerBlockBreakListener implements Listener {
                             if (ThreadLocalRandom.current().nextInt(1, June24LessOPPickaxeSeaLanternChance) == 0)
                                 p.getWorld().dropItemNaturally(b.getLocation(), seaLantern);
                             if (ThreadLocalRandom.current().nextInt(1, June24LessOPPickaxeFishSpawnerChance) == 0)
-                                Utils.runConsoleCommand("silkspawners:ss give " + p.getName() + Utils.randomObject("tropical_fish", "pufferfish", "salmon", "cod"));
+                                Utils.runConsoleCommand("silkspawners:ss give " + p.getName() + Utils.randomObject(List.of("tropical_fish", "pufferfish", "salmon", "cod")));
                             if (ThreadLocalRandom.current().nextInt(1, June24LessOPPickaxeGuardianSpawnerChance) == 0)
                                 Utils.runConsoleCommand("silkspawners:ss give " + p.getName() + "guardian");
                         }

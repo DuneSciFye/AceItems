@@ -37,7 +37,7 @@ public class CustomItemsCommand {
                         })
                         .then(new IntegerArgument("Amount", 1)
                             .executes((sender, args) -> {
-                                Player p = (Player) args.get("Player");
+                                Player p = (Player) args.get("player");
                                 String key = (String) args.get("Item ID");
                                 int amount = (int) args.get("Amount");
                                 if (AceItems.items.containsKey(key)) {

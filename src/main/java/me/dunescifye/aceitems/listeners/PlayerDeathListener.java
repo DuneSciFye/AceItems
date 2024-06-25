@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static me.dunescifye.aceitems.utils.Utils.*;
@@ -79,7 +80,7 @@ public class PlayerDeathListener implements Listener {
                             } else if (random < 30) {
                                 killer.getWorld().dropItemNaturally(killed.getLocation(), new ItemStack(Material.PRISMARINE_SHARD));
                             } else if (random == 30) {
-                                Utils.runConsoleCommand("silkspawners:ss give " + killer.getName() + Utils.randomObject("tropical_fish", "pufferfish", "salmon", "cod"));
+                                Utils.runConsoleCommand("silkspawners:ss give " + killer.getName() + Utils.randomObject(List.of("tropical_fish", "pufferfish", "salmon", "cod")));
                             }
                         }
                     }

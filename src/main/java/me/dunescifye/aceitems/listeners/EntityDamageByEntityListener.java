@@ -109,14 +109,21 @@ public class EntityDamageByEntityListener implements Listener {
                                             CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId()));
                                         } else {
                                             zombieVillager.setConversionTime(0);
+                                            CooldownManager.setCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId(), Duration.ofMinutes(JulyItemsConfig.July24VillagerWandCooldown));
+                                        }
+                                    }
+                                }
+                            }
+                            case "UltraJuly24VillagerWand" -> {
+                                if (!AceItems.disabledWorlds.get("UltraJuly24VillagerWand").contains(p.getWorld().getName())) {
+                                    if (livingEntity instanceof ZombieVillager zombieVillager) {
+                                        e.setCancelled(true);
 
-                                            int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
-                                            if (uses > 0) {
-                                                container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 1);
-                                            } else {
-                                                container.set(AceItems.keyUses, PersistentDataType.INTEGER, JulyItemsConfig.July24VillagerWandUses);
-                                                CooldownManager.setCooldown(CooldownManager.July24VillagerWandCooldowns, p.getUniqueId(), Duration.ofMinutes(30));
-                                            }
+                                        if (CooldownManager.hasCooldown(CooldownManager.UltraJuly24VillagerWandCooldowns, p.getUniqueId())) {
+                                            CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.UltraJuly24VillagerWandCooldowns, p.getUniqueId()));
+                                        } else {
+                                            zombieVillager.setConversionTime(0);
+                                            CooldownManager.setCooldown(CooldownManager.UltraJuly24VillagerWandCooldowns, p.getUniqueId(), Duration.ofMinutes(JulyItemsConfig.UltraJuly24VillagerWandCooldown));
                                         }
                                     }
                                 }
