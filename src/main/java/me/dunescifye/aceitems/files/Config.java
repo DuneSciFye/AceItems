@@ -6,46 +6,15 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Config {
 
     public static String changeVariableMessage, cooldownMessageHours, cooldownMessageMinutes, cooldownMessageSeconds, confirmMessage,
         inClaimMessage, spawnerCommand, cannotUseHereMessage, keyCommand;
 
-    private static final Set<Material> unobtainableBlocks = new HashSet<>(Arrays.asList(
-        Material.BEDROCK,
-        Material.END_PORTAL_FRAME,
-        Material.END_PORTAL,
-        Material.LIGHT,
-        Material.BARRIER,
-        Material.COMMAND_BLOCK,
-        Material.CHAIN_COMMAND_BLOCK,
-        Material.REPEATING_COMMAND_BLOCK,
-        Material.STRUCTURE_VOID,
-        Material.STRUCTURE_BLOCK,
-        Material.JIGSAW,
-        Material.BLACK_CANDLE_CAKE,
-        Material.CANDLE_CAKE,
-        Material.BLUE_CANDLE_CAKE,
-        Material.CYAN_CANDLE_CAKE,
-        Material.BROWN_CANDLE_CAKE,
-        Material.GRAY_CANDLE_CAKE,
-        Material.GREEN_CANDLE_CAKE,
-        Material.LIGHT_BLUE_CANDLE_CAKE,
-        Material.LIGHT_GRAY_CANDLE_CAKE,
-        Material.LIME_CANDLE_CAKE,
-        Material.MAGENTA_CANDLE_CAKE,
-        Material.ORANGE_CANDLE_CAKE,
-        Material.PINK_CANDLE_CAKE,
-        Material.PURPLE_CANDLE_CAKE,
-        Material.RED_CANDLE_CAKE,
-        Material.WHITE_CANDLE_CAKE,
-        Material.YELLOW_CANDLE_CAKE
-    ));
+    public static List<Material> obtainableBlocks = new ArrayList<>();
 
     public static void setup(){
         Plugin plugin = AceItems.getInstance();
@@ -69,38 +38,11 @@ public class Config {
         if (!config.isSet("Messages.InClaimMessage")){
             config.set("Messages.InClaimMessage", "&cThis can only be used in your claim.");
         }
-        if (!config.isSet("unobtainableBlocks")){
-            List<String> unobtainableBlocks = Arrays.asList(
-                "BEDROCK",
-                "END_PORTAL_FRAME",
-                "END_PORTAL",
-                "LIGHT",
-                "BARRIER",
-                "COMMAND_BLOCK",
-                "CHAIN_COMMAND_BLOCK",
-                "REPEATING_COMMAND_BLOCK",
-                "STRUCTURE_VOID",
-                "STRUCTURE_BLOCK",
-                "JIGSAW",
-                "BLACK_CANDLE_CAKE",
-                "CANDLE_CAKE",
-                "BLUE_CANDLE_CAKE",
-                "CYAN_CANDLE_CAKE",
-                "BROWN_CANDLE_CAKE",
-                "GRAY_CANDLE_CAKE",
-                "GREEN_CANDLE_CAKE",
-                "LIGHT_BLUE_CANDLE_CAKE",
-                "LIGHT_GRAY_CANDLE_CAKE",
-                "LIME_CANDLE_CAKE",
-                "MAGENTA_CANDLE_CAKE",
-                "ORANGE_CANDLE_CAKE",
-                "PINK_CANDLE_CAKE",
-                "PURPLE_CANDLE_CAKE",
-                "RED_CANDLE_CAKE",
-                "WHITE_CANDLE_CAKE",
-                "YELLOW_CANDLE_CAKE"
+        if (!config.isSet("obtainableBlocks")){
+            List<String> obtainableBlocks = List.of(
+                "STONE"
             );
-            config.set("unobtainableBlocks", unobtainableBlocks);
+            config.set("unobtainableBlocks", obtainableBlocks);
         }
 
         changeVariableMessage = config.getString("Messages.ChangeVariableMessage");
@@ -111,8 +53,8 @@ public class Config {
         inClaimMessage = config.getString("Messages.InClaimMessage");
         cannotUseHereMessage = ConfigUtils.setupConfig("Message.CannotUseHere", config, "&cYou cannot use this here!", List.of("Message for when an item cannot be used. Example disabled worlds,"));
 
-        for (String material : config.getStringList("unobtainableBlocks")){
-            unobtainableBlocks.add(Material.getMaterial(material));
+        for (String material : config.getStringList("obtainableBlocks")){
+            obtainableBlocks.add(Material.getMaterial(material));
         }
 
         spawnerCommand = ConfigUtils.setupConfig("Commands.SpawnerCommand", config, "spawner admin give %player% %type%", List.of("Command used to give spawner. %player% for player and %type% for mob type."));
@@ -123,10 +65,6 @@ public class Config {
 
     public static String getInClaimMessage(){
         return inClaimMessage;
-    }
-
-    public static Set<Material> getUnobtainableBlocks(){
-        return unobtainableBlocks;
     }
 
 }

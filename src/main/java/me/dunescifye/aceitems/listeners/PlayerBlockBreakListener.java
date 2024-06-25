@@ -214,12 +214,12 @@ public class PlayerBlockBreakListener implements Listener {
                                     for (int z = -radius; z <= radius; z++) {
                                         Block block = b.getRelative(x, y, z);
                                         for (Predicate<Block> whitelisted : pickaxeWhitelist) {
-                                            if (whitelisted.test(b)) {
+                                            if (whitelisted.test(block)) {
                                                 for (Predicate<Block> blacklisted : pickaxeBlacklist) {
                                                     if (!blacklisted.test(block)) {
-                                                        drops.addAll(b.getDrops(item));
-                                                        if (p.getWorld().getEnvironment() == World.Environment.NETHER &&  BlockUtils.isNaturallyGenerated(block))
-                                                            drops.addAll(b.getDrops(item));
+                                                        drops.addAll(block.getDrops(item));
+                                                        if (p.getWorld().getEnvironment() == World.Environment.NETHER && BlockUtils.isNaturallyGenerated(block))
+                                                            drops.addAll(block.getDrops(item));
                                                         block.setType(Material.AIR);
                                                     }
                                                 }

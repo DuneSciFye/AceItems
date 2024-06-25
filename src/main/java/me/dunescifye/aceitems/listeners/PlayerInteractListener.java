@@ -35,7 +35,6 @@ import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import static me.dunescifye.aceitems.files.Config.*;
 import static me.dunescifye.aceitems.utils.BlockUtils.*;
@@ -44,11 +43,6 @@ import static me.dunescifye.aceitems.utils.Utils.*;
 import static net.kyori.adventure.text.format.NamedTextColor.GREEN;
 
 public class PlayerInteractListener implements Listener {
-
-    private static final List<Material> blockMaterials = Stream.of(Material.values())
-        .filter(Material::isBlock)
-        .filter(material -> !getUnobtainableBlocks().contains(material))
-        .toList();
 
     public static final Map<UUID, BukkitTask> confirm = new HashMap<>();
 
@@ -61,8 +55,7 @@ public class PlayerInteractListener implements Listener {
         ItemStack item = e.getItem();
         Player p = e.getPlayer();
 
-        if (item == null) return;
-        if (!item.hasItemMeta()) return;
+        if (item == null || !item.hasItemMeta()) return;
 
         Block b = e.getClickedBlock();
 
@@ -330,9 +323,8 @@ public class PlayerInteractListener implements Listener {
                             sendCooldownMessage(p, getRemainingCooldown(June24BlockWandCooldowns, p.getUniqueId()));
                         } else {
                             setCooldown(June24BlockWandCooldowns, p.getUniqueId(), Duration.ofMinutes(20));
-                            Material randomBlock = blockMaterials.get(ThreadLocalRandom.current().nextInt(blockMaterials.size()));
-                            Component message = Component.text("You received " + randomBlock.toString().toLowerCase().replace("_", " ") + ".", GREEN);
-                            p.sendMessage(message);
+                            Material randomBlock = obtainableBlocks.get(ThreadLocalRandom.current().nextInt(obtainableBlocks.size()));
+                            p.sendMessage(Component.text("You received " + randomBlock.toString().toLowerCase().replace("_", " ") + ".", GREEN));
                             ItemStack itemStack = new ItemStack(randomBlock, ThreadLocalRandom.current().nextInt(1, 129));
                             Utils.dropItems(p.getLocation(), itemStack);
                         }
@@ -345,9 +337,8 @@ public class PlayerInteractListener implements Listener {
                             sendCooldownMessage(p, getRemainingCooldown(UltraJune24BlockWandCooldowns, p.getUniqueId()));
                         } else {
                             setCooldown(UltraJune24BlockWandCooldowns, p.getUniqueId(), Duration.ofMinutes(10));
-                            Material randomBlock = blockMaterials.get(ThreadLocalRandom.current().nextInt(blockMaterials.size()));
-                            Component message = Component.text("You received " + randomBlock.toString().toLowerCase().replace("_", " ") + ".", GREEN);
-                            p.sendMessage(message);
+                            Material randomBlock = obtainableBlocks.get(ThreadLocalRandom.current().nextInt(obtainableBlocks.size()));
+                            p.sendMessage(Component.text("You received " + randomBlock.toString().toLowerCase().replace("_", " ") + ".", GREEN));
                             ItemStack itemStack = new ItemStack(randomBlock, ThreadLocalRandom.current().nextInt(1, 129));
                             Utils.dropItems(p.getLocation(), itemStack);
                         }
@@ -502,12 +493,14 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                 }
-                case "UltraJuly24BeachMaker" -> {
+                case
+                    "UltraJuly24BeachMaker" -> {
                     if (p.isSneaking() && !AceItems.disabledWorlds.get("July24BeachMaker").contains(p.getWorld().getName())) {
                         July24BeachMaker(p, 10);
                     }
                 }
-                case "July24SlimeWand" -> {
+                case
+                    "July24SlimeWand" -> {
                     if (p.isSneaking()) {
                         int currentUses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
                         if (currentUses < 64) {
@@ -535,8 +528,12 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                 }
-                case "July24Shovel" ->
+                case
+                    "July24Shovel" ->
                     Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Mining Mode", 0, "1x1", 1, "3x3");
+                case "June24GrowthStunter" -> {
+                    e.setCancelled(true);
+                }
             }
         }
         //Left click
