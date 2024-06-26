@@ -28,7 +28,7 @@ public class JulyItemsConfig {
         July24FishingRodSalmonSpawnEggChance, July24FishingRodAxolotlSpawnEggChance, July24FishingRodTurtleSpawnEggChance, July24FishingRodSquidSpawnEggChance,
         July24BeachMakerCooldown, July24SlimeWandDefaultUses, July24TridentPVPKeyChance, July24TridentFishKeyChance, July24AxeFireworkDamage,
         July24AxeIgnoreArmorChance, July24ShovelBedrockChance, July24ShovelReinforcedDeepslateChance, July24VillagerWandCureCooldown, July24VillagerWandZombifyCooldown,
-        UltraJuly24VillagerWandCooldown, UltraJuly24VillagerWandEmeraldCooldown;
+        UltraJuly24VillagerWandEmeraldCooldown;
     public static double July24ArmorExtraDamagePercent, July24ArmorFireDamageReductionPercent, July24SaddleLaunchStrength, July24TridentExtraDamagePercent;
     public static String July24JobsLanternIncomeBoostPerm, UltraJuly24JobsLanternIncomeBoostPerm, July24MoreOPSwordSlayerPointsCommand,
         July24MoreOPSwordKillAnnouncement, July24FishingRodFishKeyCommand, July24SpeedVoucherPerm, July24SlimeWandMissingSlimeBallsMessage,
