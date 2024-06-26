@@ -347,8 +347,8 @@ public class PlayerInteractListener implements Listener {
                 case
                     "June24LeafBlower" -> {
                     if (!AceItems.disabledWorlds.get("June24LeafBlower").contains(p.getWorld().getName())) {
+                        String leafType = container.get(AceItems.keyState, PersistentDataType.STRING);
                         Bukkit.getScheduler().runTask(AceItems.getInstance(), () -> {
-                            String leafType = container.get(AceItems.keyState, PersistentDataType.STRING);
                             if (p.isSneaking()) {
                                 sendPlayerChangeVariableMessage(p, changeVariableMessage, "Leaf Type", inputOutput(leafType, "OAK", "Spruce", "SPRUCE", "Jungle", "JUNGLE", "Dark Oak", "DARK_OAK", "Birch", "BIRCH", "Acacia", "ACACIA", "Mangrove", "MANGROVE", "Cherry", "CHERRY", "Azalea", "AZALEA", "Flowering Azalea", "FLOWERING_AZALEA", "Oak"));
                                 meta.getPersistentDataContainer().set(AceItems.keyState, PersistentDataType.STRING, inputOutputCycle(leafType, "OAK", "SPRUCE", "JUNGLE", "DARK_OAK", "BIRCH", "ACACIA", "MANGROVE", "CHERRY", "AZALEA", "FLOWERING_AZALEA", "OAK"));
@@ -357,12 +357,10 @@ public class PlayerInteractListener implements Listener {
                             } else if (b != null) {
                                 Block blockRelative = b.getRelative(e.getBlockFace());
                                 Claim claim = GriefPrevention.instance.dataStore.getClaimAt(blockRelative.getLocation(), true, null);
-                                if (claim != null && blockRelative.getType() == Material.AIR) {
-                                    if (claim.getOwnerID().equals(p.getUniqueId())) {
+                                    if (blockRelative.getType() == Material.AIR && (claim == null || claim.getOwnerID().equals(p.getUniqueId()))) {
                                         blockRelative.setType(Material.valueOf(leafType + "_LEAVES"));
                                     } else {
                                         sendClaimMessage(p);
-                                    }
                                 }
                             }
                         });
