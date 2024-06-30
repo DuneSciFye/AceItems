@@ -367,51 +367,55 @@ public class PlayerInteractListener implements Listener {
                     }
                 }
                 case
-                    "June24LavaWaterBucket" -> {
-                    if (b != null) {
-                        if (p.isSneaking()) {
-                            if (hasCooldown(June24LavaWaterBucketCooldowns, p.getUniqueId())) {
-                                sendCooldownMessage(p, getRemainingCooldown(June24LavaWaterBucketCooldowns, p.getUniqueId()));
-                            } else {
-                                setCooldown(June24LavaWaterBucketCooldowns, p.getUniqueId(), Duration.ofMinutes(5));
-                                removeInRadius(b, 3, getWater());
-                            }
-                        } else {
-                            Block blockRelative = b.getRelative(e.getBlockFace());
-                            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(blockRelative.getLocation(), true, null);
-                            if (claim != null) {
-                                if (claim.getOwnerID().equals(p.getUniqueId())) {
-                                    blockRelative.setType(Material.WATER);
+                    "June24LavaBucket" -> {
+                    if (!AceItems.disabledWorlds.get("June24LavaBucket").contains(p.getWorld().getName())) {
+                        if (b != null) {
+                            if (p.isSneaking()) {
+                                if (hasCooldown(June24LavaWaterBucketCooldowns, p.getUniqueId())) {
+                                    sendCooldownMessage(p, getRemainingCooldown(June24LavaWaterBucketCooldowns, p.getUniqueId()));
                                 } else {
-                                    sendClaimMessage(p);
+                                    setCooldown(June24LavaWaterBucketCooldowns, p.getUniqueId(), Duration.ofMinutes(5));
+                                    removeInRadius(b, 3, getWater());
                                 }
                             } else {
-                                blockRelative.setType(Material.WATER);
+                                Block blockRelative = b.getRelative(e.getBlockFace());
+                                Claim claim = GriefPrevention.instance.dataStore.getClaimAt(blockRelative.getLocation(), true, null);
+                                if (claim != null) {
+                                    if (claim.getOwnerID().equals(p.getUniqueId())) {
+                                        blockRelative.setType(Material.WATER);
+                                    } else {
+                                        sendClaimMessage(p);
+                                    }
+                                } else {
+                                    blockRelative.setType(Material.WATER);
+                                }
                             }
                         }
                     }
                 }
                 case
                     "UltraJune24LavaWaterBucket" -> {
-                    if (b != null) {
-                        if (p.isSneaking()) {
-                            if (hasCooldown(UltraJune24LavaWaterBucketCooldowns, p.getUniqueId())) {
-                                sendCooldownMessage(p, getRemainingCooldown(UltraJune24LavaWaterBucketCooldowns, p.getUniqueId()));
-                            } else {
-                                setCooldown(UltraJune24LavaWaterBucketCooldowns, p.getUniqueId(), Duration.ofSeconds(30));
-                                removeInRadius(b, 3, getWater());
-                            }
-                        } else {
-                            Block blockRelative = b.getRelative(e.getBlockFace());
-                            Claim claim = GriefPrevention.instance.dataStore.getClaimAt(blockRelative.getLocation(), true, null);
-                            if (claim != null) {
-                                if (claim.getOwnerID().equals(p.getUniqueId())) {
-                                    blockRelative.setType(Material.WATER);
+                    if (!AceItems.disabledWorlds.get("UltraJune24LavaWaterBucket").contains(p.getWorld().getName())) {
+                        if (b != null) {
+                            if (p.isSneaking()) {
+                                if (hasCooldown(UltraJune24LavaWaterBucketCooldowns, p.getUniqueId())) {
+                                    sendCooldownMessage(p, getRemainingCooldown(UltraJune24LavaWaterBucketCooldowns, p.getUniqueId()));
                                 } else {
-                                    sendClaimMessage(p);
+                                    setCooldown(UltraJune24LavaWaterBucketCooldowns, p.getUniqueId(), Duration.ofSeconds(30));
+                                    removeInRadius(b, 3, getWater());
                                 }
                             } else {
-                                blockRelative.setType(Material.WATER);
+                                Block blockRelative = b.getRelative(e.getBlockFace());
+                                Claim claim = GriefPrevention.instance.dataStore.getClaimAt(blockRelative.getLocation(), true, null);
+                                if (claim != null) {
+                                    if (claim.getOwnerID().equals(p.getUniqueId())) {
+                                        blockRelative.setType(Material.WATER);
+                                    } else {
+                                        sendClaimMessage(p);
+                                    }
+                                } else {
+                                    blockRelative.setType(Material.WATER);
+                                }
                             }
                         }
                     }
