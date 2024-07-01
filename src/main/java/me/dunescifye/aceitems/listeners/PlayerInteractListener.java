@@ -16,11 +16,14 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -80,18 +83,26 @@ public class PlayerInteractListener implements Listener {
                         if (CooldownManager.hasCooldown(July24PaintBrushCooldowns, p.getUniqueId())) {
                             CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(July24PaintBrushCooldowns, p.getUniqueId()));
                         } else {
-                            b.setType(Objects.requireNonNull(Material.getMaterial(changeColor(b.getType().toString(), container.get(AceItems.keyState, PersistentDataType.STRING)))));
-                            int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
-                            if (uses > 1) {
-                                container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 1);
-                            } else {
-                                container.set(AceItems.keyUses, PersistentDataType.INTEGER, JulyItemsConfig.July24PaintBrushUses);
-                                CooldownManager.setCooldown(July24MelonWandCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.July24PaintBrushCooldown));
+                            if (!(b instanceof ShulkerBox)) {
+                                b.setType(Objects.requireNonNull(Material.getMaterial(changeColor(b.getType().toString(), container.get(AceItems.keyState, PersistentDataType.STRING)))));
+                                int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
+                                if (uses > 1) {
+                                    container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 1);
+                                } else {
+                                    container.set(AceItems.keyUses, PersistentDataType.INTEGER, JulyItemsConfig.July24PaintBrushUses);
+                                    CooldownManager.setCooldown(July24MelonWandCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.July24PaintBrushCooldown));
+                                }
+                                item.setItemMeta(meta);
                             }
-                            item.setItemMeta(meta);
                         }
                     }
-                    case "UltraJuly24PaintBrush" -> b.setType(Objects.requireNonNull(Material.getMaterial(changeColor(b.getType().toString(), container.get(AceItems.keyState, PersistentDataType.STRING)))));
+                    case "UltraJuly24PaintBrush" -> {
+                        if (!AceItems.disabledWorlds.get("June24PropTool").contains(p.getWorld().getName())) {
+                            if (!(b instanceof ShulkerBox)) {
+                                b.setType(Objects.requireNonNull(Material.getMaterial(changeColor(b.getType().toString(), container.get(AceItems.keyState, PersistentDataType.STRING)))));
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -357,10 +368,10 @@ public class PlayerInteractListener implements Listener {
                             } else if (b != null) {
                                 Block blockRelative = b.getRelative(e.getBlockFace());
                                 Claim claim = GriefPrevention.instance.dataStore.getClaimAt(blockRelative.getLocation(), true, null);
-                                    if (blockRelative.getType() == Material.AIR && (claim == null || claim.getOwnerID().equals(p.getUniqueId()))) {
-                                        blockRelative.setType(Material.valueOf(leafType + "_LEAVES"));
-                                    } else {
-                                        sendClaimMessage(p);
+                                if (blockRelative.getType() == Material.AIR && (claim == null || claim.getOwnerID().equals(p.getUniqueId()))) {
+                                    blockRelative.setType(Material.valueOf(leafType + "_LEAVES"));
+                                } else {
+                                    sendClaimMessage(p);
                                 }
                             }
                         });
@@ -473,11 +484,15 @@ public class PlayerInteractListener implements Listener {
                     }
                 }
                 case
-                    "July24MoreOPPickaxe" ->
-                    Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Mining Mode", 0, "1x1", 1, "3x3");
+                    "July24MoreOPPickaxe" -> {
+                    if (p.isSneaking())
+                        Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Mining Mode", 0, "1x1", 1, "3x3");
+                }
                 case
-                    "UltraJuly24MoreOPPickaxe" ->
-                    Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Mining Mode", 0, "1x1", 1, "3x3", 2, "5x5");
+                    "UltraJuly24MoreOPPickaxe" -> {
+                    if (p.isSneaking())
+                        Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Mining Mode", 0, "1x1", 1, "3x3", 2, "5x5");
+                }
                 case
                     "July24Hoe" ->
                     Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Farming Mode", 0, "1x1", 1, "3x3");

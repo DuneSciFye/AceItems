@@ -191,6 +191,15 @@ public class BlockUtils {
         return unbreakableBlocks;
     }
 
+    public static boolean notInBlacklist(Block b, List<Predicate<Block>> blacklist) {
+        for (Predicate<Block> blacklisted : blacklist) {
+            if (blacklisted.test(b)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static void breakInRadius(Block block, int radius, Player player, List<Predicate<Block>> whitelist, List<Predicate<Block>> blacklist) {
 
         ItemStack heldItem = player.getInventory().getItemInMainHand();
@@ -203,11 +212,9 @@ public class BlockUtils {
                     Block b = block.getRelative(x, y, z);
                     for (Predicate<Block> whitelisted : whitelist) {
                         if (whitelisted.test(b)) {
-                            for (Predicate<Block> blacklisted : blacklist) {
-                                if (!blacklisted.test(b)) {
-                                    drops.addAll(b.getDrops(heldItem));
-                                    b.setType(Material.AIR);
-                                }
+                            if (notInBlacklist(b, blacklist)) {
+                                drops.addAll(b.getDrops(heldItem));
+                                b.setType(Material.AIR);
                             }
                         }
                     }
@@ -255,13 +262,10 @@ public class BlockUtils {
 
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
-                blockLoop: for (int z = -radius; z <= radius; z++) {
+                for (int z = -radius; z <= radius; z++) {
                     Block b = block.getRelative(x, y, z);
-                    for (Predicate<Block> blacklisted : blacklist) {
-                        if (blacklisted.test(b)) {
-                            continue blockLoop;
-                        }
-                    }
+                    if (notInBlacklist(b, blacklist))
+                        continue;
                     drops.addAll(b.getDrops(heldItem));
                     b.setType(Material.AIR);
                 }
@@ -280,11 +284,8 @@ public class BlockUtils {
                     Block b = block.getRelative(x, y, z);
                     for (Predicate<Block> whitelisted : whitelist) {
                         if (whitelisted.test(b)) {
-                            for (Predicate<Block> blacklisted : blacklist) {
-                                if (!blacklisted.test(b)) {
+                            if (notInBlacklist(b, blacklist))
                                     b.setType(Material.AIR);
-                                }
-                            }
                         }
                     }
                 }

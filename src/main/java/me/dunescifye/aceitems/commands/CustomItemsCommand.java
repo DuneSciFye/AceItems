@@ -7,7 +7,10 @@ import me.dunescifye.aceitems.AceItems;
 import me.dunescifye.aceitems.files.JulyItemsConfig;
 import me.dunescifye.aceitems.files.JuneItemsConfig;
 import me.dunescifye.aceitems.files.Config;
+import me.dunescifye.aceitems.utils.BlockUtils;
 import me.dunescifye.aceitems.utils.Utils;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -111,6 +114,15 @@ public class CustomItemsCommand {
                 p.sendMessage("Cleared cooldowns.");
             })
             .withPermission("customitems.command")
+            .register();
+
+
+
+        new CommandAPICommand("testa")
+            .withArguments(new LocationArgument("Block"))
+            .executesPlayer((player, args) -> {
+                player.sendMessage(String.valueOf(BlockUtils.isNaturallyGenerated(player.getWorld().getBlockAt((Location) args.get("Block")))));
+            })
             .register();
     }
 
