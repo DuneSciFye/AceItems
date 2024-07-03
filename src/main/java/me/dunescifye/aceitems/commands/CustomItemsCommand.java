@@ -118,12 +118,6 @@ public class CustomItemsCommand {
 
 
 
-        new CommandAPICommand("testa")
-            .withArguments(new LocationArgument("Block"))
-            .executesPlayer((player, args) -> {
-                player.sendMessage(String.valueOf(BlockUtils.isNaturallyGenerated(player.getWorld().getBlockAt((Location) args.get("Block")))));
-            })
-            .register();
     }
 
 }

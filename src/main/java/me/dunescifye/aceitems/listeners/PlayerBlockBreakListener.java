@@ -218,9 +218,8 @@ public class PlayerBlockBreakListener implements Listener {
                                             if (whitelisted.test(block)) {
                                                 if (notInBlacklist(b, pickaxeBlacklist)) {
                                                     drops.addAll(block.getDrops(item));
-                                                    //p.sendMessage(String.valueOf(BlockUtils.isNaturallyGenerated(block)));
-                                                    //if (p.getWorld().getEnvironment() == World.Environment.NETHER && BlockUtils.isNaturallyGenerated(block))
-                                                        //drops.addAll(block.getDrops(item));
+                                                    if (p.getWorld().getEnvironment() == World.Environment.NETHER && BlockUtils.isNaturallyGenerated(block))
+                                                        drops.addAll(block.getDrops(item));
                                                     block.setType(Material.AIR);
                                                 }
                                             }

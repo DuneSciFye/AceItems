@@ -335,7 +335,10 @@ public class BlockUtils {
     }
 
     public static boolean isNaturallyGenerated(Block block) {
-        List<String[]> lookup = getCoreProtect().blockLookup(block, 2147483647);
+        List<String[]> lookup = getCoreProtect().queueLookup(block);
+        if (lookup == null || lookup.isEmpty()) {
+            lookup = getCoreProtect().blockLookup(block, 2147483647);
+        }
         if (lookup != null && !lookup.isEmpty()) {
             CoreProtectAPI.ParseResult parseResult = getCoreProtect().parseResult(lookup.get(0));
             return parseResult.getPlayer().startsWith("#") || parseResult.getActionId() != 1 || parseResult.isRolledBack();
