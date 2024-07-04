@@ -216,8 +216,8 @@ public class Utils {
         List<Component> loreList = item.lore();
 
         TextReplacementConfig config = TextReplacementConfig.builder()
-            .match(matcher)
-            .replacement(replacement)
+            .match(" " + matcher + " ")
+            .replacement(" " + replacement + " ")
             .build();
 
         if (loreList != null)

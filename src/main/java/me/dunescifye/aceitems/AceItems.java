@@ -102,6 +102,7 @@ public final class AceItems extends JavaPlugin {
         new PlayerItemHeldListener().playerItemHeldHandler(this);
         new BlockPlaceListener().blockPlaceHandler(this);
         new FurnaceSmeltListener().furnaceSmeltHandler(this);
+        new EntityDamageListener().entityDamageHandler(this);
     }
 
     @Override

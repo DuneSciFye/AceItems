@@ -25,6 +25,17 @@ public class BlockUtils {
         pickaxeWhitelist.add(pickaxeMineable);
     }
 
+    public static List<Predicate<Block>> axeWhitelist = List.of(
+        block -> Tag.MINEABLE_AXE.isTagged(block.getType()),
+        block -> Tag.LEAVES.isTagged(block.getType())
+    );
+    public static List<Predicate<Block>> axeBlacklist = List.of(
+        block -> block.getType().equals(Material.BARREL),
+        block -> block.getType().equals(Material.CHEST),
+        block -> block.getType().equals(Material.TRAPPED_CHEST),
+        block -> Tag.ALL_SIGNS.isTagged(block.getType())
+    );
+
     public static List<Predicate<Block>> shovelWhitelist = List.of(
         block -> Tag.MINEABLE_SHOVEL.isTagged(block.getType())
     );
@@ -335,10 +346,7 @@ public class BlockUtils {
     }
 
     public static boolean isNaturallyGenerated(Block block) {
-        List<String[]> lookup = getCoreProtect().queueLookup(block);
-        if (lookup == null || lookup.isEmpty()) {
-            lookup = getCoreProtect().blockLookup(block, 2147483647);
-        }
+        List<String[]> lookup = getCoreProtect().blockLookup(block, 2147483647);
         if (lookup != null && !lookup.isEmpty()) {
             CoreProtectAPI.ParseResult parseResult = getCoreProtect().parseResult(lookup.get(0));
             return parseResult.getPlayer().startsWith("#") || parseResult.getActionId() != 1 || parseResult.isRolledBack();
@@ -398,6 +406,7 @@ public class BlockUtils {
 
         // Break all collected blocks
         for (Block b : blocksToBreak) {
+            if (b.equals(block)) continue;
             drops.addAll(b.getDrops(heldItem));
             b.setType(Material.AIR);
         }

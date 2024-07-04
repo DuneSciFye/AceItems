@@ -218,8 +218,9 @@ public class PlayerBlockBreakListener implements Listener {
                                             if (whitelisted.test(block)) {
                                                 if (notInBlacklist(b, pickaxeBlacklist)) {
                                                     drops.addAll(block.getDrops(item));
-                                                    if (p.getWorld().getEnvironment() == World.Environment.NETHER && BlockUtils.isNaturallyGenerated(block))
-                                                        drops.addAll(block.getDrops(item));
+                                                    //p.sendMessage(String.valueOf(BlockUtils.isNaturallyGenerated(block)));
+                                                    //if (p.getWorld().getEnvironment() == World.Environment.NETHER && BlockUtils.isNaturallyGenerated(block))
+                                                        //drops.addAll(block.getDrops(item));
                                                     block.setType(Material.AIR);
                                                 }
                                             }
@@ -304,7 +305,13 @@ public class PlayerBlockBreakListener implements Listener {
                     }
                     case "July24Axe" -> {
                         if (!AceItems.disabledWorlds.get("July24Axe").contains(p.getWorld().getName())) {
-                            BlockUtils.veinMine(b, b.getType(), item);
+                            for (Predicate<Block> whitelist : axeWhitelist) {
+                                if (whitelist.test(b)) {
+                                    if (notInBlacklist(b, axeBlacklist)) {
+                                        BlockUtils.veinMine(b, b.getType(), item);
+                                    }
+                                }
+                            }
                         }
                     }
                     case "July24Shovel" -> {

@@ -16,6 +16,7 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -276,7 +277,7 @@ public class EntityDamageByEntityListener implements Listener {
                 && !AceItems.disabledWorlds.get("July24Helmet").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Chestplate").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Leggings").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Boots").contains(p.getWorld().getName())) {
                 //July 24 Armor Chance to push attacker back
                 if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24ArmorLaunchChance) == 0)
-                    attacker.setVelocity(attacker.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().multiply(1));
+                    attacker.setVelocity(attacker.getLocation().toVector().subtract(p.getLocation().toVector()).normalize().multiply(JulyItemsConfig.July24ArmorLaunchStrength).add(new Vector(0, JulyItemsConfig.July24ArmorLaunchStrength, 0)));
                 //July 24 Armor Thorn Immunity
                 if (e.getCause() == EntityDamageEvent.DamageCause.THORNS) e.setCancelled(true);
                 else if (e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || e.getCause() == EntityDamageEvent.DamageCause.FIRE || e.getCause() == EntityDamageEvent.DamageCause.LAVA) {

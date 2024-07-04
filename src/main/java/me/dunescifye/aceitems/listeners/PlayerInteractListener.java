@@ -18,6 +18,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.block.data.type.Leaves;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -370,6 +371,10 @@ public class PlayerInteractListener implements Listener {
                                 Claim claim = GriefPrevention.instance.dataStore.getClaimAt(blockRelative.getLocation(), true, null);
                                 if (blockRelative.getType() == Material.AIR && (claim == null || claim.getOwnerID().equals(p.getUniqueId()))) {
                                     blockRelative.setType(Material.valueOf(leafType + "_LEAVES"));
+                                    if (blockRelative.getBlockData() instanceof Leaves leaves) {
+                                        leaves.setPersistent(true);
+                                        blockRelative.setBlockData(leaves);
+                                    }
                                 } else {
                                     sendClaimMessage(p);
                                 }
@@ -493,12 +498,14 @@ public class PlayerInteractListener implements Listener {
                     if (p.isSneaking())
                         Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Mining Mode", 0, "1x1", 1, "3x3", 2, "5x5");
                 }
-                case
-                    "July24Hoe" ->
-                    Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Farming Mode", 0, "1x1", 1, "3x3");
-                case
-                    "UltraJuly24Hoe" ->
-                    Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Farming Mode", 0, "1x1", 1, "3x3", 2, "5x5");
+                case "July24Hoe" -> {
+                    if (p.isSneaking())
+                        Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Farming Mode", 0, "1x1", 1, "3x3");
+                }
+                case "UltraJuly24Hoe" -> {
+                    if (p.isSneaking())
+                        Utils.updateKey(p, item, meta, container, AceItems.keyRadius, AceItems.keyRadiusLore, "Farming Mode", 0, "1x1", 1, "3x3", 2, "5x5");
+                }
                 case
                     "July24BeachMaker" -> {
                     if (p.isSneaking() && !AceItems.disabledWorlds.get("July24BeachMaker").contains(p.getWorld().getName())) {
