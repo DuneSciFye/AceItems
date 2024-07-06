@@ -412,7 +412,7 @@ public class BlockUtils {
         }
 
         for (ItemStack drop : mergeSimilarItemStacks(drops)){
-            block.getWorld().dropItemNaturally(block.getLocation(), drop);
+            Utils.dropItems(block.getLocation(), drop);
         }
     }
 

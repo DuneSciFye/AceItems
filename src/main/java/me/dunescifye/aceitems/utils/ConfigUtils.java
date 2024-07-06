@@ -1,5 +1,6 @@
 package me.dunescifye.aceitems.utils;
 
+import dev.lone.itemsadder.api.CustomStack;
 import me.dunescifye.aceitems.AceItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -217,6 +218,11 @@ public class ConfigUtils {
             material = Material.PAPER;
         }
         ItemStack item = new ItemStack(material);
+        if (config.isSet(itemID + ".iaItem")) {
+            CustomStack stack = CustomStack.getInstance(config.getString(itemID + ".iaItem"));
+            if(stack != null)
+                item = stack.getItemStack();
+        }
         ItemMeta meta = item.getItemMeta();
 
         meta.getPersistentDataContainer().set(AceItems.keyItemID, PersistentDataType.STRING, itemID);
@@ -321,6 +327,11 @@ public class ConfigUtils {
             material = Material.PAPER;
         }
         ItemStack item = new ItemStack(material);
+        if (config.isSet(itemID + ".iaItem")) {
+            CustomStack stack = CustomStack.getInstance(config.getString(itemID + ".iaItem"));
+            if(stack != null)
+                item = stack.getItemStack();
+        }
         ItemMeta meta = item.getItemMeta();
 
         //Setting PDC's
