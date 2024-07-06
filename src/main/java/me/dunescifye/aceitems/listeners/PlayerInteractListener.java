@@ -450,7 +450,9 @@ public class PlayerInteractListener implements Listener {
                 case
                     "July24SpawnerBundle" -> {
                     if (container.has(AceItems.keyUses, PersistentDataType.INTEGER)) {
-                        Utils.runConsoleCommand(spawnerCommand.replace("%player%", p.getName()).replace("%type%", randomString(JulyItemsConfig.July24SpawnerBundleMobTypes).toString()));
+                        String spawnerType = randomString(JulyItemsConfig.July24SpawnerBundleMobTypes).toString();
+                        Utils.runConsoleCommand(spawnerCommand.replace("%player%", p.getName()).replace("%type%", spawnerType));
+                        p.sendMessage(Component.text("You received a " + spawnerType + " spawner!", GREEN));
                         int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
                         if (uses < 1) {
                             item.setAmount(item.getAmount() - 1);
