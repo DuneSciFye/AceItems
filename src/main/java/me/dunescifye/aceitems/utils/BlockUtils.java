@@ -275,10 +275,10 @@ public class BlockUtils {
             for (int y = -radius; y <= radius; y++) {
                 for (int z = -radius; z <= radius; z++) {
                     Block b = block.getRelative(x, y, z);
-                    if (notInBlacklist(b, blacklist))
-                        continue;
-                    drops.addAll(b.getDrops(heldItem));
-                    b.setType(Material.AIR);
+                    if (notInBlacklist(b, blacklist)) {
+                        drops.addAll(b.getDrops(heldItem));
+                        b.setType(Material.AIR);
+                    }
                 }
             }
         }

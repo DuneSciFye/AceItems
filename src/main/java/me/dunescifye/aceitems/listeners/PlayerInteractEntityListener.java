@@ -62,7 +62,7 @@ public class PlayerInteractEntityListener implements Listener {
                             CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.July24VillagerWandZombifyCooldowns, p.getUniqueId()));
                         } else {
                             villager.zombify();
-                            CooldownManager.setCooldown(CooldownManager.July24VillagerWandZombifyCooldowns, p.getUniqueId(), Duration.ofMinutes(JulyItemsConfig.July24VillagerWandZombifyCooldown));
+                            CooldownManager.setCooldown(CooldownManager.July24VillagerWandZombifyCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.July24VillagerWandZombifyCooldown));
                         }
                     }
                 }

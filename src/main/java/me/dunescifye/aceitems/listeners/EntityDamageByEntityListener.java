@@ -89,7 +89,8 @@ public class EntityDamageByEntityListener implements Listener {
                 //Mainhand items
                 ItemStack item = p.getInventory().getItemInMainHand();
                 if (item.hasItemMeta()){
-                    PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+                    ItemMeta meta = item.getItemMeta();
+                    PersistentDataContainer container = meta.getPersistentDataContainer();
                     String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
                     if (itemID != null) {
                         switch (itemID) {
@@ -154,6 +155,7 @@ public class EntityDamageByEntityListener implements Listener {
                                         } else {
                                             container.set(AceItems.keyInt, PersistentDataType.INTEGER, crits + 1);
                                         }
+                                        item.setItemMeta(meta);
                                     }
                                     if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24AxeIgnoreArmorChance) == 0) {
                                         e.setDamage(EntityDamageEvent.DamageModifier.ARMOR, 0);
@@ -231,7 +233,7 @@ public class EntityDamageByEntityListener implements Listener {
                                     }
                                 }
                             }
-                            case "July24Bow" ->
+                            case "July24Bow", "July24XBow" ->
                                 spawnNoDamageFirework(entity);
                         }
                     }

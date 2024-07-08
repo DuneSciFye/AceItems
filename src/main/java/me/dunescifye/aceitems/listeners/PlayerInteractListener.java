@@ -84,14 +84,13 @@ public class PlayerInteractListener implements Listener {
                         if (CooldownManager.hasCooldown(July24PaintBrushCooldowns, p.getUniqueId())) {
                             CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(July24PaintBrushCooldowns, p.getUniqueId()));
                         } else {
-                            if (!(b instanceof ShulkerBox)) {
+                            if (!(b.getState() instanceof ShulkerBox)) {
                                 b.setType(Objects.requireNonNull(Material.getMaterial(changeColor(b.getType().toString(), container.get(AceItems.keyState, PersistentDataType.STRING)))));
                                 int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
                                 if (uses > 1) {
                                     container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 1);
                                 } else {
                                     container.set(AceItems.keyUses, PersistentDataType.INTEGER, JulyItemsConfig.July24PaintBrushUses);
-                                    CooldownManager.setCooldown(July24MelonWandCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.July24PaintBrushCooldown));
                                 }
                                 item.setItemMeta(meta);
                             }
@@ -463,12 +462,6 @@ public class PlayerInteractListener implements Listener {
                     }
                 }
                 case
-                    "July24DirtWand" -> {
-                    if (p.isSneaking()) {
-                        Utils.updateKey(p, item, meta, container, AceItems.keyState, AceItems.keyStateLore, "Dirt Type", "PODZOL", "Podzol", "DIRT", "Dirt", "COARSE_DIRT", "Coarse Dirt", "FARMLAND", "Farmland", "DIRT_PATH", "Dirt Path", "GRASS_BLOCK", "Grass Block");
-                    }
-                }
-                case
                     "July24MelonWand" -> {
                     if (p.isSneaking()) {
                         if (CooldownManager.hasCooldown(July24MelonWandCooldowns, p.getUniqueId())) {
@@ -477,7 +470,8 @@ public class PlayerInteractListener implements Listener {
                             accelerateMelonGrowth(p.getLocation().getBlock(), JulyItemsConfig.July24MelonWandRadius);
                             CooldownManager.setCooldown(July24MelonWandCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.July24MelonWandCooldown));
                         }
-                    }
+                    } else
+                        Utils.updateKey(p, item, meta, container, AceItems.keyState, AceItems.keyStateLore, "Dirt Type", "PODZOL", "Podzol", "DIRT", "Dirt", "COARSE_DIRT", "Coarse Dirt", "FARMLAND", "Farmland", "DIRT_PATH", "Dirt Path", "GRASS_BLOCK", "Grass Block");
                 }
                 case
                     "UltraJuly24MelonWand" -> {
@@ -488,7 +482,8 @@ public class PlayerInteractListener implements Listener {
                             accelerateMelonGrowth(p.getLocation().getBlock(), JulyItemsConfig.UltraJuly24MelonWandRadius);
                             CooldownManager.setCooldown(UltraJuly24MelonWandCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.UltraJuly24MelonWandCooldown));
                         }
-                    }
+                    } else
+                        Utils.updateKey(p, item, meta, container, AceItems.keyState, AceItems.keyStateLore, "Dirt Type", "PODZOL", "Podzol", "DIRT", "Dirt", "COARSE_DIRT", "Coarse Dirt", "FARMLAND", "Farmland", "DIRT_PATH", "Dirt Path", "GRASS_BLOCK", "Grass Block");
                 }
                 case
                     "July24MoreOPPickaxe" -> {
@@ -540,11 +535,23 @@ public class PlayerInteractListener implements Listener {
                             for (int i = 0; i < 5; i++) {
                                 slimes.add(p.getWorld().spawn(p.getLocation(), Slime.class));
                             }
+
+                            Bukkit.getScheduler().runTaskLater(AceItems.getInstance(), () -> {
+                                for (Entity target : p.getNearbyEntities(20.0, 20.0, 20.0)) {
+                                    if (target instanceof Player nearbyPlayer && nearbyPlayer != p) {
+                                        for (Slime slime : slimes) {
+                                            slime.setTarget(nearbyPlayer);
+                                        }
+                                        break;
+                                    }
+                                }
+                            }, 20L);
+
                             Bukkit.getScheduler().runTaskLater(AceItems.getInstance(), () -> {
                                 for (Slime slime : slimes) {
                                     slime.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, slime.getLocation(), 3);
                                     for (Entity entity : slime.getNearbyEntities(3, 3, 3)) {
-                                        if (entity instanceof LivingEntity livingEntity && livingEntity != p) {
+                                        if (entity instanceof LivingEntity livingEntity && livingEntity != p && !(livingEntity instanceof Slime)) {
                                             livingEntity.damage(10, p);
                                         }
                                     }
@@ -820,7 +827,7 @@ public class PlayerInteractListener implements Listener {
                             }
                         }
                     }
-                    case "July24DirtWand" -> {
+                    case "July24MelonWand" -> {
                         if (BlockUtils.getDirtBlocks().contains(b.getType())) {
                             String blockType = container.get(AceItems.keyState, PersistentDataType.STRING);
                             if (blockType != null) {
