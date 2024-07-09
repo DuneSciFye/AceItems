@@ -250,6 +250,7 @@ public class PlayerBlockBreakListener implements Listener {
                         for (int x = -radius; x <= radius; x++){
                             for (int z = -radius; z <= radius; z++){
                                 Block block = b.getRelative(x, 0, z);
+                                if (b.equals(block)) continue;
                                 BlockData blockData = block.getBlockData();
                                 if (blockData instanceof Ageable ageable && ageable.getAge() == ageable.getMaximumAge()) {
                                     Collection<ItemStack> blockDrops = block.getDrops(item);
@@ -320,6 +321,9 @@ public class PlayerBlockBreakListener implements Listener {
                                 Utils.dropItems(b.getLocation(), new ItemStack(Material.BEDROCK));
                             if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24ShovelReinforcedDeepslateChance) == 0)
                                 Utils.dropItems(b.getLocation(), new ItemStack(Material.REINFORCED_DEEPSLATE));
+                            if (container.get(AceItems.keyRadius, PersistentDataType.INTEGER) > 0) {
+                                breakInRadius(b, 1, p, shovelWhitelist);
+                            }
                         }
                     }
                 }

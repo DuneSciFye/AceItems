@@ -41,16 +41,8 @@ public class PlayerDeathListener implements Listener {
                     if (itemID.equals("June24MoreOPSword")){
                         if (!AceItems.disabledWorlds.get("June24MoreOPSword").contains(killer.getWorld().getName())) {
                             int kills = container.get(AceItems.keyKills, PersistentDataType.INTEGER);
-                            int newKills;
-
-                            if (kills > 9) {
-                                meta.getPersistentDataContainer().set(AceItems.keyItemID, PersistentDataType.INTEGER, 0);
-                                Utils.strikeLightningAroundLocation(killer.getLocation(), 3);
-                                newKills = 0;
-                            } else {
-                                newKills = kills + 1;
-                                meta.getPersistentDataContainer().set(AceItems.keyKills, PersistentDataType.INTEGER, newKills);
-                            }
+                            int newKills = kills + 1;
+                            meta.getPersistentDataContainer().set(AceItems.keyKills, PersistentDataType.INTEGER, newKills);
 
                             meta.lore(updateLore(heldItem, String.valueOf(kills), String.valueOf(newKills)));
                             heldItem.setItemMeta(meta);

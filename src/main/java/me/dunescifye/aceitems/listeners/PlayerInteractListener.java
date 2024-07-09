@@ -243,6 +243,19 @@ public class PlayerInteractListener implements Listener {
                         item.setItemMeta(meta);
                     }
                 }
+                case "June24MoreOPSword" -> {
+                    if (p.isSneaking() && !AceItems.disabledWorlds.get("June24MoreOPSword").contains(p.getWorld().getName())) {
+                        int kills = container.get(AceItems.keyKills, PersistentDataType.INTEGER);
+
+                        if (kills > 9) {
+                            meta.getPersistentDataContainer().set(AceItems.keyItemID, PersistentDataType.INTEGER, 0);
+                            Utils.strikeLightningAroundLocation(p.getLocation(), 3);
+                            meta.lore(updateLore(item, String.valueOf(kills), "0"));
+                            item.setItemMeta(meta);
+                        }
+
+                    }
+                }
                 case
                     "UltraJune24MoreOPSword" -> {
                     if (!AceItems.disabledWorlds.get("UltraJune24MoreOPSword").contains(p.getWorld().getName())) {
