@@ -25,7 +25,7 @@ import static me.dunescifye.aceitems.utils.Utils.*;
 
 public class PlayerToggleSneakListener implements Listener {
 
-    private static Map<UUID, Integer> sneaks = new HashMap<>();
+    public static Map<UUID, Integer> sneaks = new HashMap<>();
 
     public void PlayerToggleSneakHandler(AceItems plugin){
         Bukkit.getPluginManager().registerEvents(this, plugin);
@@ -76,7 +76,7 @@ public class PlayerToggleSneakListener implements Listener {
                     sneaks.put(p.getUniqueId(), 1);
                 }
                 else if (sneaks.get(p.getUniqueId()) == 5) {
-                    sneaks.remove(p.getUniqueId());
+                    sneaks.put(p.getUniqueId(), 0);
                     p.setVelocity(new Vector(0, JulyItemsConfig.July24ArmorJumpStrength, 0));
                 }
                 else {

@@ -56,7 +56,7 @@ public class EntityDamageListener implements Listener {
             //July 24 Armor
             if (Objects.equals(helmetID, "July24Helmet") && Objects.equals(chestplateID, "July24Chestplate") && Objects.equals(leggingsID, "July24Leggings") && Objects.equals(bootsID, "July24Boots")
                 && !AceItems.disabledWorlds.get("July24Helmet").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Chestplate").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Leggings").contains(p.getWorld().getName()) && !AceItems.disabledWorlds.get("July24Boots").contains(p.getWorld().getName())) {
-                if ((e.getCause() == EntityDamageEvent.DamageCause.LAVA || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || e.getCause() == EntityDamageEvent.DamageCause.FIRE) && p.getWorld().getEnvironment() == World.Environment.NETHER) e.setCancelled(true);
+                if ((e.getCause() == EntityDamageEvent.DamageCause.FALL && PlayerToggleSneakListener.sneaks.get(p.getUniqueId()) == 0) || ((e.getCause() == EntityDamageEvent.DamageCause.LAVA || e.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || e.getCause() == EntityDamageEvent.DamageCause.FIRE) && p.getWorld().getEnvironment() == World.Environment.NETHER)) e.setCancelled(true);
             }
         }
     }

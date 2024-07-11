@@ -220,7 +220,7 @@ public class ConfigUtils {
         ItemStack item = new ItemStack(material);
         if (config.isSet(itemID + ".iaItem")) {
             CustomStack stack = CustomStack.getInstance(config.getString(itemID + ".iaItem"));
-            if(stack != null)
+            if (stack != null)
                 item = stack.getItemStack();
         }
         ItemMeta meta = item.getItemMeta();
