@@ -111,6 +111,7 @@ public class EntityDamageByEntityListener implements Listener {
                                             CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(CooldownManager.July24VillagerWandCureCooldowns, p.getUniqueId()));
                                         } else {
                                             zombieVillager.setConversionTime(0);
+                                            zombieVillager.setConversionPlayer(p);
                                             CooldownManager.setCooldown(CooldownManager.July24VillagerWandCureCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.July24VillagerWandCureCooldown));
                                         }
                                     }
@@ -121,6 +122,7 @@ public class EntityDamageByEntityListener implements Listener {
                                     if (livingEntity instanceof ZombieVillager zombieVillager) {
                                         e.setCancelled(true);
                                         zombieVillager.setConversionTime(0);
+                                        zombieVillager.setConversionPlayer(p);
                                     }
                                 }
                             }

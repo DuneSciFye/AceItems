@@ -239,13 +239,15 @@ public class PlayerBlockBreakListener implements Listener {
                         int radius = container.get(AceItems.keyRadius, PersistentDataType.INTEGER);
                         Collection<ItemStack> drops = new ArrayList<>();
 
-                        if (b.getBlockData() instanceof Ageable ageable && ageable.getAge() == ageable.getMaximumAge()) {
-                            Bukkit.getScheduler().runTask(AceItems.getInstance(), () -> b.setType(material));
-                            if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24HoeBlazeSpawnEggChance) == 0) {
-                                drops.add(new ItemStack(Material.BLAZE_SPAWN_EGG));
+                        if (b.getBlockData() instanceof Ageable ageable) {
+                            if (ageable.getAge() == ageable.getMaximumAge()) {
+                                Bukkit.getScheduler().runTask(AceItems.getInstance(), () -> b.setType(material));
+                                if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24HoeBlazeSpawnEggChance) == 0) {
+                                    drops.add(new ItemStack(Material.BLAZE_SPAWN_EGG));
+                                }
                             }
+                            else e.setCancelled(true);
                         }
-                        else e.setCancelled(true);
 
                         for (int x = -radius; x <= radius; x++){
                             for (int z = -radius; z <= radius; z++){
