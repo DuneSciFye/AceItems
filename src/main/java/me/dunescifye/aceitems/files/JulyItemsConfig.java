@@ -26,7 +26,7 @@ public class JulyItemsConfig {
         July24LessOPSWordPlayerRandomPotionChance, July24LessOPSWordEntityRandomPotionChance, July24HoeNoSeedReplantChance, July24HoeBlazeSpawnEggChance,
         UltraJuly24HoeNoSeedReplantChance, UltraJuly24HoeBlazeSpawnEggChance, UltraJuly24HoeGuardianSpawnEggChance, July24FishingRodFishKeyChance,
         July24FishingRodSalmonSpawnEggChance, July24FishingRodAxolotlSpawnEggChance, July24FishingRodTurtleSpawnEggChance, July24FishingRodSquidSpawnEggChance,
-        July24BeachMakerCooldown, July24SlimeWandDefaultUses, July24TridentPVPKeyChance, July24TridentFishKeyChance, July24AxeFireworkDamage,
+        July24BeachMakerCooldown, UltraJuly24BeachMakerCooldown, July24SlimeWandDefaultUses, July24TridentPVPKeyChance, July24TridentFishKeyChance, July24AxeFireworkDamage,
         July24AxeIgnoreArmorChance, July24ShovelBedrockChance, July24ShovelReinforcedDeepslateChance, July24VillagerWandCureCooldown, July24VillagerWandZombifyCooldown,
         UltraJuly24VillagerWandEmeraldCooldown;
     public static double July24ArmorExtraDamagePercent, July24ArmorFireDamageReductionPercent, July24SaddleLaunchStrength, July24TridentExtraDamagePercent;
@@ -163,6 +163,7 @@ public class JulyItemsConfig {
         July24BeachMaker = ConfigUtils.initializeItem("July24BeachMaker", config);
         UltraJuly24BeachMaker = ConfigUtils.initializeItem("UltraJuly24BeachMaker", config);
         July24BeachMakerCooldown = ConfigUtils.setupConfig("July24BeachMaker.Cooldown", config, 30, 0, List.of("Cooldown for ability in seconds."));
+        UltraJuly24BeachMakerCooldown = ConfigUtils.setupConfig("UltraJuly24BeachMaker.Cooldown", config, 10, 0, List.of("Cooldown for ability in seconds."));
 
         July24SpeedVoucher = ConfigUtils.initializeItem("July24SpeedVoucher", config);
         July24SpeedVoucherPerm = ConfigUtils.setupConfig("July24SpeedVoucher.Perm", config, "essentials.flyspeed.4", List.of("Permission node to be given when held"));

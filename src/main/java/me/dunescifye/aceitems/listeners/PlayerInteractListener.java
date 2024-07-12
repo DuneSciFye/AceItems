@@ -532,7 +532,12 @@ public class PlayerInteractListener implements Listener {
                 case
                     "UltraJuly24BeachMaker" -> {
                     if (p.isSneaking() && !AceItems.disabledWorlds.get("July24BeachMaker").contains(p.getWorld().getName())) {
-                        July24BeachMaker(p, 10);
+                        if (CooldownManager.hasCooldown(UltraJuly24BeachMakerCooldowns, p.getUniqueId())) {
+                            CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(UltraJuly24BeachMakerCooldowns, p.getUniqueId()));
+                        } else {
+                            CooldownManager.setCooldown(UltraJuly24BeachMakerCooldowns, p.getUniqueId(), Duration.ofSeconds(JulyItemsConfig.UltraJuly24BeachMakerCooldown));
+                            July24BeachMaker(p, 10);
+                        }
                     }
                 }
                 case
