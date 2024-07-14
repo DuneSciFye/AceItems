@@ -40,6 +40,7 @@ public class BlockPlaceListener implements Listener {
                 PersistentDataContainer blockContainer = new CustomBlockData(b, AceItems.getInstance());
                 blockContainer.set(AceItems.keyItemID, PersistentDataType.STRING, "UltraJuly24Grill");
             }
+            case "July24JobsLantern", "UltraJuly24JobsLantern" -> e.setCancelled(true);
         }
 
     }

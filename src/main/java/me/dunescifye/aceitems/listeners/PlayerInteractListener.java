@@ -86,13 +86,15 @@ public class PlayerInteractListener implements Listener {
                         } else {
                             if (!(b.getState() instanceof ShulkerBox)) {
                                 b.setType(Objects.requireNonNull(Material.getMaterial(changeColor(b.getType().toString(), container.get(AceItems.keyState, PersistentDataType.STRING)))));
-                                int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
-                                if (uses > 1) {
-                                    container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 1);
-                                } else {
-                                    container.set(AceItems.keyUses, PersistentDataType.INTEGER, JulyItemsConfig.July24PaintBrushUses);
+                                Integer uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
+                                if (uses != null) {
+                                    if (uses > 1) {
+                                        container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 1);
+                                    } else {
+                                        container.set(AceItems.keyUses, PersistentDataType.INTEGER, JulyItemsConfig.July24PaintBrushUses);
+                                    }
+                                    item.setItemMeta(meta);
                                 }
-                                item.setItemMeta(meta);
                             }
                         }
                     }
@@ -531,7 +533,7 @@ public class PlayerInteractListener implements Listener {
                 }
                 case
                     "UltraJuly24BeachMaker" -> {
-                    if (p.isSneaking() && !AceItems.disabledWorlds.get("July24BeachMaker").contains(p.getWorld().getName())) {
+                    if (p.isSneaking() && !AceItems.disabledWorlds.get("UltraJuly24BeachMaker").contains(p.getWorld().getName())) {
                         if (CooldownManager.hasCooldown(UltraJuly24BeachMakerCooldowns, p.getUniqueId())) {
                             CooldownManager.sendCooldownMessage(p, CooldownManager.getRemainingCooldown(UltraJuly24BeachMakerCooldowns, p.getUniqueId()));
                         } else {

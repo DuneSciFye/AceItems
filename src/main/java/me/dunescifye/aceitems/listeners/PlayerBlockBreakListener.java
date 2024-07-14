@@ -7,6 +7,7 @@ import me.dunescifye.aceitems.utils.BlockUtils;
 import me.dunescifye.aceitems.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
@@ -308,12 +309,8 @@ public class PlayerBlockBreakListener implements Listener {
                     }
                     case "July24Axe" -> {
                         if (!AceItems.disabledWorlds.get("July24Axe").contains(p.getWorld().getName())) {
-                            for (Predicate<Block> whitelist : axeWhitelist) {
-                                if (whitelist.test(b)) {
-                                    if (notInBlacklist(b, axeBlacklist)) {
-                                        BlockUtils.veinMine(b, b.getType(), item);
-                                    }
-                                }
+                            if (Tag.LOGS.isTagged(b.getType())) {
+                                BlockUtils.veinMine(b, b.getType(), item);
                             }
                         }
                     }

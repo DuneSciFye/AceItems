@@ -36,43 +36,46 @@ public class PlayerDeathListener implements Listener {
             if (heldItem.hasItemMeta()) {
                 ItemMeta meta = heldItem.getItemMeta();
                 PersistentDataContainer container = meta.getPersistentDataContainer();
-                String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
-                if (itemID != null) {
-                    if (itemID.equals("June24MoreOPSword")){
-                        if (!AceItems.disabledWorlds.get("June24MoreOPSword").contains(killer.getWorld().getName())) {
-                            int kills = container.get(AceItems.keyKills, PersistentDataType.INTEGER);
-                            int newKills = kills + 1;
-                            meta.getPersistentDataContainer().set(AceItems.keyKills, PersistentDataType.INTEGER, newKills);
-
-                            meta.lore(updateLore(heldItem, String.valueOf(kills), String.valueOf(newKills)));
-                            heldItem.setItemMeta(meta);
-                        }
-                    } if (itemID.equals("UltraJune24MoreOPSword")){
-                        if (!AceItems.disabledWorlds.get("UltraJune24MoreOPSword").contains(killer.getWorld().getName())) {
-                            int kills = container.get(AceItems.keyKills, PersistentDataType.INTEGER);
-                            int newKills;
-
-                            if (kills > 9) {
-                                meta.getPersistentDataContainer().set(AceItems.keyItemID, PersistentDataType.INTEGER, 0);
-                                Utils.strikeLightningAroundLocation(killer.getLocation(), 3);
-                                newKills = 0;
-                            } else {
-                                newKills = kills + 1;
+                if (container.has(AceItems.keyItemID, PersistentDataType.STRING)) {
+                    String itemID = container.get(AceItems.keyItemID, PersistentDataType.STRING);
+                    if (itemID != null) {
+                        if (itemID.equals("June24MoreOPSword")) {
+                            if (!AceItems.disabledWorlds.get("June24MoreOPSword").contains(killer.getWorld().getName())) {
+                                int kills = container.get(AceItems.keyKills, PersistentDataType.INTEGER);
+                                int newKills = kills + 1;
                                 meta.getPersistentDataContainer().set(AceItems.keyKills, PersistentDataType.INTEGER, newKills);
-                            }
 
-                            meta.lore(updateLore(heldItem, String.valueOf(kills), String.valueOf(newKills)));
-                            heldItem.setItemMeta(meta);
+                                meta.lore(updateLore(heldItem, String.valueOf(kills), String.valueOf(newKills)));
+                                heldItem.setItemMeta(meta);
+                            }
                         }
-                    } else if (itemID.equals("June24LessOPSword")) {
-                        if (!AceItems.disabledWorlds.get("June24LessOPSword").contains(killer.getWorld().getName())){
-                            int random = ThreadLocalRandom.current().nextInt(300);
-                            if (random < 15) {
-                                killer.getWorld().dropItemNaturally(killed.getLocation(), new ItemStack(Material.SEA_LANTERN));
-                            } else if (random < 30) {
-                                killer.getWorld().dropItemNaturally(killed.getLocation(), new ItemStack(Material.PRISMARINE_SHARD));
-                            } else if (random == 30) {
-                                Utils.runConsoleCommand("silkspawners:ss give " + killer.getName() + Utils.randomObject(List.of("tropical_fish", "pufferfish", "salmon", "cod")));
+                        if (itemID.equals("UltraJune24MoreOPSword")) {
+                            if (!AceItems.disabledWorlds.get("UltraJune24MoreOPSword").contains(killer.getWorld().getName())) {
+                                int kills = container.get(AceItems.keyKills, PersistentDataType.INTEGER);
+                                int newKills;
+
+                                if (kills > 9) {
+                                    meta.getPersistentDataContainer().set(AceItems.keyItemID, PersistentDataType.INTEGER, 0);
+                                    Utils.strikeLightningAroundLocation(killer.getLocation(), 3);
+                                    newKills = 0;
+                                } else {
+                                    newKills = kills + 1;
+                                    meta.getPersistentDataContainer().set(AceItems.keyKills, PersistentDataType.INTEGER, newKills);
+                                }
+
+                                meta.lore(updateLore(heldItem, String.valueOf(kills), String.valueOf(newKills)));
+                                heldItem.setItemMeta(meta);
+                            }
+                        } else if (itemID.equals("June24LessOPSword")) {
+                            if (!AceItems.disabledWorlds.get("June24LessOPSword").contains(killer.getWorld().getName())) {
+                                int random = ThreadLocalRandom.current().nextInt(300);
+                                if (random < 15) {
+                                    killer.getWorld().dropItemNaturally(killed.getLocation(), new ItemStack(Material.SEA_LANTERN));
+                                } else if (random < 30) {
+                                    killer.getWorld().dropItemNaturally(killed.getLocation(), new ItemStack(Material.PRISMARINE_SHARD));
+                                } else if (random == 30) {
+                                    Utils.runConsoleCommand("silkspawners:ss give " + killer.getName() + Utils.randomObject(List.of("tropical_fish", "pufferfish", "salmon", "cod")));
+                                }
                             }
                         }
                     }

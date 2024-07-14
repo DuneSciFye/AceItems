@@ -91,6 +91,8 @@ public class JulyItemsConfig {
         UltraJuly24MelonWandRadius = ConfigUtils.setupConfig("UltraJuly24MelonWand.Radius", config, 5, 0, List.of("Radius of melon growth"));
         UltraJuly24MelonWandCooldown = ConfigUtils.setupConfig("UltraJuly24MelonWand.Cooldown", config, 15, 0, List.of("Cooldown on melon growth ability in seconds."));
 
+        AceItems.defaultValue.put(AceItems.keyState, "WHITE");
+        AceItems.defaultValue.put(AceItems.keyStateLore, "White");
         July24PaintBrushUses = ConfigUtils.setupConfig("July24PaintBrush.Uses", config, 300, 1, List.of("Uses until cooldown."));
         AceItems.defaultValue.put(AceItems.keyUses, July24PaintBrushUses);
         July24PaintBrush = ConfigUtils.initializeItem("July24PaintBrush", config, AceItems.keyUses, AceItems.keyState, AceItems.keyStateLore);
