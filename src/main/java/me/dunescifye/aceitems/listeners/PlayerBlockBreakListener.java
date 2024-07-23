@@ -307,7 +307,7 @@ public class PlayerBlockBreakListener implements Listener {
                             p.getWorld().dropItemNaturally(b.getLocation(), drop);
                         }
                     }
-                    case "July24Axe" -> {
+                    case "July24Axe", "August24Axe" -> {
                         if (!AceItems.disabledWorlds.get("July24Axe").contains(p.getWorld().getName())) {
                             if (Tag.LOGS.isTagged(b.getType())) {
                                 BlockUtils.veinMine(b, b.getType(), item);
