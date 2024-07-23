@@ -34,6 +34,8 @@ public final class AceItems extends JavaPlugin {
     public static final NamespacedKey keyUses = new NamespacedKey("customitems", "uses");
     public static final NamespacedKey keyInt = new NamespacedKey("customitems", "int");
     public static final NamespacedKey keyString = new NamespacedKey("customitems", "string");
+    public static final NamespacedKey keyScoreType = new NamespacedKey("score", "score-type");
+    public static final NamespacedKey keyScoreMaterial = new NamespacedKey("score", "score-material");
     //Map of all items
     public static Map<String, ItemStack> items = new HashMap<>();
     //Map of all disabled worlds for each item
@@ -103,6 +105,7 @@ public final class AceItems extends JavaPlugin {
         new BlockPlaceListener().blockPlaceHandler(this);
         new FurnaceSmeltListener().furnaceSmeltHandler(this);
         new EntityDamageListener().entityDamageHandler(this);
+        new PlayerInteractAtEntityListener().playerInteractAtEntityHandler(this);
     }
 
     @Override

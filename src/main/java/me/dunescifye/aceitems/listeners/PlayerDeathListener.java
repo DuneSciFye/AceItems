@@ -27,6 +27,7 @@ public class PlayerDeathListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
         Player killed = e.getEntity();
+        Utils.runConsoleCommand("score variables clear player August24ExtraHearts " + killed.getName(), "attribute " + killed.getName() + " minecraft:generic.max_health modifier remove 597cc153-c857-4b57-9321-75a945a0b29f");
         Player killer;
         if (e.getEntity().getKiller() != null) {
             killer = e.getEntity().getKiller();
