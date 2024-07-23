@@ -8,10 +8,7 @@ import me.dunescifye.aceitems.utils.CooldownManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Ageable;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Villager;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -24,6 +21,8 @@ import org.bukkit.util.Vector;
 
 import java.time.Duration;
 import java.util.Objects;
+
+import static me.dunescifye.aceitems.utils.Utils.updateLore;
 
 public class PlayerInteractEntityListener implements Listener {
 
@@ -92,15 +91,19 @@ public class PlayerInteractEntityListener implements Listener {
             }
             case "July24AIDisabler" -> {
                 if (Objects.equals(container.get(AceItems.keyState, PersistentDataType.STRING), "enable")) {
-                    NBT.modify(entity, nbt -> {
-                        nbt.setBoolean("Bukkit.Aware", true);
-                        p.sendMessage(Component.text("You have enabled this mob's AI.", NamedTextColor.GREEN));
-                    });
+                    ((LivingEntity) entity).setAI(true);
+                    p.sendMessage(Component.text("You have enabled this mob's AI.", NamedTextColor.GREEN));
                 } else {
-                    NBT.modify(entity, nbt -> {
-                        nbt.setBoolean("Bukkit.Aware", false);
-                        p.sendMessage(Component.text("You have disabled this mob's AI.", NamedTextColor.GREEN));
-                    });
+                    ((LivingEntity) entity).setAI(false);
+                    p.sendMessage(Component.text("You have disabled this mob's AI.", NamedTextColor.GREEN));
+                }
+                int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
+                if (uses > 1) {
+                    container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 64);
+                    meta.lore(updateLore(heldItem, String.valueOf(uses), String.valueOf(uses - 1)));
+                    heldItem.setItemMeta(meta);
+                } else {
+                    heldItem.setAmount(0);
                 }
             }
         }

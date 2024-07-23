@@ -833,7 +833,7 @@ public class PlayerInteractListener implements Listener {
                                 sendCooldownMessage(p, getRemainingCooldown(UltraJune24LavaWaterBucketCooldowns, p.getUniqueId()));
                             } else {
                                 setCooldown(UltraJune24LavaWaterBucketCooldowns, p.getUniqueId(), Duration.ofSeconds(30));
-                                removeInRadius(b, 3, getWater());
+                                removeInRadius(b, 3, getLava());
                             }
                         } else {
                             Block blockRelative = b.getRelative(e.getBlockFace());
