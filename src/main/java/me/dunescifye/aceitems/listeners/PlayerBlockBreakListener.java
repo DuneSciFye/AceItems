@@ -20,6 +20,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
@@ -54,8 +55,8 @@ public class PlayerBlockBreakListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent e) {
-        if (e.isCancelled()) return;
         Player p = e.getPlayer();
+        if (e.isCancelled() || p.hasMetadata("ignoreBlockBreak")) return;
         ItemStack item = p.getInventory().getItemInMainHand();
         Block b = e.getBlock();
 
@@ -250,12 +251,20 @@ public class PlayerBlockBreakListener implements Listener {
                             else e.setCancelled(true);
                         }
 
+                        p.setMetadata("ignoreBlockBreak", new FixedMetadataValue(AceItems.getInstance(), true));
+
                         for (int x = -radius; x <= radius; x++){
                             for (int z = -radius; z <= radius; z++){
                                 Block block = b.getRelative(x, 0, z);
                                 if (b.equals(block)) continue;
                                 BlockData blockData = block.getBlockData();
                                 if (blockData instanceof Ageable ageable && ageable.getAge() == ageable.getMaximumAge()) {
+                                    BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, p);
+                                    Bukkit.getPluginManager().callEvent(blockBreakEvent);
+                                    if (blockBreakEvent.isCancelled()) continue;
+
+                                    blockBreakEvent.setDropItems(false);
+
                                     Collection<ItemStack> blockDrops = block.getDrops(item);
                                     for (ItemStack drop : blockDrops) {
                                         if (ThreadLocalRandom.current().nextInt(JulyItemsConfig.July24HoeNoSeedReplantChance) != 1 && drop.getType().equals(blockData.getPlacementMaterial()))
@@ -267,6 +276,8 @@ public class PlayerBlockBreakListener implements Listener {
                                 }
                             }
                         }
+
+                        p.removeMetadata("ignoreBlockBreak", AceItems.getInstance());
 
                         for (ItemStack drop : mergeSimilarItemStacks(drops)){
                             p.getWorld().dropItemNaturally(b.getLocation(), drop);
