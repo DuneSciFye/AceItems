@@ -90,13 +90,7 @@ public class PlayerInteractEntityListener implements Listener {
                 }
             }
             case "July24AIDisabler" -> {
-                if (Objects.equals(container.get(AceItems.keyState, PersistentDataType.STRING), "enable")) {
-                    ((LivingEntity) entity).setAI(true);
-                    p.sendMessage(Component.text("You have enabled this mob's AI.", NamedTextColor.GREEN));
-                } else {
-                    ((LivingEntity) entity).setAI(false);
-                    p.sendMessage(Component.text("You have disabled this mob's AI.", NamedTextColor.GREEN));
-                }
+                ToggleMobAI(p, (LivingEntity) entity, container);
                 int uses = container.get(AceItems.keyUses, PersistentDataType.INTEGER);
                 if (uses > 1) {
                     container.set(AceItems.keyUses, PersistentDataType.INTEGER, uses - 64);
@@ -106,6 +100,19 @@ public class PlayerInteractEntityListener implements Listener {
                     heldItem.setAmount(0);
                 }
             }
+            case "UltraJuly24AIDisabler" -> {
+                ToggleMobAI(p, (LivingEntity) entity, container);
+            }
+        }
+    }
+
+    private void ToggleMobAI(Player p, LivingEntity entity, PersistentDataContainer container) {
+        if (Objects.equals(container.get(AceItems.keyState, PersistentDataType.STRING), "enable")) {
+            entity.setAI(true);
+            p.sendMessage(Component.text("You have enabled this mob's AI.", NamedTextColor.GREEN));
+        } else {
+            entity.setAI(false);
+            p.sendMessage(Component.text("You have disabled this mob's AI.", NamedTextColor.GREEN));
         }
     }
 

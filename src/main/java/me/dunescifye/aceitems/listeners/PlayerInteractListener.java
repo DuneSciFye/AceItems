@@ -655,7 +655,7 @@ public class PlayerInteractListener implements Listener {
                         }
                     }
                 }
-                case "July24AIDisabler" -> {
+                case "July24AIDisabler", "UltraJuly24AIDisabler" -> {
                     if (p.isSneaking()) {
                         Utils.updateKey(p, item, meta, container, AceItems.keyState, AceItems.keyStateLore, "AI mode", "enable", "Enable", "disable", "Disable");
                     }
