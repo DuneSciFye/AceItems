@@ -1,7 +1,9 @@
 package me.dunescifye.aceitems.utils;
 
+import me.dunescifye.aceitems.AceItems;
 import net.coreprotect.CoreProtect;
 import net.coreprotect.CoreProtectAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
@@ -9,7 +11,9 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.Directional;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 
 import java.util.*;
@@ -244,6 +248,7 @@ public class BlockUtils {
         ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         Collection<ItemStack> drops = new ArrayList<>();
+        player.setMetadata("ignoreBlockBreak", new FixedMetadataValue(AceItems.getInstance(), true));
 
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
@@ -251,13 +256,19 @@ public class BlockUtils {
                     Block b = block.getRelative(x, y, z);
                     for (Predicate<Block> whitelisted : whitelist) {
                         if (whitelisted.test(b)) {
+                            BlockBreakEvent blockBreakEvent = new BlockBreakEvent(b, player);
+                            Bukkit.getPluginManager().callEvent(blockBreakEvent);
+                            if (blockBreakEvent.isCancelled()) continue;
+                            blockBreakEvent.setDropItems(false);
+
                             drops.addAll(b.getDrops(heldItem));
-                            b.setType(Material.AIR);
                         }
                     }
                 }
             }
         }
+
+        player.removeMetadata("ignoreBlockBreak", AceItems.getInstance());
 
         for (ItemStack item : mergeSimilarItemStacks(drops)){
             block.getWorld().dropItemNaturally(block.getLocation(), item);
