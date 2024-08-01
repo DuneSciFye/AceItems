@@ -383,11 +383,13 @@ public class PlayerInteractListener implements Listener {
                             } else if (b != null) {
                                 Block blockRelative = b.getRelative(e.getBlockFace());
                                 Claim claim = GriefPrevention.instance.dataStore.getClaimAt(blockRelative.getLocation(), true, null);
-                                if (blockRelative.getType() == Material.AIR && (claim == null || claim.getOwnerID().equals(p.getUniqueId()))) {
-                                    blockRelative.setType(Material.valueOf(leafType + "_LEAVES"));
-                                    if (blockRelative.getBlockData() instanceof Leaves leaves) {
-                                        leaves.setPersistent(true);
-                                        blockRelative.setBlockData(leaves);
+                                if (claim == null || claim.getOwnerID().equals(p.getUniqueId())) {
+                                    if (blockRelative.getType() == Material.AIR) {
+                                        blockRelative.setType(Material.valueOf(leafType + "_LEAVES"));
+                                        if (blockRelative.getBlockData() instanceof Leaves leaves) {
+                                            leaves.setPersistent(true);
+                                            blockRelative.setBlockData(leaves);
+                                        }
                                     }
                                 } else {
                                     sendClaimMessage(p);
