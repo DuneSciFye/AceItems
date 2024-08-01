@@ -262,6 +262,7 @@ public class BlockUtils {
                             blockBreakEvent.setDropItems(false);
 
                             drops.addAll(b.getDrops(heldItem));
+                            b.setType(Material.AIR);
                         }
                     }
                 }
