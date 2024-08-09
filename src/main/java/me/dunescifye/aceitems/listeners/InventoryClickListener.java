@@ -120,8 +120,61 @@ public class InventoryClickListener implements Listener {
                         }
                         case
                             "UltraJuly24JobsLantern" -> {
-                            if (!AceItems.disabledWorlds.get("UltraJuly24JobsLantern").contains(p.getWorld().getName()))
-                                Utils.addPermission(p.getUniqueId(), JulyItemsConfig.UltraJuly24JobsLanternIncomeBoostPerm);
+                            if (!AceItems.disabledWorlds.get("UltraJuly24JobsLantern").contains(p.getWorld().getName()))Utils.addPermission(p.getUniqueId(), "jobs.boost.Brewer.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Brewer.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Brewer.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Miner.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Miner.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Miner.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Woodcutter.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Woodcutter.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Woodcutter.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Weaponsmith.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Weaponsmith.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Weaponsmith.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Crafter.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Crafter.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Crafter.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Digger.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Digger.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Digger.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Engineer.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Engineer.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Engineer.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Explorer.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Explorer.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Explorer.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Farmer.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Farmer.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Farmer.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Enchanter.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Enchanter.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Enchanter.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Cooker.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Cooker.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Cooker.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Builder.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Builder.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Builder.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Trader.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Trader.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Trader.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Tamer.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Tamer.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Tamer.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Taster.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Taster.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Taster.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Florist.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Florist.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Florist.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Hunter.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Hunter.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Hunter.points.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Smelter.exp.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Smelter.money.2");
+                            Utils.addPermission(p.getUniqueId(), "jobs.boost.Smelter.points.2");
+
                         }
                         case
                             "July24PocketBeacon" -> {
@@ -166,8 +219,61 @@ public class InventoryClickListener implements Listener {
                                 Utils.removePermission(p.getUniqueId(), JulyItemsConfig.July24JobsLanternIncomeBoostPerm);
                         }
                         case "UltraJuly24JobsLantern" -> {
-                            if (!AceItems.disabledWorlds.get("UltraJuly24JobsLantern").contains(p.getWorld().getName()))
-                                Utils.removePermission(p.getUniqueId(), JulyItemsConfig.UltraJuly24JobsLanternIncomeBoostPerm);
+                            if (!AceItems.disabledWorlds.get("UltraJuly24JobsLantern").contains(p.getWorld().getName()))Utils.removePermission(p.getUniqueId(), "jobs.boost.Brewer.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Brewer.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Brewer.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Miner.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Miner.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Miner.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Woodcutter.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Woodcutter.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Woodcutter.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Weaponsmith.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Weaponsmith.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Weaponsmith.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Crafter.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Crafter.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Crafter.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Digger.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Digger.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Digger.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Engineer.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Engineer.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Engineer.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Explorer.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Explorer.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Explorer.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Farmer.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Farmer.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Farmer.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Enchanter.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Enchanter.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Enchanter.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Cooker.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Cooker.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Cooker.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Builder.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Builder.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Builder.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Trader.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Trader.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Trader.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Tamer.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Tamer.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Tamer.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Taster.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Taster.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Taster.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Florist.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Florist.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Florist.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Hunter.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Hunter.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Hunter.points.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Smelter.exp.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Smelter.money.2");
+                            Utils.removePermission(p.getUniqueId(), "jobs.boost.Smelter.points.2");
+
                         }
                         case "July24PocketBeacon" -> {
                             if (!JulyItemsConfig.July24PocketBeaconWhitelistedWorlds.contains(p.getWorld().getName())) {
